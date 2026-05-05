@@ -7,12 +7,12 @@ type PresenceSummary = {
 }
 
 export const countWorkshopPresence = (channel: RealtimeChannel): PresenceSummary => {
-  const state = channel.presenceState<{ isOver: boolean }>()
+  const state = channel.presenceState<{ isTurnOver: boolean }>()
   const users = Object.values(state).flat()
 
   return {
-    readOnly: users.filter(u => u.isOver === true).length,
-    queuing:  users.filter(u => u.isOver === false).length,
+    readOnly: users.filter(u => u.isTurnOver === true).length,
+    queuing:  users.filter(u => u.isTurnOver === false).length,
     total:    users.length
   }
 }

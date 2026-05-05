@@ -4,41 +4,84 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import useWorkshopChannel from '@/hooks/realTime/useWorkshopChannel';
 import { useAppStore } from '@/store/useAppStore';
 import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from "react";
 
 import WritingWorkshopComposer from '@/features/oneWritingWorkshop/writingWorkshopComposer';
 import WritingWorkshopContent from '@/features/oneWritingWorkshop/writingWorkshopContent';
 import WritingWorkshopHeader from '@/features/oneWritingWorkshop/writingWorkshopHeader';
 import WritingWorkshopPrompt from '@/features/oneWritingWorkshop/writingWorkshopPrompt';
 
+import { createSegment, fetchSegmentsByWorkshopId } from '@/services/supabase/segments';
+import { getWritingWorkshopById } from '@/services/supabase/writingWorkshops';
+import { SegmentType } from '@/types/segments';
+
+
 export default function WritingWorkshopEditor() {
 
   const writingWorkshopIdFromStore = useAppStore(state => state.writingWorkshopId)
   const { id } = useLocalSearchParams()
   const writingWorkshopId = writingWorkshopIdFromStore || id
+  const writingWorkshopFromStore = useAppStore(state => state.writingWorkshop)
 
-
-  const writingWorkshop = useAppStore(state => state.writingWorkshop)
   const guestId = useAppStore(state => state.guestId)
   const userId = useAppStore(state => state.userId)
 
-  console.log("WORKSHOP", writingWorkshop)
+  const [contributions, setContributions] = useState<SegmentType[]>([])
+  const [writingWorkshop, setWritingWorkshop] = useState(writingWorkshopFromStore || null)
+  const [reloadContribution, setReloadContribution] = useState<boolean>(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const segments = (await fetchSegmentsByWorkshopId({ writingWorkshopId })) || []
+      setContributions(segments)
+      if (!writingWorkshop || writingWorkshop.id !== writingWorkshopId) {
+        const refreshedWritingWorkshop = await getWritingWorkshopById(writingWorkshopId)
+        setWritingWorkshop(refreshedWritingWorkshop)
+      }
+    }
+    fetchData()
+  }, [writingWorkshopId])
+
+  useEffect(() => {
+    const fetchContributions = async () => {
+      const segments = (await fetchSegmentsByWorkshopId({ writingWorkshopId })) || []
+      setContributions(segments)
+    }
+    if (reloadContribution) {
+      fetchContributions()
+      setReloadContribution(false)
+    }
+  }, [reloadContribution])
+
 
   // call useEffect hook to register user presence in workshop with supabase realTime and to untrack user when component unmounts
   useWorkshopChannel({ writingWorkshopId, guestId, userId })
 
+  const handleSubmitSegment = async (data: { text: string }) => {
+    console.log("DATA", data, writingWorkshopId, guestId, userId)
+    await createSegment({
+      writingWorkshopId,
+      guestId,
+      userId,
+      text: data.text
+    })
+    setReloadContribution(true)
+  }
+
   return (
     <SafeAreaView style={styles.writingWorkshopEditorContainer}>
       <WritingWorkshopHeader
-        title={writingWorkshop.title}
+        title={writingWorkshop?.title}
         type={"Cadavre Exquis"}
         presencesCount={10}
         participantsCount={3}
       />
       <WritingWorkshopPrompt
-        prompt={writingWorkshop.prompt} />
+        prompt={writingWorkshop?.prompt} />
       <WritingWorkshopContent
-        contributions={[]} />
-      <WritingWorkshopComposer />
+        contributions={contributions} />
+      <WritingWorkshopComposer
+        onSubmit={handleSubmitSegment} />
     </SafeAreaView>)
 
 }

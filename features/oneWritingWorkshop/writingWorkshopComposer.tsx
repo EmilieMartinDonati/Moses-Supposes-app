@@ -1,7 +1,29 @@
-import { Colors } from "@/constants/theme"
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+import { Colors } from "@/constants/theme";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from "react-hook-form";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { z } from 'zod'; // or 'zod/v4'
 
-export default function WritingWorkshopComposer() {
+export default function WritingWorkshopComposer({ onSubmit }: {
+    onSubmit: (data: { text: string }) => Promise<void>
+}) {
+
+    const formSchema = z.object({
+        text: z.string()
+    })
+
+    const {
+        handleSubmit,
+        reset,
+        control,
+        formState: { errors } } = useForm({
+            resolver: zodResolver(formSchema),
+            defaultValues: {
+                text: ""
+            },
+        })
+
+
     return (
         <View style={styles.writingWorkshopComposerContainer}>
             <View style={styles.userContainer}>
@@ -10,21 +32,31 @@ export default function WritingWorkshopComposer() {
                 </View>
                 <Text style={styles.userText}>A TON TOUR</Text>
             </View>
-            <TextInput
-                style={styles.input}
-                placeholder="Continue the story…"
-                placeholderTextColor={Colors.light.mainBlue}
-                multiline
+            <Controller
+                control={control}
+                name="text"
+                render={({ field: { onChange, value } }) => (
+                    <TextInput
+                        style={[styles.input, { outline: 'none' } as any]}
+                        placeholder="Continue the story…"
+                        placeholderTextColor={Colors.light.mainBlue}
+                        underlineColorAndroid="transparent"
+                        multiline
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
             />
             <View style={styles.inputFooter}>
                 <Text style={styles.hint}>1 phrase maximum</Text>
-                <Pressable style={styles.submitButton}>
+                <Pressable style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
                     <Text style={styles.submitText}>Envoyer</Text>
                 </Pressable>
             </View>
         </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     writingWorkshopComposerContainer: {
@@ -54,7 +86,7 @@ const styles = StyleSheet.create({
     userText: {
         color: Colors.light.chocolate
     },
-     input: {
+    input: {
         height: 120,
         backgroundColor: Colors.light.faintWarmWhite,
         borderColor: Colors.light.elevatedBeige,
@@ -64,9 +96,9 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         color: Colors.light.chocolate,
         fontSize: 14,
-        textAlignVertical: "top",   // Android — texte commence en haut
+        textAlignVertical: "top",   // Android — texte begins at the top
     },
-     inputFooter: {
+    inputFooter: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
