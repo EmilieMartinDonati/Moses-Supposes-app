@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { z } from 'zod'; // or 'zod/v4'
 
 export default function WritingWorkshopComposer({ onSubmit }: {
-    onSubmit: (data: { text: string }) => Promise<void>
+    onSubmit: ( data: { text: string } ) => Promise<void>
 }) {
 
     const formSchema = z.object({

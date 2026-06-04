@@ -15,9 +15,7 @@ const styles = StyleSheet.create({
         display: "flex",
         gap: 8,
         padding: 16,
-        backgroundColor: Colors.light.faintWarmWhite,
-        borderTopColor: Colors.light.elevatedBeige,
-        borderTopWidth: 1
+        backgroundColor: Colors.light.faintWarmWhite
     },
     promptLabel: {
         fontSize: 10,

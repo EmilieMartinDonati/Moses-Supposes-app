@@ -16,8 +16,6 @@ type WritingWorkshopCardProps = {
 
 export default function WritingWorkshopCard({ writingWorkshopId, title, prompt, participantsCount, endTime, startTime, visibility, loading }: WritingWorkshopCardProps) {
 
-    console.log("END DATE", endTime, participantsCount)
-
     const _onPress = async () => {
        await clickWritingWorkshop(writingWorkshopId, visibility);
     }

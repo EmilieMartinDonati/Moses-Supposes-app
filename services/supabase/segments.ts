@@ -15,7 +15,7 @@ export async function createSegment({ text, guestId, userId, writingWorkshopId }
     }
 
     const createdSegment = await supabase.from("segments").insert(payload).select("*").single()
-    console.log("___ CREATED SEGMENT ____", createdSegment)
+    return createdSegment
 
     // @todo replace w/ transaction
 }
@@ -33,10 +33,8 @@ export async function fetchSegmentsByWorkshopId({ writingWorkshopId, limit = 100
         .order("created_at", { ascending: true });
 
     if (error) {
-        console.log(`Error retrieving segments for workshop id ${writingWorkshopId}`, error)
+        console.error(`Error retrieving segments for workshop id ${writingWorkshopId}`, error)
     }
-
-    console.log("SEGMENTSSSS", segments)
 
     return segments
 

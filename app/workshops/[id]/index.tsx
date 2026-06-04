@@ -58,7 +58,6 @@ export default function WritingWorkshopEditor() {
   useWorkshopChannel({ writingWorkshopId, guestId, userId })
 
   const handleSubmitSegment = async (data: { text: string }) => {
-    console.log("DATA", data, writingWorkshopId, guestId, userId)
     await createSegment({
       writingWorkshopId,
       guestId,

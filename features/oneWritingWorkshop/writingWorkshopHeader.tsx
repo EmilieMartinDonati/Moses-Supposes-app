@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/theme"
 import { StyleSheet, Text, View } from "react-native"
 
-export default function WritingWorkshopHeader({ title, type = "Cadavre Exquis", presencesCount, participantsCount }: { title: string, type: string, presencesCount: number, participantsCount: number }) {
+export default function WritingWorkshopHeader({ title, type = "Cadavre Exquis", presencesCount, participantsCount }: { title: string, type: string, presencesCount?: number, participantsCount?: number }) {
     return (
         <View style={styles.writingWorkshopHeaderContainer}>
             <View style={styles.writingWorkshopHeaderTextContent}>
@@ -19,7 +19,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         height: 80,
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        borderBottomColor: Colors.light.elevatedBeige,
+        borderBottomWidth: 1,
+        backgroundColor: "white"
     },
     writingWorkshopHeaderTextContent: {
         display: "flex",

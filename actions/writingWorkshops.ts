@@ -24,3 +24,7 @@ export const clickWritingWorkshop = async (writingWorkshopId: string, visibility
         }
     }
 }
+
+export const clickCreateWritingWorkshop = () => {
+    NavigationActions.createWorkshop()
+}

@@ -12,11 +12,8 @@ export async function countPresencesByWorkshopId({ writingWorkshopId }: { writin
         .eq("writing_workshop_id", writingWorkshopId)
 
     if (error) {
-        console.log("Error counting presences:", error);
-        throw error;
+        console.error("Error counting presences:", error);
     }
-
-    console.log("count !!!!", count)
 
     return count;
 }
@@ -54,8 +51,6 @@ export async function createPresence({ writingWorkshopId }: { writingWorkshopId:
     if (!!userId) payload.user_id = userId;
     if (!!guestId) payload.guest_id = guestId;
 
-    console.log("Creating presence with payload:", payload);
-
     const { data, error } = await supabase.from("presences").insert(payload).select("*").single();
     if (error) {
         console.error("Error creating presence:", error);
@@ -88,7 +83,7 @@ export async function deletePresence({ presenceId }: { presenceId: string }) {
         .eq("id", presenceId);
 
     if (error) {
-        console.log(`error on deleting presence for presenceId ${presenceId}`, error)
+        console.error(`error on deleting presence for presenceId ${presenceId}`, error)
         throw error
     }
 }

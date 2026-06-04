@@ -4,7 +4,8 @@ type NavigationActionsType = {
     goHome: () => void,
     goToWorkshopEditor: (workshopId: string) => void,
     goToWorkshopLobby: (workshopId: string) => void,
-    goBack: () => void
+    goBack: () => void,
+    createWorkshop: () => void
 }
 
 export const NavigationActions: NavigationActionsType = {
@@ -20,5 +21,8 @@ export const NavigationActions: NavigationActionsType = {
     },
     goBack: () => {
         router.back();
+    },
+    createWorkshop: () => {
+        router.push("/create")
     }
 }

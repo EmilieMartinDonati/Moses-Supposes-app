@@ -1,3 +1,4 @@
+import { NavigationActions } from "@/actions/navigation"
 import FloatingActionButton from "@/components/ui/floatingActionButton"
 import { Colors } from "@/constants/theme"
 import CodeAddBanner from "@/features/codes/CodeAddBanner"
@@ -6,6 +7,11 @@ import WritingWorkshopList from "@/features/writingWorkshops/writingWorkshopsLis
 import { ScrollView, StyleSheet, View } from "react-native"
 
 export default function HomeScreen() {
+
+    const onPressFAB = () => {
+        NavigationActions.createWorkshop()
+    }
+
     return (
         // <SafeAreaView>
         <>
@@ -20,9 +26,7 @@ export default function HomeScreen() {
                     <WritingWorkshopList />
                 </View>
             </ScrollView>
-            <FloatingActionButton variant="add" onPress={() => {
-                console.log("PRESSING FAB")
-            }} />
+            <FloatingActionButton variant="add" onPress={onPressFAB} />
             </>
         // </SafeAreaView>
     )
