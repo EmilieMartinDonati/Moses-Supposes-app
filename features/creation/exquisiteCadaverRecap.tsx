@@ -1,12 +1,13 @@
 import { Colors, Fonts } from "@/constants/theme";
 import { Platform, StyleSheet, Text, View } from "react-native";
+import { ExquisiteCadaverCode } from "./exquisiteCadaverCode";
 
 // ─── Recap Row ────────────────────────────────────────────────────────────────
 
-function RecapRow({ label, value }: { label: string; value: string | number | undefined }) {
+function RecapRow({ label, value, isLast }: { label: string; value: string | number | undefined, isLast?: boolean }) {
     if (value === undefined || value === null || value === "") return null;
     return (
-        <View style={rowStyles.container}>
+        <View style={[rowStyles.container, isLast && { borderBottomWidth: 0 }]}>
             <Text style={rowStyles.label}>{label}</Text>
             <Text style={rowStyles.value}>{value}</Text>
         </View>
@@ -91,31 +92,30 @@ function formatDate(date: Date | string | undefined): string | undefined {
 
 export default function ExquisiteCadaverRecap({ values }: { values: any }) {
     const isPublic = values.visibility === "public";
+    const code = values.access_code
 
     return (
         <View style={styles.container}>
+            {code && <Text style={styles.heading}>Votre code d'accès</Text>}
+            {code && <ExquisiteCadaverCode code={code} /> }
             <Text style={styles.heading}>Récapitulatif</Text>
-            <Text style={styles.subheading}>
-                Vérifiez les informations avant de créer votre atelier.
-            </Text>
-
             <RecapSection title="Contenu">
                 <RecapRow label="Titre" value={values.title} />
                 <RecapRow label="Prompt" value={values.prompt} />
-                <RecapRow label="Visibilité" value={isPublic ? "🌐 Public" : "🔒 Privé"} />
+                <RecapRow label="Visibilité" value={isPublic ? "🌐 Public" : "🔒 Privé"} isLast/>
             </RecapSection>
 
             <RecapSection title="Paramètres">
                 <RecapRow label="Délai d'écriture" value={values.writingDelay ? `${values.writingDelay} s` : undefined} />
                 <RecapRow label="Phrases max / participant" value={values.max_sentences} />
-                {isPublic && <RecapRow label="Participants max" value={values.max_participants} />}
-                {!isPublic && <RecapRow label="Tours / participant" value={values.iterations_count} />}
+                {isPublic && <RecapRow label="Participants max" value={values.max_participants} isLast/>}
+                {!isPublic && <RecapRow label="Tours / participant" value={values.iterations_count} isLast/>}
             </RecapSection>
 
             {isPublic && (
                 <RecapSection title="Dates">
                     <RecapRow label="Début" value={formatDate(values.start_time)} />
-                    <RecapRow label="Fin" value={formatDate(values.end_time)} />
+                    <RecapRow label="Fin" value={formatDate(values.end_time)} isLast />
                 </RecapSection>
             )}
         </View>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         gap: 16,
     },
     heading: {
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: "600",
         color: Colors.light.chocolate,
         fontFamily: Platform.select(Fonts ?? {}) ?? undefined,

@@ -50,7 +50,7 @@ Upon closing, the final story is published to the public gallery and a summary e
 These rules apply to both session types but are especially important for public sessions.
 
 - **Idle player:** If the current player has not begun typing within 120 seconds, they are moved to the end of the waiting queue.
-- **WhatsApp notification:** Upon joining a busy public session, if many players are waiting, the user is notified on WhatsApp when it is their turn so they do not have to stay in the app.
+- **Lobby logic:** Upon joining a busy public session, if many players are waiting, the user is sent to a lobby, where they have the choice to wait (with an estimated waiting time and the possibility to browse other sessions) or to be notified on WhatsApp when it is their turn so they do not have to stay in the app.
 
 ---
 

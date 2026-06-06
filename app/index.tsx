@@ -1,5 +1,5 @@
 import { NavigationActions } from "@/actions/navigation"
-import FloatingActionButton from "@/components/ui/floatingActionButton"
+import FloatingActionButton from "@/components/floatingActionButton"
 import { Colors } from "@/constants/theme"
 import CodeAddBanner from "@/features/codes/CodeAddBanner"
 import HomeHeader from "@/features/home/homeHeader"

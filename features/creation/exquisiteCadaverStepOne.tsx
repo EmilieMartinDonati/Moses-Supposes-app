@@ -82,7 +82,7 @@ export default function ExquisiteCadaverStepOne({
                     render={({ field: { onChange, value } }) => (
                         <TextInput
                             placeholder="Titre de votre cadavre exquis"
-                            placeholderTextColor={Colors.light.elevatedBeige}
+                            placeholderTextColor={Colors.light.chocolate + "66"}
                             underlineColorAndroid="transparent"
                             multiline
                             style={styles.textInput}
@@ -104,8 +104,8 @@ export default function ExquisiteCadaverStepOne({
                     name="prompt"
                     render={({ field: { onChange, value } }) => (
                         <TextInput
-                            placeholder="Quel est le thème de votre atelier ?"
-                            placeholderTextColor={Colors.light.elevatedBeige}
+                            placeholder="Saisissez la première phrase de votre cadavre exquis"
+                            placeholderTextColor={Colors.light.chocolate + "66"}
                             underlineColorAndroid="transparent"
                             multiline
                             numberOfLines={3}
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     formContainer: {
         gap: 24,
     },
-
     // Field group
     fieldGroup: {
         gap: 8,

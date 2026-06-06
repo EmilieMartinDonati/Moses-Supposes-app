@@ -2,8 +2,7 @@ import { Colors, Fonts } from "@/constants/theme";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import ExquisiteCadaverRecap from './exquisiteCadaverRecap';
+import { Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 // ─── Date Picker Field ────────────────────────────────────────────────────────
 
@@ -20,12 +19,12 @@ function DatePickerField({
 
     const formatted = value
         ? value.toLocaleString("fr-FR", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-          })
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        })
         : null;
 
     return (
@@ -116,22 +115,47 @@ const pickerStyles = StyleSheet.create({
 
 export default function ExquisiteCadaverStepThree({
     control,
-    visibility,
-    values,
+    errors,
+    visibility
 }: {
     control: any;
-    visibility: "private" | "public";
     errors: any;
-    values: any;
+    visibility: "private" | "public"
 }) {
+
+    console.log("errrors", errors)
+
     if (visibility === "private") {
-        return <ExquisiteCadaverRecap values={values} />;
+        return (
+            <View style={styles.formContainer}>
+                <Text style={styles.sectionHint}>Email</Text>
+                <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            placeholder="Saisissez votre email"
+                            placeholderTextColor={Colors.light.chocolate + "66"}
+                            underlineColorAndroid="transparent"
+                            multiline
+                            numberOfLines={3}
+                            style={[styles.textInput, styles.textInputMultiline]}
+                            onChangeText={onChange}
+                            value={value}
+                        />
+                    )}
+                />
+                {errors.email && (
+                    <Text style={styles.errorText}>{errors.email.message}</Text>
+                )}
+            </View>
+        )
     }
 
     return (
         <View style={styles.formContainer}>
             <Text style={styles.sectionHint}>
-                Définissez la fenêtre de participation pour cet atelier public.
+                Définissez la fenêtre de participation pour cet atelier.
             </Text>
 
             <Controller
@@ -145,7 +169,9 @@ export default function ExquisiteCadaverStepThree({
                     />
                 )}
             />
-
+            {errors.start_time && (
+                <Text style={styles.errorText}>{errors.start_time.message}</Text>
+            )}
             <Controller
                 control={control}
                 name="end_time"
@@ -157,6 +183,9 @@ export default function ExquisiteCadaverStepThree({
                     />
                 )}
             />
+            {errors.end_time && (
+                <Text style={styles.errorText}>{errors.end_time.message}</Text>
+            )}
         </View>
     );
 }
@@ -166,10 +195,30 @@ const styles = StyleSheet.create({
         gap: 24,
     },
     sectionHint: {
-        fontSize: 13,
-        color: Colors.light.chocolate,
-        opacity: 0.5,
-        lineHeight: 20,
         fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
+        fontSize: 11,
+        fontWeight: "600",
+        letterSpacing: 0.8,
+        textTransform: "uppercase",
+        color: Colors.light.chocolate,
+        opacity: 0.6
+    },
+    errorText: {
+        fontSize: 12,
+        color: "#b33a3a",
+    },
+        textInput: {
+        backgroundColor: Colors.light.faintWarmWhite,
+        color: Colors.light.chocolate,
+        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
+        fontSize: 15,
+        padding: 12,
+        borderRadius: 8,
+        borderColor: Colors.light.elevatedBeige,
+        borderWidth: 1,
+    },
+    textInputMultiline: {
+        minHeight: 80,
+        textAlignVertical: "top",
     },
 });

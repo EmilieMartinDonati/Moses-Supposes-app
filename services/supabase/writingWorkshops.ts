@@ -151,8 +151,16 @@ export const generateUniqueCode = async (): Promise<string> => {
 export const createWritingWorkshop = async (data: any) => {
     try {
         const { visibility, prompt, title } = data
-        const writing_workshop_payload = {
-            prompt, title, type: "exquisite_corpse", creator_email: "emilie.martindonati@gmail.com"
+        const writing_workshop_payload : {
+            prompt: string,
+            title: string,
+            type: "exquisite_corpse" | "contest",
+            creator_email?: string
+        } = {
+            prompt, title, type: "exquisite_corpse"
+        }
+        if (data.email) {
+            writing_workshop_payload["creator_email"] = data.email
         }
         const { data: writing_workshop, error } = await supabase.from("writing_workshops").insert(writing_workshop_payload).select("*").single()
 

@@ -99,43 +99,7 @@ const stepperStyles = StyleSheet.create({
     },
 });
 
-// ─── Conditional Block ───────────────────────────────────────────────────────
 
-function ConditionalBlock({
-    label,
-    accentColor,
-    children,
-}: {
-    label?: string;
-    accentColor: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <View style={[blockStyles.container, { borderLeftColor: accentColor }]}>
-            {label && <Text style={[blockStyles.badge, { color: accentColor }]}>{label}</Text>}
-            {children}
-        </View>
-    );
-}
-
-const blockStyles = StyleSheet.create({
-    container: {
-        backgroundColor: Colors.light.faintWarmWhite,
-        borderRadius: 8,
-        borderLeftWidth: 3,
-        borderWidth: 1,
-        borderColor: Colors.light.elevatedBeige,
-        padding: 16,
-        gap: 12,
-    },
-    badge: {
-        fontSize: 10,
-        fontWeight: "700",
-        letterSpacing: 0.8,
-        textTransform: "uppercase",
-        opacity: 0.7,
-    },
-});
 
 // ─── Step Two ────────────────────────────────────────────────────────────────
 
@@ -195,29 +159,29 @@ export default function ExquisiteCadaverStepTwo({
 
             {/* Public: max participants */}
             {visibility === "public" && (
-                <ConditionalBlock accentColor={Colors.light.mainBlue}>
+                <>
                     <Text style={styles.label}>Nombre maximal de participants</Text>
                     <Controller
                         control={control}
                         name="max_participants"
                         render={({ field: { onChange, value } }) => (
                             <NumberStepper
-                                value={value || 10}
+                                value={value || 100}
                                 onChange={onChange}
                                 min={2}
-                                max={100}
+                                max={500}
                             />
                         )}
                     />
                     {errors.max_participants && (
                         <Text style={styles.errorText}>{errors.max_participants.message}</Text>
                     )}
-                </ConditionalBlock>
+                    </>
             )}
 
             {/* Private: iterations per participant */}
             {visibility === "private" && (
-                <ConditionalBlock accentColor={Colors.light.honey}>
+                <>
                     <Text style={styles.label}>Nombre de tours par participant</Text>
                     <Controller
                         control={control}
@@ -234,7 +198,7 @@ export default function ExquisiteCadaverStepTwo({
                     {errors.iterations_count && (
                         <Text style={styles.errorText}>{errors.iterations_count.message}</Text>
                     )}
-                </ConditionalBlock>
+                </>
             )}
         </View>
     );

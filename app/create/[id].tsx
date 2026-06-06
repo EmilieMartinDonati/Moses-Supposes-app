@@ -1,10 +1,11 @@
+import { DualActionsFooter } from "@/components/dualActionsFooter";
 import { Colors } from "@/constants/theme";
 import ExquisiteCadaverRecap from "@/features/creation/exquisiteCadaverRecap";
 import WritingWorkshopHeader from "@/features/oneWritingWorkshop/writingWorkshopHeader";
 import { getWritingWorkshopWithDetails } from "@/services/supabase/writingWorkshops";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function WorkshopConfirmationScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -14,20 +15,22 @@ export default function WorkshopConfirmationScreen() {
         getWritingWorkshopWithDetails(id).then(setWorkshop)
     }, [id])
 
+    console.log("Workshop with details:", workshop)
+
     return (
         <View style={styles.container}>
             <WritingWorkshopHeader title="Atelier créé !" type="Cadavre Exquis" />
             <View style={styles.content}>
                 {workshop && <ExquisiteCadaverRecap values={workshop} />}
             </View>
-            <View style={styles.buttons}>
-                <Pressable style={styles.secondaryButton} onPress={() => router.replace("/")}>
-                    <Text style={styles.secondaryText}>Retour à l'accueil</Text>
-                </Pressable>
-                <Pressable style={styles.primaryButton} onPress={() => router.replace(`/workshops/${id}`)}>
-                    <Text style={styles.primaryText}>Voir l'atelier</Text>
-                </Pressable>
-            </View>
+            <DualActionsFooter leftAction={{
+                label: "Revenir à l'accueil",
+                onPress: () => router.replace("/")
+            }}
+            rightAction={{
+                label: "Voir le workshop",
+                onPress: () => console.log("todo")
+            }} />
         </View>
     )
 }
