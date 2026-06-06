@@ -103,7 +103,7 @@ const stepperStyles = StyleSheet.create({
 
 // ─── Step Two ────────────────────────────────────────────────────────────────
 
-export default function ExquisiteCadaverStepTwo({
+export default function exquisiteCorpseStepTwo({
     control,
     visibility,
     errors,

@@ -1,6 +1,5 @@
 import { Colors, Fonts } from "@/constants/theme";
 import { Platform, StyleSheet, Text, View } from "react-native";
-import { ExquisiteCadaverCode } from "./exquisiteCadaverCode";
 
 // ─── Recap Row ────────────────────────────────────────────────────────────────
 
@@ -90,14 +89,14 @@ function formatDate(date: Date | string | undefined): string | undefined {
     });
 }
 
-export default function ExquisiteCadaverRecap({ values }: { values: any }) {
+export default function ExquisiteCorpseRecap({ values }: { values: any }) {
     const isPublic = values.visibility === "public";
     const code = values.access_code
 
     return (
         <View style={styles.container}>
             {code && <Text style={styles.heading}>Votre code d'accès</Text>}
-            {code && <ExquisiteCadaverCode code={code} /> }
+            {code && <exquisiteCorpseCode code={code} /> }
             <Text style={styles.heading}>Récapitulatif</Text>
             <RecapSection title="Contenu">
                 <RecapRow label="Titre" value={values.title} />

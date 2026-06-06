@@ -3,11 +3,9 @@ import { useEffect } from "react"
 
 export default function useWorkshopChannel({ writingWorkshopId, guestId, userId }: { writingWorkshopId: string, guestId: string, userId: string }) {
     useEffect(() => {
-
         if (!writingWorkshopId && (!guestId || !userId)) {
             return
         }
-
         const channel = supabase.channel(`workshop:${writingWorkshopId}`)
 
         channel.on("presence", { event: "sync" }, () => {

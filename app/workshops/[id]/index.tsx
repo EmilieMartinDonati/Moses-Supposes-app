@@ -15,7 +15,6 @@ import { createSegment, fetchSegmentsByWorkshopId } from '@/services/supabase/se
 import { getWritingWorkshopById } from '@/services/supabase/writingWorkshops';
 import { SegmentType } from '@/types/segments';
 
-
 export default function WritingWorkshopEditor() {
 
   const writingWorkshopIdFromStore = useAppStore(state => state.writingWorkshopId)
@@ -30,10 +29,14 @@ export default function WritingWorkshopEditor() {
   const [writingWorkshop, setWritingWorkshop] = useState(writingWorkshopFromStore || null)
   const [reloadContribution, setReloadContribution] = useState<boolean>(false)
 
+  const fetchContributions = async () => {
+    const segments = (await fetchSegmentsByWorkshopId({ writingWorkshopId })) || []
+    setContributions(segments)
+  }
+
   useEffect(() => {
     const fetchData = async () => {
-      const segments = (await fetchSegmentsByWorkshopId({ writingWorkshopId })) || []
-      setContributions(segments)
+      await fetchContributions()
       if (!writingWorkshop || writingWorkshop.id !== writingWorkshopId) {
         const refreshedWritingWorkshop = await getWritingWorkshopById(writingWorkshopId)
         setWritingWorkshop(refreshedWritingWorkshop)
@@ -43,10 +46,6 @@ export default function WritingWorkshopEditor() {
   }, [writingWorkshopId])
 
   useEffect(() => {
-    const fetchContributions = async () => {
-      const segments = (await fetchSegmentsByWorkshopId({ writingWorkshopId })) || []
-      setContributions(segments)
-    }
     if (reloadContribution) {
       fetchContributions()
       setReloadContribution(false)

@@ -64,7 +64,7 @@ function VisibilityToggle({
 
 // ─── Step One ────────────────────────────────────────────────────────────────
 
-export default function ExquisiteCadaverStepOne({
+export default function exquisiteCorpseStepOne({
     control,
     errors,
 }: {

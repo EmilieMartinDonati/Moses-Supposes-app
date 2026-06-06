@@ -7,8 +7,8 @@
 - writing_workshops
 - exquisite_corpse_config
 - workshop_access
-
-- segments
+- exquisite_corpse_participants
+- segments (or contributions)
 
 ## users
 
@@ -21,7 +21,7 @@ This collection is fairly light-weight to anticipate on the situation where ther
 | id            | uuid                     | NO          | gen_random_uuid() |
 | title         | text                     | NO          | null              |
 | prompt        | text                     | NO          | null              | first sentence of exquisite cadaver for ex
-| type          | text                     | NO          | null              | eg exquisite_cadaver or contest
+| type          | text                     | NO          | null              | eg exquisite_cadaver | contest | educative exercise
 | created_at    | timestamp with time zone | YES         | now()             |
 | created_by    | uuid                     | YES         | null              | only if creator is logged in 
 | creator_email | text                     | YES         | null              | mandatory if private workshop
@@ -32,7 +32,7 @@ Nature of title and prompt depends on type of workshop
 
 ## exquisite_corpse_config 
 
-This is used to handle exquisite_corpse parameters, the nature of the fields vary depending on whether the visibility is public or private
+This is used to handle exquisite_corpse parameters, the nature of the fields depends on whether the visibility is public or private
 
 | column_name      | data_type                | is_nullable | column_default    | specs
 | ---------------- | ------------------------ | ----------- | ----------------- | --------------------------------------------------
@@ -62,20 +62,42 @@ This is used to handle exquisite_corpse parameters, the nature of the fields var
 
 NB : we could remove whatsapp_link as code can be shared by whatsapp, email does not make sense and will be removed
 
-## segments
+## exquisite_corpse_participants
 
-The story for a workshop ordered
+| column_name     | data_type   | is_nullable | column_default    | specs                               |
+| --------------- | ----------- | ----------- | ----------------- | ----------------------------------- |
+| id              | uuid        | NO          | gen_random_uuid() | PK                                  |
+| workshop_id     | uuid        | NO          | null              | FK                                  |
+| user_id         | uuid        | YES         | null              |                                     |
+| guest_id        | uuid        | YES         | null              |                                     |
+| participant_id  | uuid        | NO          | null.             |                                     |
+| joined_at       | timestamptz | NO          | now()             | FIFO key                            |
+| state           | text        | NO          | 'waiting'         | waiting | active | done | timed_out |
+| cycle           | int         | NO          | 0                 | replay counter                      |
+| turn_started_at | timestamptz | YES         | null              | start timestamp                     |
+| turn_deadline   | timestamptz | YES         | null              | config-based timeout                |
+| created_at      | timestamptz | NO          | now()             |                                     |
+| updated_at      | timestamptz | NO          | now()             |                                     |
 
-| column_name | data_type                | is_nullable | column_default    |
-| ----------- | ------------------------ | ----------- | ----------------- |
-| id          | uuid                     | NO          | gen_random_uuid() |
-| workshop_id | uuid                     | YES         | null              |
-| text        | text                     | YES         | null              |
-| guest_id    | uuid                     | YES         | null              |
-| user_id     | uuid                     | YES         | null              |
-| round       | integer                  | YES         | null              |
-| position    | integer                  | YES         | null              |
-| created_at  | timestamp with time zone | YES         | now()             |
+## segments or contributions
+
+the final product, in the case of an exquisite corpse, it will be segments, but it can also be an entire text
+
+| column_name    | data_type   | is_nullable | column_default    | specs                                             |
+| -------------- | ----------- | ----------- | ----------------- | ------------------------------------------------- |
+| id.            | uuid        | NO          | gen_random_uuid() | Primary key                                       |
+| workshop_id    | uuid        | NO          | null              | FK → writing_workshops.id                         |
+| participant_id | uuid        | YES         | null              | Technical trace to participant cycle              |
+| user_id        | uuid        | YES         | null              | Snapshot of logged-in user at submission time     |
+| anonymous_id   | uuid        | YES         | null              | Snapshot of anonymous identity at submission time |
+| display_name   | text        | NO          | null              | Snapshot of name shown in final story             |
+| avatar_seed    | text        | NO          | null              | Stable anonymous avatar / symbol seed             |
+| content        | text        | NO          | null              | Segment text                                      |
+| status         | text        | NO          | null              | "draft" or "submitted"                            |
+| visibility     | text        | NO          | null              | "private" or "public"                             |
+| created_at     | timestamptz | NO          | now()             | Submission timestamp                              |
+
+---
 
 ## Known issues
 

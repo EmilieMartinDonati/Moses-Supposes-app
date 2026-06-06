@@ -9,7 +9,7 @@ const baseExquisiteCadaverSchema = z.object({
     max_sentences: z.number(),
 });
 
-export const exquisiteCadaverFormSchema = z.discriminatedUnion("visibility", [
+export const exquisiteCorpseFormSchema = z.discriminatedUnion("visibility", [
     baseExquisiteCadaverSchema.extend({
         visibility: z.literal("private"),
         iterations_count: z.number({ error: "Obligatoire" }).min(1, "Obligatoire"),

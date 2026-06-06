@@ -113,7 +113,7 @@ const pickerStyles = StyleSheet.create({
 
 // ─── Step Three ───────────────────────────────────────────────────────────────
 
-export default function ExquisiteCadaverStepThree({
+export default function exquisiteCorpseStepThree({
     control,
     errors,
     visibility

@@ -1,6 +1,6 @@
 import { DualActionsFooter } from "@/components/dualActionsFooter";
 import { Colors } from "@/constants/theme";
-import ExquisiteCadaverRecap from "@/features/creation/exquisiteCadaverRecap";
+import ExquisiteCorpseRecap from "@/features/creation/exquisiteCorpseRecap";
 import WritingWorkshopHeader from "@/features/oneWritingWorkshop/writingWorkshopHeader";
 import { getWritingWorkshopWithDetails } from "@/services/supabase/writingWorkshops";
 import { router, useLocalSearchParams } from "expo-router";
@@ -21,7 +21,7 @@ export default function WorkshopConfirmationScreen() {
         <View style={styles.container}>
             <WritingWorkshopHeader title="Atelier créé !" type="Cadavre Exquis" />
             <View style={styles.content}>
-                {workshop && <ExquisiteCadaverRecap values={workshop} />}
+                {workshop && <ExquisiteCorpseRecap values={workshop} />}
             </View>
             <DualActionsFooter leftAction={{
                 label: "Revenir à l'accueil",

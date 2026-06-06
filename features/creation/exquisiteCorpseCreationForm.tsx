@@ -8,19 +8,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { z } from "zod";
-import { exquisiteCadaverFormSchema } from "../../utils/forms";
-import ExquisiteCadaverStepOne from "./exquisiteCadaverStepOne";
-import ExquisiteCadaverStepThree from "./exquisiteCadaverStepThree";
-import ExquisiteCadaverStepTwo from "./exquisiteCadaverStepTwo";
+import { exquisiteCorpseFormSchema } from "../../utils/forms";
 
-type FormValues = z.infer<typeof exquisiteCadaverFormSchema>;
+type FormValues = z.infer<typeof exquisiteCorpseFormSchema>;
 
-export default function ExquisiteCadaverCreationForm() {
+export default function ExquisiteCorpseCreationForm() {
     const [step, setStep] = useState(0);
     const [stepFields, setStepFields] = useState<any[]>([["title", "prompt", "visibility"]]);
 
     const { handleSubmit, watch, control, trigger, formState: { errors } } = useForm<FormValues>({
-        resolver: zodResolver(exquisiteCadaverFormSchema),
+        resolver: zodResolver(exquisiteCorpseFormSchema),
         defaultValues: {
             title: "",
             prompt: "",
@@ -64,9 +61,9 @@ export default function ExquisiteCadaverCreationForm() {
                 type="Nouveau cadavre exquis"
             />
             <View style={styles.createFormContainer}>
-                {step === 0 && <ExquisiteCadaverStepOne control={control} errors={errors} />}
-                {step === 1 && <ExquisiteCadaverStepTwo control={control} visibility={visibility} errors={errors} />}
-                {step === 2 && <ExquisiteCadaverStepThree control={control} visibility={visibility} errors={errors} />}
+                {step === 0 && <exquisiteCorpseStepOne control={control} errors={errors} />}
+                {step === 1 && <exquisiteCorpseStepTwo control={control} visibility={visibility} errors={errors} />}
+                {step === 2 && <exquisiteCorpseStepThree control={control} visibility={visibility} errors={errors} />}
             </View>
             <DualActionsFooter
                 leftAction={{
