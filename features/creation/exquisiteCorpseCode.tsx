@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 // todo implement deep linking here
 
-export function exquisiteCorpseCode( { code }: {code: string}) {
+export default function ExquisiteCorpseCode({ code }: { code: string }) {
 
     return (
         <View style={styles.codeBannerContainer}>

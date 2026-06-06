@@ -1,5 +1,6 @@
 import { Colors, Fonts } from "@/constants/theme";
 import { Platform, StyleSheet, Text, View } from "react-native";
+import ExquisiteCorpseCode from "./exquisiteCorpseCode";
 
 // ─── Recap Row ────────────────────────────────────────────────────────────────
 
@@ -96,7 +97,7 @@ export default function ExquisiteCorpseRecap({ values }: { values: any }) {
     return (
         <View style={styles.container}>
             {code && <Text style={styles.heading}>Votre code d'accès</Text>}
-            {code && <exquisiteCorpseCode code={code} /> }
+            {code && <ExquisiteCorpseCode code={code} /> }
             <Text style={styles.heading}>Récapitulatif</Text>
             <RecapSection title="Contenu">
                 <RecapRow label="Titre" value={values.title} />

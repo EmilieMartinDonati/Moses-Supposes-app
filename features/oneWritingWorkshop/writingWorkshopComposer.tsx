@@ -14,7 +14,6 @@ export default function WritingWorkshopComposer({ onSubmit }: {
 
     const {
         handleSubmit,
-        reset,
         control,
         formState: { errors } } = useForm({
             resolver: zodResolver(formSchema),

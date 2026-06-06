@@ -1,8 +1,8 @@
 # Technical specs for Moses Supposes (mobile app)
 
-## Authentification (or lack of thereof)
+## Authentification
 
-### Principes : light substitute auth
+### Principes : light authentification
 
 We don't want to force user to log in to participate in a workshop, whether public or private, but we still need to track what they do and identify that they are the same person through different interactions.
 
@@ -24,7 +24,7 @@ state = waiting
 
 ```sql
 anonymous_id = NULL
-user_id = auth.id
+user_id = auth.uid
 ```
 
 3) User joins session when already logged in, in exquisite_corpse_participants :
@@ -32,7 +32,7 @@ user_id = auth.id
 ```sql
 participant_id = uuid()
 anonymous_id = NULL
-user_id = auth.id
+user_id = auth.uid
 joined_at = now()
 state = waiting
 ```
