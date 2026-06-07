@@ -28,13 +28,13 @@ export default function HomeScreen() {
     return (
         // <SafeAreaView>
         <>
+            <HomeHeader title="MOSES SUPPOSES" logo="" actions={[]} />
             <ScrollView
                 contentContainerStyle={styles.main}
                 style={{ backgroundColor: Colors.light.background }}
                 onScroll={handleScroll}
                 scrollEventThrottle={16}
             >
-                <HomeHeader title="MOSES SUPPOSES" logo="" actions={[]} />
                 <View style={styles.codeAddBannerContainer}>
                     <CodeAddBanner />
                 </View>
@@ -44,7 +44,7 @@ export default function HomeScreen() {
             </ScrollView>
             <View style={styles.footer}>
                 <ExpandingChip
-                   initialContent="+"
+                    initialContent="+"
                     targetContent='Créer votre propre workshop'
                     initialColor={Colors.light.honey}
                     targetColor={Colors.light.honey}
@@ -63,11 +63,12 @@ const styles = StyleSheet.create({
     codeAddBannerContainer: {
     },
     writingWorkshopListContainer: {
-        paddingTop: 24
+        paddingTop: 24,
+        paddingBottom: 50
     },
     footer: {
         position: "absolute",
-        bottom: 24,
+        bottom: 8,
         right: 24
     }
 })

@@ -2,6 +2,8 @@ import { Colors } from "@/constants/theme";
 import { useRef } from "react";
 import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
 
+// WIP (should have variants in theme)
+
 
 export default function AnimatedToggle({
     leftValue, rightValue, currentValue, leftIcon, rightIcon, leftLabel, rightLabel, handleChange

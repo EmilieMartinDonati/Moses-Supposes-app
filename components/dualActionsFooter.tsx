@@ -1,6 +1,8 @@
 import { Colors } from "@/constants/theme";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+// WIP (should have variants in theme)
+
 export default function DualActionsFooter({
     leftAction,
     rightAction,

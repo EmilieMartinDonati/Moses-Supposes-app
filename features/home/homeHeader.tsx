@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: Colors.light.mainBlue,
     color: "white",
-    height: 55.5
+    height: 55.5,
+    borderRadius: 3
   },
 
   left: {

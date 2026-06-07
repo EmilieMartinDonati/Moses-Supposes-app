@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 
+// WIP see comment below
+
 export default function ExpandingChip({
     initialColor = Colors.light.honey,
     targetColor = Colors.light.paleRose,
@@ -106,3 +108,10 @@ const styles = StyleSheet.create({
         textAlign: "center"
     }
 })
+
+/**
+ * @todo
+ * instead of hard-coded width it should depends on screen size, totalWidth - bothOffset (24px)
+ *  to smooth anim out, displace initialContent towardsLeft before triggering text switch then write each letter of targetContent one of one
+ * careful about what "start / toward left" means
+ **/

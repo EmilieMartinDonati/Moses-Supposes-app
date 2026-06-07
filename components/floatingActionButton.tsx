@@ -2,6 +2,8 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 
+// WIP use variants from theme
+
 const variantConfig: any = {
     add: { background: '#e6b566', iconColor: '#faf7f4', iconName: 'plus' },
     delete: { background: '#c45c5c', iconColor: '#faf7f4', iconName: 'delete' },

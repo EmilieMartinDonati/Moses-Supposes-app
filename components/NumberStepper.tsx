@@ -2,6 +2,8 @@
 import { Colors } from "@/constants/theme"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
+// WIP variants should come from theme, at the very least be in shared design utils
+
 const variants = {
     "neutral": {
         "container": {
