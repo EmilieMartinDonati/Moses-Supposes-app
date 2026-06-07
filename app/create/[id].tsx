@@ -1,4 +1,4 @@
-import { DualActionsFooter } from "@/components/DualActionsFooter";
+import DualActionsFooter from "@/components/DualActionsFooter";
 import { Colors } from "@/constants/theme";
 import ExquisiteCorpseRecap from "@/features/creation/ExquisiteCorpseRecap";
 import WritingWorkshopHeader from "@/features/oneWritingWorkshop/WritingWorkshopHeader";

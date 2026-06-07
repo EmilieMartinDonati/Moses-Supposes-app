@@ -18,6 +18,7 @@ const waterGreen = '#a8d5c3';
 const forestGreen = '#356a5a'
 const mediumGreen = '#4f8f7a'
 const faintWarmWhite = "#faf7f4"
+const redError = "#b33a3a"
 
 export const Colors = {
   light: {
@@ -32,6 +33,7 @@ export const Colors = {
     faintWarmWhite: faintWarmWhite,
     mainBeige: mainBeige,
     elevatedBeige: elevatedBeige,
+    redError: redError,
     text: '#11181C',
     tint: tintColorLight,
     icon: '#687076',

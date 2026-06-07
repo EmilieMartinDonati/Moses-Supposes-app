@@ -1,36 +1,13 @@
 import AnimatedToggle from "@/components/AnimatedToggle";
-import { Colors, Fonts } from "@/constants/theme";
+import FormLabel from "@/components/forms/FormLabel";
+import { Colors } from "@/constants/theme";
 import { Controller } from "react-hook-form";
 import {
-    Platform,
     StyleSheet,
     Text,
     TextInput,
     View
 } from "react-native";
-
-// ─── Visibility Toggle ───────────────────────────────────────────────────────
-
-function VisibilityToggle({
-    value,
-    onChange,
-}: {
-    value: "private" | "public";
-    onChange: (v: string) => void;
-}) {
-    return (
-        <AnimatedToggle
-            leftValue="private"
-            rightValue="public"
-            leftLabel="privé"
-            rightLabel="public"
-            currentValue={value}
-            leftIcon={"🔒"}
-            rightIcon={"🌐"}
-            handleChange={onChange}
-        />
-    )
-}
 
 // ─── Step One ────────────────────────────────────────────────────────────────
 
@@ -43,9 +20,8 @@ export default function ExquisiteCorpseStepOne({
 }) {
     return (
         <View style={styles.formContainer}>
-            {/* Titre */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>--- Titre ---</Text>
+                <FormLabel variant="neutral" label="Titre" />
                 <Controller
                     control={control}
                     name="title"
@@ -68,7 +44,7 @@ export default function ExquisiteCorpseStepOne({
 
             {/* Prompt */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>--- Prompt ---</Text>
+                <FormLabel variant="neutral" label="Prompt" />
                 <Controller
                     control={control}
                     name="prompt"
@@ -92,12 +68,21 @@ export default function ExquisiteCorpseStepOne({
 
             {/* Visibilité */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>--- Visibilité ---</Text>
+                <FormLabel variant="neutral" label="Visibilité" />
                 <Controller
                     control={control}
                     name="visibility"
                     render={({ field: { onChange, value } }) => (
-                        <VisibilityToggle value={value} onChange={onChange} />
+                        <AnimatedToggle
+                            leftValue="private"
+                            rightValue="public"
+                            leftLabel="privé"
+                            rightLabel="public"
+                            currentValue={value}
+                            leftIcon={"🔒"}
+                            rightIcon={"🌐"}
+                            handleChange={onChange}
+                        />
                     )}
                 />
             </View>
@@ -116,7 +101,6 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     label: {
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
         fontSize: 11,
         fontWeight: "600",
         letterSpacing: 0.8,
@@ -127,7 +111,6 @@ const styles = StyleSheet.create({
     textInput: {
         backgroundColor: Colors.light.faintWarmWhite,
         color: Colors.light.chocolate,
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
         fontSize: 15,
         padding: 12,
         borderRadius: 8,

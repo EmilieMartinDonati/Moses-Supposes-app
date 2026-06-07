@@ -72,8 +72,7 @@ const sectionStyles = StyleSheet.create({
         letterSpacing: 1,
         textTransform: "uppercase",
         color: Colors.light.mainBlue,
-        marginBottom: 4,
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
+        marginBottom: 4
     },
 });
 

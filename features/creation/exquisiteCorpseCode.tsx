@@ -1,8 +1,6 @@
 import { Colors } from "@/constants/theme";
 import { StyleSheet, Text, View } from "react-native";
 
-// todo implement deep linking here
-
 export default function ExquisiteCorpseCode({ code }: { code: string }) {
 
     return (

@@ -1,3 +1,4 @@
+import FormLabel from "@/components/forms/FormLabel";
 import NumberStepper from "@/components/NumberStepper";
 import { Colors } from "@/constants/theme";
 import { Controller } from "react-hook-form";
@@ -24,8 +25,10 @@ export default function ExquisiteCorpseStepTwo({
 
             {/* Writing delay */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>Délai d'écriture</Text>
-                <Text style={styles.hint}>En secondes, par tour d'écriture</Text>
+                <View>
+                    <FormLabel label="Délai d'écriture" variant="green" />
+                    <Text style={styles.hint}>En secondes, par tour d'écriture</Text>
+                </View>
                 <Controller
                     control={control}
                     name="writingDelay"
@@ -45,8 +48,10 @@ export default function ExquisiteCorpseStepTwo({
 
             {/* Max sentences */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>Phrases max par participant</Text>
-                <Text style={styles.hint}>Recommandé : 2</Text>
+                <View>
+                    <FormLabel label="Phrases max par participant" variant="green" />
+                    <Text style={styles.hint}>Recommandé : 2</Text>
+                </View>
                 <Controller
                     control={control}
                     name="max_sentences"
@@ -67,7 +72,7 @@ export default function ExquisiteCorpseStepTwo({
             {/* Public: max participants */}
             {visibility === "public" && (
                 <>
-                    <Text style={styles.label}>Nombre maximal de participants</Text>
+                    <FormLabel label="Nombre maximal de participants" variant="green" />
                     <Controller
                         control={control}
                         name="max_participants"
@@ -83,13 +88,13 @@ export default function ExquisiteCorpseStepTwo({
                     {errors.max_participants && (
                         <Text style={styles.errorText}>{errors.max_participants.message}</Text>
                     )}
-                    </>
+                </>
             )}
 
             {/* Private: iterations per participant */}
             {visibility === "private" && (
                 <>
-                    <Text style={styles.label}>Nombre de tours par participant</Text>
+                    <FormLabel label="Nombre de tours par participant" variant="green" />
                     <Controller
                         control={control}
                         name="iterations_count"
@@ -131,8 +136,7 @@ const styles = StyleSheet.create({
     hint: {
         fontSize: 12,
         color: Colors.light.chocolate,
-        opacity: 0.4,
-        marginTop: -4,
+        opacity: 0.6
     },
     errorText: {
         fontSize: 12,

@@ -1,4 +1,4 @@
-import { DualActionsFooter } from "@/components/DualActionsFooter";
+import DualActionsFooter from "@/components/DualActionsFooter";
 import { Colors } from "@/constants/theme";
 import WritingWorkshopHeader from "@/features/oneWritingWorkshop/WritingWorkshopHeader";
 import { createWritingWorkshop } from "@/services/supabase/writingWorkshops";
@@ -53,6 +53,7 @@ export default function ExquisiteCorpseCreationForm() {
     const onSubmit = async (data: any) => {
         const result = await createWritingWorkshop(data);
         if (result?.id) {
+            console.log("result.id", result?.id)
             router.replace(`/create/${result.id}`);
         }
     };
