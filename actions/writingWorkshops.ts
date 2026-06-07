@@ -1,5 +1,6 @@
 import { getWritingWorkshopById } from "@/services/supabase/writingWorkshops"
 import { useAppStore } from "@/store/useAppStore"
+import { countExquisiteCorpseWaitingParticipants } from "../services/supabase/exquisite_corpse_participants"
 import { NavigationActions } from "./navigation"
 
 export const clickWritingWorkshop = async (writingWorkshopId: string, visibility: "live" | "upcoming") => {
@@ -12,10 +13,9 @@ export const clickWritingWorkshop = async (writingWorkshopId: string, visibility
         const writingWorkshop = await getWritingWorkshopById(writingWorkshopId)
         useAppStore.getState().setWritingWorkshopId(writingWorkshopId)
         useAppStore.getState().setWritingWorkshop(writingWorkshop)
-        const count = 2;
-        // @todo instead count presence from realTime feature
+        
+        const count = await countExquisiteCorpseWaitingParticipants({ workshopId: writingWorkshopId })
         if ((count ?? 0) < 5) {
-            // await createPresence({ writingWorkshopId })
             NavigationActions.goToWorkshopEditor(writingWorkshopId)
         }
         else {

@@ -9,6 +9,9 @@ import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { z } from "zod";
 import { exquisiteCorpseFormSchema } from "../../utils/forms";
+import ExquisiteCorpseStepOne from "./exquisiteCorpseStepOne";
+import ExquisiteCorpseStepThree from "./exquisiteCorpseStepThree";
+import ExquisiteCorpseStepTwo from "./exquisiteCorpseStepTwo";
 
 type FormValues = z.infer<typeof exquisiteCorpseFormSchema>;
 
@@ -61,9 +64,9 @@ export default function ExquisiteCorpseCreationForm() {
                 type="Nouveau cadavre exquis"
             />
             <View style={styles.createFormContainer}>
-                {step === 0 && <exquisiteCorpseStepOne control={control} errors={errors} />}
-                {step === 1 && <exquisiteCorpseStepTwo control={control} visibility={visibility} errors={errors} />}
-                {step === 2 && <exquisiteCorpseStepThree control={control} visibility={visibility} errors={errors} />}
+                {step === 0 && <ExquisiteCorpseStepOne control={control} errors={errors} />}
+                {step === 1 && <ExquisiteCorpseStepTwo control={control} visibility={visibility} errors={errors} />}
+                {step === 2 && <ExquisiteCorpseStepThree control={control} visibility={visibility} errors={errors} />}
             </View>
             <DualActionsFooter
                 leftAction={{

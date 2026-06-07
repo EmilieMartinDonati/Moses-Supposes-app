@@ -1,14 +1,14 @@
-# Product specs for Moses Supposes (mobile app)
+## Product specs for Moses Supposes (mobile app)
 
-## Overview
+### Overview
 
 Moses Supposes is a collaborative writing app whose first purpose is to allow users to create exquisite cadavers and to participate in them along with their friends (in the case of private sessions) or with other internauts (in the case of public sessions). The exquisite cadavers may be prose or verse and may contain optional writing rules.
 
 ---
 
-## Session types
+### Session types
 
-### Private sessions
+#### Private sessions
 
 We have chosen a light authentication process to stay coherent with the playful and light purpose of the game: unlogged users are allowed to create private sessions, they are granted an access code that they can share on WhatsApp or by email with their friends. However, upon creating the game, they are asked to provide their email so that we can send them the entire story once the session is closed. This email will furthermore invite them to create an account so that they can have access to other features, most noticeably the possibility to create a public session.
 
@@ -16,7 +16,7 @@ We have chosen a light authentication process to stay coherent with the playful 
 
 **Result visibility:** The final story is sent by email to the creator. It is not publicly accessible.
 
-### Public sessions
+#### Public sessions
 
 Only logged users are allowed to create public sessions. Those sessions have a defined start and end time. Players may play as many times as they like provided there are no other users waiting in the session. If several users are queueing, turns are handled depending on the time they joined.
 
@@ -24,9 +24,9 @@ Only logged users are allowed to create public sessions. Those sessions have a d
 
 ---
 
-## Closing a session
+### Closing a session
 
-### Private sessions
+#### Private sessions
 
 We want to avoid closing the session too soon (e.g. if the story doesn't feel complete or if a late newcomer joins).
 
@@ -37,7 +37,7 @@ We want to avoid closing the session too soon (e.g. if the story doesn't feel co
 
 Upon closing, the final story is sent by email to the creator.
 
-### Public sessions
+#### Public sessions
 
 The session closes once its defined end time is reached. A reminder email is sent to the creator 30 minutes before closing, with a link to extend if needed.
 
@@ -45,16 +45,16 @@ Upon closing, the final story is published to the public gallery and a summary e
 
 ---
 
-## Handling turns
+### Handling turns
 
 These rules apply to both session types but are especially important for public sessions.
 
 - **Idle player:** If the current player has not begun typing within 120 seconds, they are moved to the end of the waiting queue.
-- **Lobby logic:** Upon joining a busy public session, if many players are waiting, the user is sent to a lobby, where they have the choice to wait (with an estimated waiting time and the possibility to browse other sessions) or to be notified on WhatsApp when it is their turn so they do not have to stay in the app.
+- **Lobby logic:** Upon joining a busy public session, if many players are waiting, the user is sent to a lobby, where they have the choice to wait (with an estimated waiting time and the possibility to browse other sessions) or to be notified on WhatsApp when it is their turn so they don't have to hover in lobby.
 
 ---
 
-## AI-assisted session creation
+### AI-assisted session creation
 
 The session creator may optionally use AI to generate:
 - A writing prompt (in case inspiration fails them)
@@ -62,15 +62,15 @@ The session creator may optionally use AI to generate:
 
 ---
 
-## Open questions
+### Open questions
 
 - **Per-segment attribution in public stories:** Should the final public story show which player wrote each segment? Fitting for the exquisite cadaver format but requires collecting a display name at join time.
 - **Extend end time:** Should the creator of a public session be able to extend the end time, and if so, by how much?
 
 ---
 
-## Scope V2
+### Features to be implemented later on
 
 Foreseen evolutions include:
-- Generating writing workshops for students
+- Generating educational-driven writing workshops for students
 - Generating writing contests
