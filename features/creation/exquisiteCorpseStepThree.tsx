@@ -1,3 +1,4 @@
+import Alert from "@/components/Alert";
 import DatePickerField from "@/components/forms/DatePickerField";
 import FormLabel from "@/components/forms/FormLabel";
 import { Colors } from "@/constants/theme";
@@ -39,6 +40,12 @@ export default function ExquisiteCorpseStepThree({
                 {errors.email && (
                     <Text style={styles.errorText}>{errors.email.message}</Text>
                 )}
+                <Alert
+                    visible={true}
+                    height={200}
+                    width={250}
+                    variant="success"
+                    content="Nous vous demandons votre email afin de pouvoir vous envoyer les résultats de votre atelier" />
             </View>
         )
     }
@@ -48,7 +55,12 @@ export default function ExquisiteCorpseStepThree({
             <Text style={styles.sectionHint}>
                 Définissez la fenêtre de participation pour cet atelier.
             </Text>
-
+                  <Alert
+                visible={true}
+                height={200}
+                width={250}
+                variant="success"
+                content="Si votre workshop est encore actif et que les contributions abondent, nous vous enverrons une notification 30 minutes avant la clotûre pour vous demander si vous souhaitez étendre la date de fin." />
             <Controller
                 control={control}
                 name="start_time"
@@ -67,7 +79,7 @@ export default function ExquisiteCorpseStepThree({
                 control={control}
                 name="end_time"
                 render={({ field: { value, onChange } }) => (
-                      <DatePickerField
+                    <DatePickerField
                         renderLabelAndInstructions={() => <FormLabel label="Date de fin" />}
                         value={value}
                         handleChange={onChange}
@@ -97,7 +109,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: "#b33a3a",
     },
-        textInput: {
+    textInput: {
         backgroundColor: Colors.light.faintWarmWhite,
         color: Colors.light.chocolate,
         fontSize: 15,

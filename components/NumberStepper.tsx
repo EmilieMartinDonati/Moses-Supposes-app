@@ -29,18 +29,24 @@ export default function NumberStepper({
     max,
     value,
     sizeVariant = "medium",
-    colorVariant = "neutral"
+    colorVariant = "neutral",
+    step = 1
 }: {
     handleChange: (v: number) => void,
     min: number,
     max: number,
     value: number,
     sizeVariant?: "small" | "medium" | "large",
-    colorVariant?: ColorVariant
+    colorVariant?: ColorVariant,
+    step?: number
 }) {
 
-const increment = () => handleChange(Math.min(max, value + 1))
-const decrement = () => handleChange(Math.max(min, value - 1))
+const increment = () => {
+    handleChange(Math.min(max, value + step))
+}
+const decrement = () => {
+    handleChange(Math.max(min, value - step))
+}
 
     return (
         <View style={[styles.container, variants[colorVariant].container]}>

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native"
 export default function WritingWorkshopPrompt({ prompt }: { prompt: string }) {
     return (
         <View style={styles.promptContainer}>
-            <Text style={styles.promptLabel}>Prompt</Text>
+            <Text style={styles.promptLabel}>Première phrase</Text>
             <Text style={styles.prompt}>{prompt}</Text>
         </View>
     )

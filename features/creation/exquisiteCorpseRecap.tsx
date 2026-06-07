@@ -1,5 +1,6 @@
-import { Colors, Fonts } from "@/constants/theme";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { Colors } from "@/constants/theme";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import ExquisiteCorpseCode from "./ExquisiteCorpseCode";
 
 // ─── Recap Row ────────────────────────────────────────────────────────────────
@@ -31,16 +32,14 @@ const rowStyles = StyleSheet.create({
         textTransform: "uppercase",
         color: Colors.light.chocolate,
         opacity: 0.5,
-        flex: 1,
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
+        flex: 1
     },
     value: {
         fontSize: 14,
         color: Colors.light.chocolate,
         fontWeight: "500",
         flex: 2,
-        textAlign: "right",
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
+        textAlign: "right"
     },
 });
 
@@ -94,7 +93,7 @@ export default function ExquisiteCorpseRecap({ values }: { values: any }) {
     const code = values.access_code
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {code && <Text style={styles.heading}>Votre code d'accès</Text>}
             {code && <ExquisiteCorpseCode code={code} /> }
             <Text style={styles.heading}>Récapitulatif</Text>
@@ -117,7 +116,7 @@ export default function ExquisiteCorpseRecap({ values }: { values: any }) {
                     <RecapRow label="Fin" value={formatDate(values.end_time)} isLast />
                 </RecapSection>
             )}
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -128,15 +127,13 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 18,
         fontWeight: "600",
-        color: Colors.light.chocolate,
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
+        color: Colors.light.chocolate
     },
     subheading: {
         fontSize: 13,
         color: Colors.light.chocolate,
         opacity: 0.45,
         lineHeight: 19,
-        marginTop: -8,
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
+        marginTop: -8
     },
 });

@@ -38,6 +38,7 @@ export default function ExquisiteCorpseStepTwo({
                             handleChange={onChange}
                             min={10}
                             max={3600}
+                            step={30}
                         />
                     )}
                 />

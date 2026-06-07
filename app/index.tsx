@@ -1,23 +1,39 @@
 import { NavigationActions } from "@/actions/navigation"
-import FloatingActionButton from "@/components/FloatingActionButton"
+import ExpandingChip from "@/components/ExpandingChip"
 import { Colors } from "@/constants/theme"
 import CodeAddBanner from "@/features/codes/CodeAddBanner"
 import HomeHeader from "@/features/home/HomeHeader"
 import WritingWorkshopList from "@/features/writingWorkshops/WritingWorkshopsList"
-import { ScrollView, StyleSheet, View } from "react-native"
+import { useState } from "react"
+import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from "react-native"
 
 export default function HomeScreen() {
+
+    const [creationButtonExpanded, setCreationButtonExpanded] = useState(false)
 
     const onPressFAB = () => {
         NavigationActions.createWorkshop()
     }
+
+    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        if (event.nativeEvent.contentOffset.y >= 200) {
+            setCreationButtonExpanded(true)
+        }
+        else {
+            setCreationButtonExpanded(false)
+        }
+    }
+
 
     return (
         // <SafeAreaView>
         <>
             <ScrollView
                 contentContainerStyle={styles.main}
-                style={{ backgroundColor: Colors.light.background }}>
+                style={{ backgroundColor: Colors.light.background }}
+                onScroll={handleScroll}
+                scrollEventThrottle={16}
+            >
                 <HomeHeader title="MOSES SUPPOSES" logo="" actions={[]} />
                 <View style={styles.codeAddBannerContainer}>
                     <CodeAddBanner />
@@ -26,8 +42,16 @@ export default function HomeScreen() {
                     <WritingWorkshopList />
                 </View>
             </ScrollView>
-            <FloatingActionButton variant="add" onPress={onPressFAB} />
-            </>
+            <View style={styles.footer}>
+                <ExpandingChip
+                   initialContent="+"
+                    targetContent='Créer votre propre workshop'
+                    initialColor={Colors.light.honey}
+                    targetColor={Colors.light.honey}
+                    shouldExpand={creationButtonExpanded}
+                    onClick={onPressFAB} />
+            </View>
+        </>
         // </SafeAreaView>
     )
 }
@@ -40,5 +64,10 @@ const styles = StyleSheet.create({
     },
     writingWorkshopListContainer: {
         paddingTop: 24
+    },
+    footer: {
+        position: "absolute",
+        bottom: 24,
+        right: 24
     }
 })

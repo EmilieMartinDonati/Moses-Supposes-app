@@ -8,7 +8,7 @@ export default function WritingWorkshopComposer({ onSubmit }: {
     onSubmit: ( data: { text: string } ) => Promise<void>
 }) {
 
-    const formSchema = z.object({
+    const formSchema = z.object({ // here custom resolver depending of the config rules
         text: z.string()
     })
 
