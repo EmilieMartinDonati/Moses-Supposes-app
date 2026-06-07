@@ -1,7 +1,7 @@
-import { DualActionsFooter } from "@/components/dualActionsFooter";
+import { DualActionsFooter } from "@/components/DualActionsFooter";
 import { Colors } from "@/constants/theme";
-import ExquisiteCorpseRecap from "@/features/creation/exquisiteCorpseRecap";
-import WritingWorkshopHeader from "@/features/oneWritingWorkshop/writingWorkshopHeader";
+import ExquisiteCorpseRecap from "@/features/creation/ExquisiteCorpseRecap";
+import WritingWorkshopHeader from "@/features/oneWritingWorkshop/WritingWorkshopHeader";
 import { getWritingWorkshopWithDetails } from "@/services/supabase/writingWorkshops";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
@@ -14,9 +14,7 @@ export default function WorkshopConfirmationScreen() {
     useEffect(() => {
         getWritingWorkshopWithDetails(id).then(setWorkshop)
     }, [id])
-
-    console.log("Workshop with details:", workshop)
-
+    
     return (
         <View style={styles.container}>
             <WritingWorkshopHeader title="Atelier créé !" type="Cadavre Exquis" />

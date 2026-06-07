@@ -6,10 +6,10 @@ import { useAppStore } from '@/store/useAppStore';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from "react";
 
-import WritingWorkshopComposer from '@/features/oneWritingWorkshop/writingWorkshopComposer';
-import WritingWorkshopContent from '@/features/oneWritingWorkshop/writingWorkshopContent';
-import WritingWorkshopHeader from '@/features/oneWritingWorkshop/writingWorkshopHeader';
-import WritingWorkshopPrompt from '@/features/oneWritingWorkshop/writingWorkshopPrompt';
+import WritingWorkshopComposer from '@/features/oneWritingWorkshop/WritingWorkshopComposer';
+import WritingWorkshopContent from '@/features/oneWritingWorkshop/WritingWorkshopContent';
+import WritingWorkshopHeader from '@/features/oneWritingWorkshop/WritingWorkshopHeader';
+import WritingWorkshopPrompt from '@/features/oneWritingWorkshop/WritingWorkshopPrompt';
 
 import { createSegment, fetchSegmentsByWorkshopId } from '@/services/supabase/segments';
 import { getWritingWorkshopById } from '@/services/supabase/writingWorkshops';

@@ -1,6 +1,6 @@
 import { Colors, Fonts } from "@/constants/theme";
 import { Platform, StyleSheet, Text, View } from "react-native";
-import ExquisiteCorpseCode from "./exquisiteCorpseCode";
+import ExquisiteCorpseCode from "./ExquisiteCorpseCode";
 
 // ─── Recap Row ────────────────────────────────────────────────────────────────
 

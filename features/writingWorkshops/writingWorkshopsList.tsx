@@ -2,7 +2,7 @@ import { getWritingWorkshopsByVisibility } from "@/services/supabase/writingWork
 import { chunkArray } from "@/utils/utils";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import WritingWorkshopsCarousel from "./writingWorkshopsCarousel";
+import WritingWorkshopsCarousel from "./WritingWorkshopsCarousel";
 
 type WritingWorkshop = {
     id: number;

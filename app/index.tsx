@@ -1,9 +1,9 @@
 import { NavigationActions } from "@/actions/navigation"
-import FloatingActionButton from "@/components/floatingActionButton"
+import FloatingActionButton from "@/components/FloatingActionButton"
 import { Colors } from "@/constants/theme"
 import CodeAddBanner from "@/features/codes/CodeAddBanner"
-import HomeHeader from "@/features/home/homeHeader"
-import WritingWorkshopList from "@/features/writingWorkshops/writingWorkshopsList"
+import HomeHeader from "@/features/home/HomeHeader"
+import WritingWorkshopList from "@/features/writingWorkshops/WritingWorkshopsList"
 import { ScrollView, StyleSheet, View } from "react-native"
 
 export default function HomeScreen() {

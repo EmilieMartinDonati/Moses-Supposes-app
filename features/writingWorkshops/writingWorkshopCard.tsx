@@ -1,7 +1,7 @@
 import { clickWritingWorkshop } from "@/actions/writingWorkshops"
 import { Colors } from "@/constants/theme"
 import { Pressable, StyleSheet, Text, View } from "react-native"
-import WritingWorkshopCardSkeletonContent from "./writingWorkshopCardSkeletonContent"
+import WritingWorkshopCardSkeletonContent from "./WritingWorkshopCardSkeletonContent"
 
 type WritingWorkshopCardProps = {
     writingWorkshopId: string,

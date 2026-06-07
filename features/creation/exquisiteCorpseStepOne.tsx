@@ -1,14 +1,12 @@
+import AnimatedToggle from "@/components/AnimatedToggle";
 import { Colors, Fonts } from "@/constants/theme";
-import { useRef } from "react";
 import { Controller } from "react-hook-form";
 import {
-    Animated,
     Platform,
-    Pressable,
     StyleSheet,
     Text,
     TextInput,
-    View,
+    View
 } from "react-native";
 
 // ─── Visibility Toggle ───────────────────────────────────────────────────────
@@ -18,48 +16,20 @@ function VisibilityToggle({
     onChange,
 }: {
     value: "private" | "public";
-    onChange: (v: "private" | "public") => void;
+    onChange: (v: string) => void;
 }) {
-    const isPublic = value === "public";
-    const anim = useRef(new Animated.Value(isPublic ? 1 : 0)).current;
-
-    const toggle = () => {
-        const next = !isPublic;
-        Animated.timing(anim, {
-            toValue: next ? 1 : 0,
-            duration: 200,
-            useNativeDriver: false,
-        }).start();
-        onChange(next ? "public" : "private");
-    };
-
-    const trackColor = anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [Colors.light.honey, Colors.light.mainBlue],
-    });
-
-    const thumbLeft = anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [3, 27],
-    });
-
     return (
-        <View style={styles.toggleRow}>
-            <Text style={[styles.toggleLabel, !isPublic && styles.toggleLabelActive]}>
-                🔒 Privé
-            </Text>
-
-            <Pressable onPress={toggle} accessibilityRole="switch" accessibilityState={{ checked: isPublic }}>
-                <Animated.View style={[styles.toggleTrack, { backgroundColor: trackColor }]}>
-                    <Animated.View style={[styles.toggleThumb, { left: thumbLeft }]} />
-                </Animated.View>
-            </Pressable>
-
-            <Text style={[styles.toggleLabel, isPublic && styles.toggleLabelActive]}>
-                🌐 Public
-            </Text>
-        </View>
-    );
+        <AnimatedToggle
+            leftValue="private"
+            rightValue="public"
+            leftLabel="privé"
+            rightLabel="public"
+            currentValue={value}
+            leftIcon={"🔒"}
+            rightIcon={"🌐"}
+            handleChange={onChange}
+        />
+    )
 }
 
 // ─── Step One ────────────────────────────────────────────────────────────────

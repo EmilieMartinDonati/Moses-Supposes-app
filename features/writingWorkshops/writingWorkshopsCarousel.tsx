@@ -1,6 +1,6 @@
 
 import { FlatList, StyleSheet, View } from "react-native";
-import WritingWorkshopCard from "./writingWorkshopCard";
+import WritingWorkshopCard from "./WritingWorkshopCard";
 
 type Visibility = "live" | "upcoming";
 

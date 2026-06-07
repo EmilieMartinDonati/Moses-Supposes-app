@@ -1,6 +1,6 @@
-import { DualActionsFooter } from "@/components/dualActionsFooter";
+import { DualActionsFooter } from "@/components/DualActionsFooter";
 import { Colors } from "@/constants/theme";
-import WritingWorkshopHeader from "@/features/oneWritingWorkshop/writingWorkshopHeader";
+import WritingWorkshopHeader from "@/features/oneWritingWorkshop/WritingWorkshopHeader";
 import { createWritingWorkshop } from "@/services/supabase/writingWorkshops";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
@@ -9,9 +9,9 @@ import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { z } from "zod";
 import { exquisiteCorpseFormSchema } from "../../utils/forms";
-import ExquisiteCorpseStepOne from "./exquisiteCorpseStepOne";
-import ExquisiteCorpseStepThree from "./exquisiteCorpseStepThree";
-import ExquisiteCorpseStepTwo from "./exquisiteCorpseStepTwo";
+import ExquisiteCorpseStepOne from "./ExquisiteCorpseStepOne";
+import ExquisiteCorpseStepThree from "./ExquisiteCorpseStepThree";
+import ExquisiteCorpseStepTwo from "./ExquisiteCorpseStepTwo";
 
 type FormValues = z.infer<typeof exquisiteCorpseFormSchema>;
 

@@ -4,10 +4,9 @@ import { countExquisiteCorpseWaitingParticipants } from "../services/supabase/ex
 import { NavigationActions } from "./navigation"
 
 export const clickWritingWorkshop = async (writingWorkshopId: string, visibility: "live" | "upcoming") => {
-    console.log("Rejoindre l'atelier d'écriture", visibility, writingWorkshopId, typeof writingWorkshopId)
 
     if (visibility === "upcoming") {
-        //@todo redirect to page id mode consultation
+        //@todo redirect to page id consultation
     }
     else if (visibility === "live") {
         const writingWorkshop = await getWritingWorkshopById(writingWorkshopId)
