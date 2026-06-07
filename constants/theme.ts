@@ -15,6 +15,8 @@ const chocolate = '#3e2723';
 const honey = '#e6b566';
 const paleRose = '#e8a3a3';
 const waterGreen = '#a8d5c3';
+const forestGreen = '#356a5a'
+const mediumGreen = '#4f8f7a'
 const faintWarmWhite = "#faf7f4"
 
 export const Colors = {
@@ -25,6 +27,8 @@ export const Colors = {
     honey: honey,
     paleRose: paleRose,
     waterGreen: waterGreen,
+    mediumGreen: mediumGreen,
+    forestGreen: forestGreen,
     faintWarmWhite: faintWarmWhite,
     mainBeige: mainBeige,
     elevatedBeige: elevatedBeige,

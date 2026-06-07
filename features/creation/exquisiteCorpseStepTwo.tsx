@@ -1,104 +1,11 @@
-import { Colors, Fonts } from "@/constants/theme";
+import NumberStepper from "@/components/NumberStepper";
+import { Colors } from "@/constants/theme";
 import { Controller } from "react-hook-form";
 import {
-    Platform,
-    Pressable,
     StyleSheet,
     Text,
-    View,
+    View
 } from "react-native";
-
-// ─── Number Stepper ──────────────────────────────────────────────────────────
-
-function NumberStepper({
-    value,
-    onChange,
-    min = 1,
-    max = 999,
-}: {
-    value: number;
-    onChange: (v: number) => void;
-    min?: number;
-    max?: number;
-}) {
-    const decrement = () => onChange(Math.max(min, value - 1));
-    const increment = () => onChange(Math.min(max, value + 1));
-
-    return (
-        <View style={stepperStyles.container}>
-            <Pressable
-                onPress={decrement}
-                disabled={value <= min}
-                style={({ pressed }) => [
-                    stepperStyles.button,
-                    value <= min && stepperStyles.buttonDisabled,
-                    pressed && stepperStyles.buttonPressed,
-                ]}
-                accessibilityLabel="Diminuer"
-            >
-                <Text style={[stepperStyles.buttonText, value <= min && stepperStyles.buttonTextDisabled]}>−</Text>
-            </Pressable>
-
-            <Text style={stepperStyles.value}>{value}</Text>
-
-            <Pressable
-                onPress={increment}
-                disabled={value >= max}
-                style={({ pressed }) => [
-                    stepperStyles.button,
-                    value >= max && stepperStyles.buttonDisabled,
-                    pressed && stepperStyles.buttonPressed,
-                ]}
-                accessibilityLabel="Augmenter"
-            >
-                <Text style={[stepperStyles.buttonText, value >= max && stepperStyles.buttonTextDisabled]}>+</Text>
-            </Pressable>
-        </View>
-    );
-}
-
-const stepperStyles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: Colors.light.faintWarmWhite,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: Colors.light.elevatedBeige,
-        alignSelf: "flex-start",
-        overflow: "hidden",
-    },
-    button: {
-        width: 44,
-        height: 44,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: Colors.light.faintWarmWhite,
-    },
-    buttonDisabled: {
-        opacity: 0.3,
-    },
-    buttonPressed: {
-        backgroundColor: Colors.light.elevatedBeige,
-    },
-    buttonText: {
-        fontSize: 20,
-        color: Colors.light.chocolate,
-        lineHeight: 24,
-    },
-    buttonTextDisabled: {
-        color: Colors.light.chocolate,
-    },
-    value: {
-        minWidth: 48,
-        textAlign: "center",
-        fontSize: 17,
-        fontWeight: "600",
-        color: Colors.light.chocolate,
-        fontFamily: Platform.select(Fonts ?? {}) ?? undefined,
-    },
-});
-
 
 
 // ─── Step Two ────────────────────────────────────────────────────────────────
@@ -125,7 +32,7 @@ export default function ExquisiteCorpseStepTwo({
                     render={({ field: { onChange, value } }) => (
                         <NumberStepper
                             value={value || 60}
-                            onChange={onChange}
+                            handleChange={onChange}
                             min={10}
                             max={3600}
                         />
@@ -146,7 +53,7 @@ export default function ExquisiteCorpseStepTwo({
                     render={({ field: { onChange, value } }) => (
                         <NumberStepper
                             value={value || 2}
-                            onChange={onChange}
+                            handleChange={onChange}
                             min={1}
                             max={20}
                         />
@@ -167,7 +74,7 @@ export default function ExquisiteCorpseStepTwo({
                         render={({ field: { onChange, value } }) => (
                             <NumberStepper
                                 value={value || 100}
-                                onChange={onChange}
+                                handleChange={onChange}
                                 min={2}
                                 max={500}
                             />
@@ -189,7 +96,7 @@ export default function ExquisiteCorpseStepTwo({
                         render={({ field: { onChange, value } }) => (
                             <NumberStepper
                                 value={value || 3}
-                                onChange={onChange}
+                                handleChange={onChange}
                                 min={1}
                                 max={50}
                             />

@@ -4,9 +4,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export function DualActionsFooter({
     leftAction,
     rightAction,
+    colorVariant = "neutral"
 }: {
     leftAction: { label: string; onPress: () => void };
     rightAction: { label: string; onPress: () => void };
+    colorVariant: "neutral" | "green" | "blue" | "dark"
 }) {
     return (
         <View style={styles.dualActionsContainer}>

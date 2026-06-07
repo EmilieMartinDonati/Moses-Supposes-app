@@ -45,7 +45,7 @@ export default function ExquisiteCorpseStepOne({
         <View style={styles.formContainer}>
             {/* Titre */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>Titre</Text>
+                <Text style={styles.label}>--- Titre ---</Text>
                 <Controller
                     control={control}
                     name="title"
@@ -68,7 +68,7 @@ export default function ExquisiteCorpseStepOne({
 
             {/* Prompt */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>Prompt</Text>
+                <Text style={styles.label}>--- Prompt ---</Text>
                 <Controller
                     control={control}
                     name="prompt"
@@ -92,7 +92,7 @@ export default function ExquisiteCorpseStepOne({
 
             {/* Visibilité */}
             <View style={styles.fieldGroup}>
-                <Text style={styles.label}>Visibilité</Text>
+                <Text style={styles.label}>--- Visibilité ---</Text>
                 <Controller
                     control={control}
                     name="visibility"
