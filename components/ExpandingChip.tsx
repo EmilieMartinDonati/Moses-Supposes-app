@@ -27,12 +27,23 @@ export default function ExpandingChip({
     const textProgress = useSharedValue(1)
 
     useEffect(() => {
-        width.value = withSpring(shouldExpand ? 320 : 50)
-        colorProgress.value = withSpring(shouldExpand ? 1 : 0)
-        if (shouldExpand) {
-            textProgress.value = withTiming(1, { duration: 200 })
+        const isExpanding = shouldExpand
+
+        colorProgress.value = withSpring(isExpanding ? 1 : 0)
+
+        if (isExpanding) {
+            textProgress.value = 0
+
+            width.value = withSpring(320, {}, (finished) => {
+                if (finished) {
+                    textProgress.value = withTiming(1, { duration: 100 })
+                }
+            })
+
         } else {
             textProgress.value = withTiming(0, { duration: 120 })
+
+            width.value = withSpring(50)
         }
     }, [shouldExpand])
 
