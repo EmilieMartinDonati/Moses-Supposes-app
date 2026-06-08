@@ -3,7 +3,7 @@ CREATE TABLE exquisite_corpse_participants (
     workshop_id uuid NOT NULL
         REFERENCES writing_workshops(id)
         ON DELETE CASCADE,
-    user_id uuid REFERENCES users(id) ON DELETE CASCADE,
+    user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
     guest_id uuid,
     CHECK (user_id IS NOT NULL OR guest_id IS NOT NULL),
     participant_id uuid NOT NULL DEFAULT gen_random_uuid(),

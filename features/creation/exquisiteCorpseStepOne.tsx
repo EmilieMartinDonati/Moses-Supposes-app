@@ -100,14 +100,6 @@ const styles = StyleSheet.create({
     fieldGroup: {
         gap: 8,
     },
-    label: {
-        fontSize: 11,
-        fontWeight: "600",
-        letterSpacing: 0.8,
-        textTransform: "uppercase",
-        color: Colors.light.chocolate,
-        opacity: 0.6,
-    },
     textInput: {
         backgroundColor: Colors.light.faintWarmWhite,
         color: Colors.light.chocolate,
@@ -124,47 +116,5 @@ const styles = StyleSheet.create({
     errorText: {
         fontSize: 12,
         color: "#b33a3a",
-    },
-
-    // Toggle
-    toggleRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-        backgroundColor: Colors.light.faintWarmWhite,
-        borderRadius: 10,
-        borderColor: Colors.light.elevatedBeige,
-        borderWidth: 1,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-    },
-    toggleTrack: {
-        width: 50,
-        height: 26,
-        borderRadius: 13,
-        justifyContent: "center",
-    },
-    toggleThumb: {
-        position: "absolute",
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: "#fff",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.15,
-        shadowRadius: 2,
-        elevation: 2,
-        top: 3,
-    },
-    toggleLabel: {
-        fontSize: 14,
-        color: Colors.light.chocolate,
-        opacity: 0.4,
-        fontWeight: "500",
-    },
-    toggleLabelActive: {
-        opacity: 1,
-        fontWeight: "700",
-    },
+    }
 });

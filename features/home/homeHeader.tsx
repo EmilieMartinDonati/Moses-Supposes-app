@@ -1,31 +1,61 @@
+import { NavigationActions } from "@/actions/navigation";
 import { Colors } from "@/constants/theme";
-import { Image, StyleSheet, Text, View } from "react-native";
-
-/* Actions in header will be login/logout filters session by type, category ... */
+import { useEffect, useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 type Action = {
   label: string;
-  onPress: () => void;
-  renderView?: () => React.ReactNode;
+  onClick: () => void;
+  logo: number;
 }
 
-type HeaderProps = {
-  title: string;
-  logo: string;
-  actions: Action[]
-};
+const guestActions: Action[] = [
+  { label: "Connexion", logo: require("../../assets/images/anonymous_person_24.png"), onClick: NavigationActions.goToSignup },
+]
+const userActions: Action[] = [
+  { label: "Déconnexion", logo: require("../../assets/images/logout_24.svg"), onClick: () => { } },
+  { label: "Mon compte", logo: require("../../assets/images/anonymous_person_24.png"), onClick: () => { } },
+  { label: "Explorer", logo: require("../../assets/images/anonymous_person_24.png"), onClick: () => console.log("open filter modals") }
+]
 
-export default function HomeHeader({ title, logo, actions }: HeaderProps) {
+export default function HomeHeader({ title, logo, user, hideActions = false }: {
+  title: string, logo?: string, user?: any, hideActions?: boolean
+}) {
+
+  const [actions, setActions] = useState<Action[]>([])
+
+  useEffect(() => {
+    if (user) {
+      setActions(userActions)
+    }
+    else {
+      setActions(guestActions)
+    }
+  }, [user])
 
   return (
     <View style={styles.header}>
-      <View style={styles.left}>
+      <View style={styles.leftContent}>
         {logo ? (
           <Image source={{ uri: logo }} style={styles.logo} />
         ) : null}
         <Text style={styles.title}>{title}</Text>
       </View>
       <View>
+        {!user && !hideActions &&
+          <View style={styles.actionsContainer}>
+            {actions.map(({ onClick, logo, label }: Action) => (
+              <Pressable
+                key={label}
+                onPress={onClick}>
+                <Image source={logo} style={styles.actionsLogo} />
+              </Pressable>
+            )
+            )}
+          </View>
+        }
+        {user && !hideActions &&
+          <Text>Todo</Text>}
       </View>
     </View>
   );
@@ -43,21 +73,27 @@ const styles = StyleSheet.create({
     height: 55.5,
     borderRadius: 3
   },
-
-  left: {
+  leftContent: {
     flexDirection: "row",
     alignItems: "center",
   },
-
-  logo: {
-    width: 64,
-    height: 64,
-    resizeMode: "contain",
-  },
-
   title: {
     fontSize: 20,
     fontWeight: "700",
     color: "#ffffff",
   },
+  logo: {
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
+  },
+  actionsContainer: {
+    gap: 8,
+    flexDirection: "row"
+  },
+  actionsLogo: {
+    width: 20,
+    height: 20,
+    resizeMode: "contain",
+  }
 });

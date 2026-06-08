@@ -1,1 +1,1 @@
-type ColorVariantType = "neutral" | "dark" | "green" | "blue"
+type ColorVariantType = "neutral" | "dark" | "green" | "blue" | "pink"

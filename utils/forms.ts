@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Create exquisite cadaver
+// ------ Create exquisite corpse ------//
 
 const baseExquisiteCadaverSchema = z.object({
     title: z.string().min(1, "Titre obligatoire"),
@@ -22,3 +22,25 @@ export const exquisiteCorpseFormSchema = z.discriminatedUnion("visibility", [
         end_time: z.date({ error: "Obligatoire" }),
     }),
 ]);
+
+// --------------- Sign up with email ---------------//
+
+const passwordSchema = z.string()
+.min(8, {message: "Au moins 8 caractères"})
+.max(40, {message: "40 caractères maximum"})
+  .refine((password) => /[A-Z]/.test(password), {
+    message: "Au moins un caractère majuscule",
+  })
+  .refine((password) => /[a-z]/.test(password), {
+    message: "Au moins un caractère minuscule"
+  })
+  .refine((password) => /[0-9]/.test(password), { message: "Au moins un chiffre de 0 à 9" })
+  .refine((password) => /[!@#$%^.&*]/.test(password), {
+    message: "Au moins un caractère spécial",
+  });
+
+export const emailSignupSchema = z.object({
+  email: z.email("Email invalide"),
+  password: passwordSchema,
+  emailOptin: z.boolean()
+})
