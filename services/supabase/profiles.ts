@@ -14,10 +14,3 @@ export const getProfile = async ({ id }: { id: string }): Promise<Profile | null
     }
     return data
 }
-
-export const createProfile = async ({ id, emailOptin }: { id: string, emailOptin: boolean }) => {
-       return await supabase.from("profiles").insert({
-            id,
-            email_optin: emailOptin
-        }).select("*").single()
-}
