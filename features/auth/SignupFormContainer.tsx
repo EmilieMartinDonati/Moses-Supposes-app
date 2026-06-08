@@ -1,27 +1,38 @@
 import { Colors } from "@/constants/theme"
-import { Link } from "expo-router"
+import { Link, router } from "expo-router"
 import { Pressable, StyleSheet, Text, View } from "react-native"
+import EmailOptinField from "./EmailOptinField"
 import SignupForm from "./SignupForm"
 
-
 export default function SignupFormContainer() {
+
+    const _handleRedirect = (timeoutMs: number) => {
+        setTimeout(() => {
+            if (router.canGoBack()) router.back();
+            else router.replace("/");
+        }, timeoutMs);
+    }
 
     return (
         <View style={styles.signupContainer}>
             <View style={styles.signupMethodsContainer}>
-                <SignupForm />
+                <SignupForm
+                    handleRedirect={(timeout) => _handleRedirect(timeout)}
+                />
                 <View style={styles.dividerContainer}>
                     <View style={styles.divider}></View>
                     <Text style={styles.dividerText}>OU</Text>
                     <View style={styles.divider}></View>
                 </View>
                 <View><Pressable><Text>Se connecter avec Google</Text></Pressable></View>
+                <EmailOptinField />
             </View>
-            <View><Text>
-                Déjà un compte ?{" "}
-                <Link href="/auth/login">
+            <View style={styles.foundAccount}><Text>
+                Vous avez déjà un compte ?{" "}
+                <Link style={styles.link} href="/auth/login">
                     Se connecter
-                </Link></Text></View>
+                </Link></Text>
+                </View>
         </View>
     )
 
@@ -51,5 +62,12 @@ const styles = StyleSheet.create({
     },
     dividerText: {
         color: Colors.light.chocolate
+    },
+    foundAccount: {
+        marginTop: 24
+    },
+    link: {
+        color: Colors.light.mainBlue,
+        fontWeight: "600"
     }
 })

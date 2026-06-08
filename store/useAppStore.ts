@@ -1,10 +1,10 @@
 import { create } from 'zustand'
-import { createUsersSlice } from './slices/users'
-import { createWritingWorkshopsSlice } from './slices/workshops'
+import { createUsersSlice, UsersSlice } from './slices/users'
+import { createWritingWorkshopsSlice, WorkshopsSlice } from './slices/workshops'
 
-type AppStoreType = ReturnType<typeof createUsersSlice>
+export type AppStore = UsersSlice & WorkshopsSlice
 
-export const useAppStore = create<AppStoreType>()((...args) => ({
+export const useAppStore = create<AppStore>()((...args) => ({
     ...createUsersSlice(...args),
     ...createWritingWorkshopsSlice(...args)
 }))

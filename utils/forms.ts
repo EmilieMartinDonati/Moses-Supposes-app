@@ -42,5 +42,4 @@ const passwordSchema = z.string()
 export const emailSignupSchema = z.object({
   email: z.email("Email invalide"),
   password: passwordSchema,
-  emailOptin: z.boolean()
 })
