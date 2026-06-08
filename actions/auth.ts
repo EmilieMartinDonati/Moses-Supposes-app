@@ -1,5 +1,5 @@
 
-import { signInUser, signUpUser } from "@/services/supabase/users"
+import { logOut, signInUser, signUpUser } from "@/services/supabase/users"
 import { getAuthErrorMessage } from "../utils/authentification"
 
 export const signUpAndLoginUser = async ({ email, password, emailOptin }: {
@@ -13,7 +13,7 @@ export const signUpAndLoginUser = async ({ email, password, emailOptin }: {
         data: undefined
     }
     try {
-        const { error: signupError, data: { user } } = await signUpUser({ email, password, emailOptin })
+        const { error: signupError } = await signUpUser({ email, password, emailOptin })
 
         if (signupError) {
             result.errorCode = signupError.code
@@ -39,5 +39,18 @@ export const signUpAndLoginUser = async ({ email, password, emailOptin }: {
         
     } finally {
         return result
+    }
+}
+
+export const logOutUser = async () => {
+    try {
+       const {error} = await logOut()
+       if (error) {
+        throw error
+       }
+    }
+    catch (e) {
+        console.error("Une erreur est survenue lors de la déconnexion")
+        // WIP todo open global snackbar with error message
     }
 }

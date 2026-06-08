@@ -1,3 +1,4 @@
+import { logOutUser } from "@/actions/auth";
 import { NavigationActions } from "@/actions/navigation";
 import { Colors } from "@/constants/theme";
 import { useEffect, useState } from "react";
@@ -13,7 +14,7 @@ const guestActions: Action[] = [
   { label: "Connexion", logo: require("../../assets/images/anonymous_person_24.png"), onClick: NavigationActions.goToSignup },
 ]
 const userActions: Action[] = [
-  { label: "Déconnexion", logo: require("../../assets/images/logout_24.svg"), onClick: () => { } },
+  { label: "Déconnexion", logo: require("../../assets/images/logout_24.svg"), onClick: async () => logOutUser },
   { label: "Mon compte", logo: require("../../assets/images/anonymous_person_24.png"), onClick: () => { } },
   { label: "Explorer", logo: require("../../assets/images/anonymous_person_24.png"), onClick: () => console.log("open filter modals") }
 ]
