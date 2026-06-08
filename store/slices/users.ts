@@ -1,7 +1,8 @@
+import { Profile } from '@/services/supabase/profiles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { User } from '@supabase/supabase-js'
+import * as Crypto from 'expo-crypto'
 import { StateCreator } from 'zustand'
-import { Profile } from '@/services/supabase/profiles'
 import type { AppStore } from '../useAppStore'
 
 export type UsersSlice = {
@@ -30,7 +31,7 @@ export const createUsersSlice: StateCreator<AppStore, [], [], UsersSlice> = (set
     initializeGuestId: async () => {
         let id = await AsyncStorage.getItem('guest_id')
         if (!id) {
-            id = crypto.randomUUID()
+            id = Crypto.randomUUID()
             await AsyncStorage.setItem('guest_id', id)
         }
         set({ guestId: id })

@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 12,
+        flex: 1,
         textAlign: "justify"
     }
 })

@@ -1,6 +1,3 @@
-import 'react-native-url-polyfill/auto';
-
-
 import { NavigationActions } from "@/actions/navigation";
 import ExpandingChip from "@/components/ExpandingChip";
 import { Colors } from "@/constants/theme";
@@ -10,8 +7,12 @@ import WritingWorkshopList from "@/features/writingWorkshops/WritingWorkshopsLis
 import { useAppStore } from '@/store/useAppStore';
 import { useState } from "react";
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 export default function HomeScreen() {
+
+    const insets = useSafeAreaInsets();
 
     const [creationButtonExpanded, setCreationButtonExpanded] = useState(false)
 
@@ -32,7 +33,7 @@ export default function HomeScreen() {
 
 
     return (
-        <>
+        <SafeAreaView edges={['top', 'bottom', 'left', 'right']}>
             <HomeHeader title="MOSES SUPPOSES" user={user} />
             <ScrollView
                 contentContainerStyle={styles.main}
@@ -47,7 +48,7 @@ export default function HomeScreen() {
                     <WritingWorkshopList />
                 </View>
             </ScrollView>
-            <View style={styles.footer}>
+            <View style={[styles.footer, {bottom: insets.bottom + 40 }]}>
                 <ExpandingChip
                     initialContent="+"
                     targetContent='Créer votre propre workshop'
@@ -56,7 +57,7 @@ export default function HomeScreen() {
                     shouldExpand={creationButtonExpanded}
                     onClick={onPressFAB} />
             </View>
-        </>
+        </SafeAreaView>
     )
 }
 
@@ -68,11 +69,10 @@ const styles = StyleSheet.create({
     },
     writingWorkshopListContainer: {
         paddingTop: 24,
-        paddingBottom: 50
+        paddingBottom: 80
     },
     footer: {
         position: "absolute",
-        bottom: 8,
         right: 24
     }
 })

@@ -39,7 +39,7 @@ export default function WritingWorkshopList() {
             <Text style={styles.writingWorkshopsSection}>🔥 Ateliers en cours</Text>
             <WritingWorkshopsCarousel 
               visibility={"live"}
-              workshops={chunkArray(liveWorkshops, 1)}
+              workshops={chunkArray(liveWorkshops, 4)}
               loading={loading}
               />
             <Text style={styles.writingWorkshopsSection}>⏳ Ateliers à venir</Text>

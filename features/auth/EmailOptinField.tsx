@@ -51,12 +51,14 @@ const styles = StyleSheet.create({
     checkBoxInner: {
         width: 20,
         height: 20,
-        borderRadius: 10
+        borderRadius: 10,
+        overflow: "hidden"
     },
     checkBoxInnerFilled: {
         backgroundColor: Colors.light.chocolate
     },
     optinText: {
+        flex: 1,
         textAlign: "justify",
         fontSize: 12
     }

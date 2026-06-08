@@ -33,6 +33,7 @@ export default function WritingWorkshopsCarousel({ visibility, workshops, loadin
         <View key={index} style={styles.cardsStack}>
           {item.map((workshop) => (
             <WritingWorkshopCard
+              key={workshop.id}
                id={workshop.id}
               writingWorkshopId={workshop.id}
               title={workshop.title}

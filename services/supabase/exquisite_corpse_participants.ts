@@ -1,3 +1,4 @@
+import * as Crypto from 'expo-crypto';
 import { supabase } from "./client";
 
 type StateType = "waiting" | "active" | "timed_out" | "done"
@@ -17,7 +18,7 @@ export const createExquisiteCorpseParticipant = async ({ workshopId, userId, gue
             workshop_id: workshopId,
             state: "waiting",
             cycle: 0,
-            participant_id: crypto.randomUUID()
+            participant_id: Crypto.randomUUID()
         }
         if (userId) payload.user_id = userId
         if (guestId) payload.guest_id = guestId
