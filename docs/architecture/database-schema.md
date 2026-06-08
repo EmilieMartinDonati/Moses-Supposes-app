@@ -1,8 +1,8 @@
 # Database specs for Moses Supposes and known limitations
 
-## Tables list
+## Public tables list
 
-- users
+- profiles
 
 - writing_workshops
 - exquisite_corpse_config
@@ -10,7 +10,17 @@
 - exquisite_corpse_participants
 - segments (or contributions)
 
-## users
+## profiles 
+
+the user layer where we store UX info on the users (auth.users, the supabase table dedicated to authentification, contains registering and roles informations to the exclusion of anything else)
+
+| column_name     | data_type   | is_nullable | column_default    | specs                               |
+| --------------- | ----------- | ----------- | ----------------- | ----------------------------------- |
+| id              | uuid        | NO          | gen_random_uuid() | PK                                  |
+| user_id         | uuid        | NO          | null              | FK                                  |
+| email_optin     | boolean     | NO          | false             |                                     |
+
+
 
 ## writing_workshops
 

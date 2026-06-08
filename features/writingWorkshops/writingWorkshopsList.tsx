@@ -36,13 +36,13 @@ export default function WritingWorkshopList() {
 
     return (
         <View style={styles.writingWorkshopsList}>
-            <Text style={styles.writingWorkshopsSection}>🔥 En cours</Text>
+            <Text style={styles.writingWorkshopsSection}>🔥 Ateliers en cours</Text>
             <WritingWorkshopsCarousel 
               visibility={"live"}
               workshops={chunkArray(liveWorkshops, 1)}
               loading={loading}
               />
-            <Text style={styles.writingWorkshopsSection}>⏳ À venir</Text>
+            <Text style={styles.writingWorkshopsSection}>⏳ Ateliers à venir</Text>
             <WritingWorkshopsCarousel 
               visibility={"upcoming"}
               workshops={chunkArray(upcomingWorkshops, 1)}

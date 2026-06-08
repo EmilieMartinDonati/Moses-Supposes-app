@@ -1,11 +1,15 @@
-import { NavigationActions } from "@/actions/navigation"
-import ExpandingChip from "@/components/ExpandingChip"
-import { Colors } from "@/constants/theme"
-import CodeAddBanner from "@/features/codes/CodeAddBanner"
-import HomeHeader from "@/features/home/HomeHeader"
-import WritingWorkshopList from "@/features/writingWorkshops/WritingWorkshopsList"
-import { useState } from "react"
-import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from "react-native"
+import 'react-native-url-polyfill/auto';
+
+
+import { NavigationActions } from "@/actions/navigation";
+import ExpandingChip from "@/components/ExpandingChip";
+import { Colors } from "@/constants/theme";
+import CodeAddBanner from "@/features/codes/CodeAddBanner";
+import HomeHeader from "@/features/home/HomeHeader";
+import WritingWorkshopList from "@/features/writingWorkshops/WritingWorkshopsList";
+import { useAppStore } from '@/store/useAppStore';
+import { useState } from "react";
+import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
 
@@ -24,11 +28,12 @@ export default function HomeScreen() {
         }
     }
 
+    const user = useAppStore((s) => s.user)
+
 
     return (
-        // <SafeAreaView>
         <>
-            <HomeHeader title="MOSES SUPPOSES" logo="" actions={[]} />
+            <HomeHeader title="MOSES SUPPOSES" user={user} />
             <ScrollView
                 contentContainerStyle={styles.main}
                 style={{ backgroundColor: Colors.light.background }}
@@ -52,7 +57,6 @@ export default function HomeScreen() {
                     onClick={onPressFAB} />
             </View>
         </>
-        // </SafeAreaView>
     )
 }
 

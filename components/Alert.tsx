@@ -40,7 +40,7 @@ export default function Alert({
 }: {
     variant: VariantType,
     onClick?: () => void,
-    visible: boolean,
+    visible?: boolean,
     width: number,
     height: number,
     content: string
