@@ -9,6 +9,6 @@ export const getGuestSingleContribution = async ({
    return await supabase.from("contributions")
         .select(select)
         .eq("guest_id", guestId)
-        .order("_created_at", { ascending: ascending })
+        .order("created_at", { ascending: ascending })
         .single()
 }
