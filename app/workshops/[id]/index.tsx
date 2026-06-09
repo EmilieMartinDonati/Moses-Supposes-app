@@ -43,6 +43,9 @@ export default function WritingWorkshopEditor() {
       }
     }
     fetchData()
+    return () => {
+      console.log("clear workshopid here")
+    }
   }, [writingWorkshopId])
 
   useEffect(() => {

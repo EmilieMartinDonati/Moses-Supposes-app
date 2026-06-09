@@ -3,7 +3,8 @@ import { supabase } from "./client"
 
 export type Profile = {
     id: string
-    email_optin: boolean | null
+    email_optin: boolean | null,
+    username?: string
 }
 
 export const getProfile = async ({ id }: { id: string }): Promise<Profile | null> => {

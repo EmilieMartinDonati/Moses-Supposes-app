@@ -1,4 +1,5 @@
 
+import { WorkshopType } from "@/types/workshops";
 import { FlatList, StyleSheet, View } from "react-native";
 import WritingWorkshopCard from "./WritingWorkshopCard";
 
@@ -11,6 +12,7 @@ type WritingWorkshop = {
   participantsCount?: number;
   start_time: string;
   end_time: string;
+  type: WorkshopType
 };
 
 type WritingWorkshopsCarouselProps = {
@@ -43,6 +45,7 @@ export default function WritingWorkshopsCarousel({ visibility, workshops, loadin
               endTime={workshop.end_time}
               visibility={visibility}
               loading={loading}
+              type={workshop.type}
             />))}
         </View>}
     />

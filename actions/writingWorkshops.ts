@@ -1,28 +1,54 @@
 import { getWritingWorkshopById } from "@/services/supabase/writingWorkshops"
 import { useAppStore } from "@/store/useAppStore"
-import { countExquisiteCorpseWaitingParticipants } from "../services/supabase/exquisite_corpse_participants"
+import { WorkshopType } from "@/types/workshops"
+import { countExquisiteCorpseParticipantsByState } from "../services/supabase/exquisite_corpse_participants"
+import { ActionError } from "./errors"
+import { getExquisiteCorpseTicket } from "./exquisiteCorpses"
 import { NavigationActions } from "./navigation"
 
-export const clickWritingWorkshop = async (writingWorkshopId: string, visibility: "live" | "upcoming") => {
+//--------------------------------- JOIN ---------------------------------//
 
-    if (visibility === "upcoming") {
-        //@todo redirect to page id consultation
-    }
-    else if (visibility === "live") {
-        const writingWorkshop = await getWritingWorkshopById(writingWorkshopId)
-        useAppStore.getState().setWritingWorkshopId(writingWorkshopId)
+export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
+    workshopId: string,
+    visibility: "live" | "upcoming",
+    type: WorkshopType
+}) => {
+    try {
+        if (visibility === "upcoming") {
+            return
+            //@todo redirect to page id consultation
+        }
+
+        // All this below with the workshop details should be once we enter ... 
+        const writingWorkshop = await getWritingWorkshopById(workshopId)
+        useAppStore.getState().setWritingWorkshopId(workshopId)
         useAppStore.getState().setWritingWorkshop(writingWorkshop)
-        
-        const count = await countExquisiteCorpseWaitingParticipants({ workshopId: writingWorkshopId })
-        if ((count ?? 0) < 5) {
-            NavigationActions.goToWorkshopEditor(writingWorkshopId)
+
+        if (type !== "exquisite_corpse") {
+            NavigationActions.goToWorkshopEditor(workshopId)
         }
         else {
-            //@todo redirect to consultation and invite to join
-            console.log("L'atelier d'écriture est complet. Nombre de participants:", count)
+            // If busy, redirect to lobby
+            const { error, count } = await countExquisiteCorpseParticipantsByState({ workshopId, state: "waiting" })
+            if (error) {
+                throw new ActionError("count_waiting_participants", "Impossible d'évaluer la disponibilité de l'atelier", { cause: error })
+            }
+            if ((count ?? 0) > 10) {
+                NavigationActions.goToWorkshopLobby(workshopId)
+            }
+            else {
+                await getExquisiteCorpseTicket({ workshopId })
+                NavigationActions.goToWorkshopEditor(workshopId)
+            }
         }
+    } catch (e) {
+        console.error("Error on click joining workshop", e)
+        // todo show snackbar on app overlay with error message
+        // consume ActionError to add in collection Logs or Events
     }
 }
+
+//---------------------- CREATE -----------------------------//
 
 export const clickCreateWritingWorkshop = () => {
     NavigationActions.createWorkshop()
