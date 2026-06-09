@@ -14,6 +14,12 @@ export const NavigationActions: NavigationActionsType = {
     goHome: () => {
         router.push("/")
     },
+    goToSignup: () => {
+        router.push("/auth/signup")
+    },
+    goToLogin: () => {
+        router.push("/auth/login")
+    },
     goToWorkshopEditor: (id) => {
         router.push(`/workshops/${id}`);
     },
@@ -26,11 +32,5 @@ export const NavigationActions: NavigationActionsType = {
     },
     createWorkshop: () => {
         router.push("/create")
-    },
-    goToSignup: () => {
-        router.push("/auth/signup")
-    },
-    goToLogin: () => {
-        router.push("/auth/login")
     }
 }

@@ -103,9 +103,10 @@ the final product, in the case of an exquisite corpse, it will be segments, but 
 | display_name   | text        | NO          | null              | Snapshot of name shown in final story             |
 | avatar_seed    | text        | NO          | null              | Stable anonymous avatar / symbol seed             |
 | content        | text        | NO          | null              | Segment text                                      |
-| status         | text        | NO          | null              | "draft" or "submitted"                            |
-| visibility     | text        | NO          | null              | "private" or "public"                             |
+| state         | text        | NO          | null              | "draft" or "submitted"                            |
 | created_at     | timestamptz | NO          | now()             | Submission timestamp                              |
+
+NB : no need to denormalize "visibility", it will be inferred from writing_workshop_config which will allow to modify it dynamically
 
 ---
 

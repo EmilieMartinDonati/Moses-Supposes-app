@@ -1,5 +1,6 @@
 import { clickWritingWorkshop } from "@/actions/writingWorkshops"
 import { Colors } from "@/constants/theme"
+import { WorkshopType } from "@/types/workshops"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import WritingWorkshopCardSkeletonContent from "./WritingWorkshopCardSkeletonContent"
 
@@ -11,13 +12,14 @@ type WritingWorkshopCardProps = {
     startTime: string,
     endTime: string,
     visibility: "live" | "upcoming",
-    loading: boolean
+    loading: boolean,
+    type: WorkshopType
 }
 
-export default function WritingWorkshopCard({ writingWorkshopId, title, prompt, participantsCount, endTime, startTime, visibility, loading }: WritingWorkshopCardProps) {
+export default function WritingWorkshopCard({ writingWorkshopId, title, prompt, type = "exquisite_corpse", participantsCount, endTime, startTime, visibility, loading }: WritingWorkshopCardProps) {
 
     const _onPress = async () => {
-       await clickWritingWorkshop(writingWorkshopId, visibility);
+       await clickWritingWorkshop({ type, workshopId: writingWorkshopId, visibility });
     }
 
     if (loading) {

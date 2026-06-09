@@ -1,38 +1,32 @@
-import * as Crypto from 'expo-crypto';
+import { ExquisiteCorpseParticipantType, StateType } from '@/types/exquisite_corpse_participants';
 import { supabase } from "./client";
 
-type StateType = "waiting" | "active" | "timed_out" | "done"
+export const getLastExquisiteCorpseParticipationFromUser = async ({
+    guestId, userId, workshopId, select = "*", ascending = false
+}: { guestId: string | null, userId: string | null, workshopId: string, select?: string, ascending?: boolean }) => {
+    const orFilters = [
+        userId && `user_id.eq.${userId}`,
+        guestId && `guest_id.eq.${guestId}`,
+    ].filter(Boolean).join(",")
 
-type ExquisiteCorpseParticipantType = {
-    workshop_id: string,
-    user_id?: string,
-    guest_id?: string,
-    participant_id: string,
-    state: StateType,
-    cycle: number
+    return await supabase
+        .from("exquisite_corpse_participants")
+        .select(select)
+        .eq("workshop_id", workshopId)
+        .or(orFilters)
+        .order("_created_at", { ascending: ascending })
+        .limit(1)
+        .maybeSingle()
 }
 
-export const createExquisiteCorpseParticipant = async ({ workshopId, userId, guestId }: { workshopId: string, userId?: string, guestId?: string }) => {
-    try {
-        const payload: ExquisiteCorpseParticipantType = {
-            workshop_id: workshopId,
-            state: "waiting",
-            cycle: 0,
-            participant_id: Crypto.randomUUID()
-        }
-        if (userId) payload.user_id = userId
-        if (guestId) payload.guest_id = guestId
-
-        const { data, error } = await supabase.from("exquisite_corpse_participants").insert(payload).select("*").single()
-
-        if (error) {
-            throw error
-        }
-        return data
-    }
-    catch (error) {
-        console.error(`Unexpected error creating participant for workshop id ${workshopId} and user id ${userId}`, error)
-    }
+export const insertExquisiteCorpseParticipant = async ({
+    payload,
+    select = "*"
+}: {
+    payload: ExquisiteCorpseParticipantType
+    select?: string
+}) => {
+    return await supabase.from("exquisite_corpse_participants").insert(payload).select(select).single()
 }
 
 
@@ -42,13 +36,7 @@ export const createExquisiteCorpseParticipant = async ({ workshopId, userId, gue
  * @returns 
 BEGIN;
 
-SELECT next participant FOR UPDATE SKIP LOCKED
-ORDER BY joined_at ASC
-LIMIT 1;
-
-UPDATE that row → active + timestamps;
-
-COMMIT;
+// moved to transaction assign_next_turn (in migrations folder)
  */
 export const changeExquisiteCorpseParticipantState = async ({
     participantId,
@@ -98,26 +86,9 @@ export const changeExquisiteCorpseParticipantState = async ({
 }
 
 export const deleteExquisiteCorpseParticipantsByWorkshop = async ({ workshopId }: { workshopId: string }) => {
-    try {
-        const { error } = await supabase.from("exquisite_corpse_participants").delete().eq("workshop_id", workshopId)
-        if (error) {
-            throw error
-        }
-    }
-    catch (error) {
-        console.error(`Error deleting exquisite_corpse_participants for workshop ${workshopId}`, error)
-    }
+     return await supabase.from("exquisite_corpse_participants").delete().eq("workshop_id", workshopId)
 }
 
-export const countExquisiteCorpseWaitingParticipants = async ({ workshopId }: { workshopId: string }) => {
-    try {
-        const { error, count } = await supabase.from("exquisite_corpse_participants").select("*", { count: "exact", head: true }).eq("workshop_id", workshopId).eq("state", "waiting")
-        if (error) {
-            throw error
-        }
-        return count
-    }
-    catch (e) {
-       console.error("")
-    }
+export const countExquisiteCorpseParticipantsByState = async ({ workshopId, state = "waiting" }: { workshopId: string, state?: StateType }) => {
+    return await supabase.from("exquisite_corpse_participants").select("*", { count: "exact", head: true }).eq("workshop_id", workshopId).eq("state", state)
 }
