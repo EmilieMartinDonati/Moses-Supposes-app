@@ -19,6 +19,12 @@ export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
             //@todo redirect to page id consultation
         }
 
+        const { user, guestId } = useAppStore.getState()
+
+        if (!user && !guestId) {
+            throw new ActionError("no_identity", "Vous devez être connecté ou identifié pour rejoindre l'atelier")
+        }
+
         // All this below with the workshop details should be once we enter ... 
         const writingWorkshop = await getWritingWorkshopById(workshopId)
         useAppStore.getState().setWritingWorkshopId(workshopId)
@@ -37,7 +43,7 @@ export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
                 NavigationActions.goToWorkshopLobby(workshopId)
             }
             else {
-                await getExquisiteCorpseTicket({ workshopId })
+                await getExquisiteCorpseTicket({ workshopId, userId: user?.id || null, guestId })
                 NavigationActions.goToWorkshopEditor(workshopId)
             }
         }
