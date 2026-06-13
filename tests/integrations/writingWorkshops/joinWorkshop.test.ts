@@ -1,3 +1,4 @@
+import { getExquisiteCorpseTicket } from "@/actions/exquisiteCorpses";
 import { supabase } from "@/services/supabase/client";
 import { createTestWorkshop, deleteTestWorkshop } from "@/tests/helpers/seed";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
@@ -12,6 +13,12 @@ describe("join exquisite corpse as guest", () => {
             visibility: "public"
         })
         workshopId = workshop?.id
+        if (!workshopId) {
+            return
+        }
+        await getExquisiteCorpseTicket({
+            workshopId, guestId, userId: null
+        })
     })
     afterEach(async () => {
         await deleteTestWorkshop({ workshopId })

@@ -23,6 +23,8 @@ export const getExquisiteCorpseTicket = async ({ workshopId, userId, guestId }: 
 }
 
 const createExquisiteCorpseParticipant = async ({ workshopId, userId, guestId }: { workshopId: string, userId: string | null, guestId: string | null }) => {
+    // todo check that they don't already have a turn waiting or active
+    // to account for case where user goes back to landing then back to workshop
     const payload: ExquisiteCorpseParticipantType = {
         workshop_id: workshopId,
         state: "waiting",

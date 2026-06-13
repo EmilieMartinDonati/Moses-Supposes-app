@@ -14,7 +14,7 @@ export const getLastExquisiteCorpseParticipationFromUser = async ({
         .select(select)
         .eq("workshop_id", workshopId)
         .or(orFilters)
-        .order("_created_at", { ascending: ascending })
+        .order("joined_at", { ascending: ascending })
         .limit(1)
         .maybeSingle()
 }
