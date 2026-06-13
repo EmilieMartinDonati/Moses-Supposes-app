@@ -1,22 +1,16 @@
 import { supabase } from '@/services/supabase/client'
 import { getLastExquisiteCorpseParticipationFromUser, insertExquisiteCorpseParticipant } from '@/services/supabase/exquisite_corpse_participants'
-import { useAppStore } from '@/store/useAppStore'
 import { ExquisiteCorpseParticipantType } from '@/types/exquisite_corpse_participants'
 import * as Crypto from 'expo-crypto'
 import { ActionError } from './errors'
 
-export const getExquisiteCorpseTicket = async ({ workshopId }: { workshopId: string }) => {
-    const { user, guestId } = useAppStore.getState()
-
-    if (!user && !guestId) {
-        throw new ActionError("no_identity", "Vous devez être connecté ou identifié pour rejoindre l'atelier")
-    }
+export const getExquisiteCorpseTicket = async ({ workshopId, userId, guestId }: { workshopId: string, userId: string | null, guestId: string | null }) => {
 
     // initialize workshop presence
     await createExquisiteCorpseParticipant({
         workshopId,
-        userId: user?.id ?? null,
-        guestId,
+        userId,
+        guestId
     })
 
     // check if it can be put to active and if so assign next player
@@ -29,6 +23,8 @@ export const getExquisiteCorpseTicket = async ({ workshopId }: { workshopId: str
 }
 
 const createExquisiteCorpseParticipant = async ({ workshopId, userId, guestId }: { workshopId: string, userId: string | null, guestId: string | null }) => {
+    // todo check that they don't already have a turn waiting or active
+    // to account for case where user goes back to landing then back to workshop
     const payload: ExquisiteCorpseParticipantType = {
         workshop_id: workshopId,
         state: "waiting",
