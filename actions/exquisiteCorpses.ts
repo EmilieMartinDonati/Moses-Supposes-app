@@ -1,5 +1,5 @@
 import { supabase } from '@/services/supabase/client'
-import { getLastExquisiteCorpseParticipationFromUser, insertExquisiteCorpseParticipant } from '@/services/supabase/exquisite_corpse_participants'
+import { getExquisiteCorpseCurrentParticipationFromUser, getLastExquisiteCorpseParticipationFromUser, insertExquisiteCorpseParticipant } from '@/services/supabase/exquisite_corpse_participants'
 import { ExquisiteCorpseParticipantType } from '@/types/exquisite_corpse_participants'
 import * as Crypto from 'expo-crypto'
 import { ActionError } from './errors'
@@ -51,4 +51,25 @@ const computeExquisiteCorpseParticipantCycle = async ({ userId, workshopId, gues
     if (error) throw new ActionError("compute_cycle", "Impossible de calculer votre tour de participation", { cause: error })
 
     return lastUserParticipation ? lastUserParticipation.cycle + 1 : 0
+}
+
+export const fetchExquisiteCorpseCurrentParticipant = async ({
+    workshopId, userId, guestId
+}: {
+    workshopId: string,
+    userId: string | null,
+    guestId: string | null
+}) => {
+    try {
+        const { data, error } = await getExquisiteCorpseCurrentParticipationFromUser({
+            workshopId, guestId, userId
+        })
+        if (error) {
+            throw new ActionError("fetching exquisite corpse participant", "Impossible de récupérer votre billet d'entrée", { cause: error })
+        }
+        return data
+    } catch (e) {
+        // snackbar
+        return null
+    }
 }

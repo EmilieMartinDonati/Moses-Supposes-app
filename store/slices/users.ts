@@ -15,7 +15,6 @@ export type UsersSlice = {
     profile: Profile | null
     isAuthLoading: boolean
     initializeGuestId: () => Promise<void>
-    setUserId: (userId: string) => Promise<void>
     setUser: (user: User | null) => Promise<void>
     setProfile: (profile: Profile | null) => void
     setAuthLoading: (isAuthLoading: boolean) => void
@@ -34,9 +33,6 @@ export const createUsersSlice: StateCreator<AppStore, [], [], UsersSlice> = (set
             await AsyncStorage.setItem('guest_id', id)
         }
         set({ guestId: id })
-    },
-    setUserId: async (userId: string) => {
-        set({ userId: userId })
     },
     setUser: async (user: User | null) => {
         set({ user: user})

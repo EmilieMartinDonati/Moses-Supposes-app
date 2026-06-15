@@ -1,4 +1,5 @@
 import { supabase } from "@/services/supabase/client"
+import { StateType } from "@/types/exquisite_corpse_participants"
 import { VisibilityType, WorkshopType } from "@/types/workshops"
 
 type ConfigPayload = {
@@ -60,8 +61,28 @@ export const deleteTestWorkshop = async ({ workshopId }: { workshopId: string })
     await supabase.from("writing_workshops").delete().eq("id", workshopId)
 
     if (isExquisiteCorpse) {
-        // or maybe ON DELETE CASCADE handles it already ^^
+        // or maybe ON DELETE CASCADE handles it already ? ^^
         await supabase.from("exquisite_corpse_config").delete().eq("workshop_id", workshopId)
         await supabase.from("exquisite_corpse_participants").delete().eq("workshop_id", workshopId)
+        await supabase.from("contributions").delete().eq("workshop_id", workshopId)
     }
+}
+
+
+export const createTestExquisiteCorpseParticipant = async ({
+    guestId, workshopId, state = "waiting"
+}: {
+    guestId: string, workshopId: string, state: StateType
+}) => {
+
+    const payload = {
+        guest_id: guestId,
+        workshop_id: workshopId,
+        participant_id: crypto.randomUUID(), // to deprecate
+        cycle: 0,
+        state
+    }
+    const { data } = await supabase.from("exquisite_corpse_participants").insert(payload).select("*").single()
+
+    return data
 }

@@ -10,7 +10,7 @@ import { useEffect } from "react";
 than one place would create duplicate onAuthStateChange subscriptions. **/
 export default function useAuthSync() {
 
-  const { initializeGuestId, deleteGuestId, setUser, setProfile, setAuthLoading } = useAppStore()
+  const { initializeGuestId, setUser, setProfile, setAuthLoading } = useAppStore()
 
   useEffect(() => {
 

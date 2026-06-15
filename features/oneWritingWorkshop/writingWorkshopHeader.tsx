@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/theme"
 import { StyleSheet, Text, View } from "react-native"
 
-export default function WritingWorkshopHeader({ title, type = "Cadavre Exquis", presencesCount, participantsCount }: { title: string, type: string, presencesCount?: number, participantsCount?: number }) {
+export default function WritingWorkshopHeader({ title, type = "Cadavre Exquis", presencesCount, participantsCount }: { title?: string, type: string, presencesCount?: number, participantsCount?: number }) {
     return (
         <View style={styles.writingWorkshopHeaderContainer}>
             <View style={styles.writingWorkshopHeaderTextContent}>

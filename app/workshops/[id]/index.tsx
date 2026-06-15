@@ -11,42 +11,55 @@ import WritingWorkshopContent from '@/features/oneWritingWorkshop/WritingWorksho
 import WritingWorkshopHeader from '@/features/oneWritingWorkshop/WritingWorkshopHeader';
 import WritingWorkshopPrompt from '@/features/oneWritingWorkshop/WritingWorkshopPrompt';
 
-import { createSegment, fetchSegmentsByWorkshopId } from '@/services/supabase/segments';
+import { fetchContributionsByWorkshop } from '@/actions/contributions';
+import { fetchExquisiteCorpseCurrentParticipant } from '@/actions/exquisiteCorpses';
 import { getWritingWorkshopById } from '@/services/supabase/writingWorkshops';
-import { SegmentType } from '@/types/segments';
+
+import { ContributionType } from '@/types/contributions';
+import { ExquisiteCorpseParticipantType } from '@/types/exquisite_corpse_participants';
+import { WritingWorkshopType } from '@/types/workshops';
+
+import { submitContribution } from '@/actions/contributions';
 
 export default function WritingWorkshopEditor() {
-
-  const writingWorkshopIdFromStore = useAppStore(state => state.writingWorkshopId)
-  const { id } = useLocalSearchParams()
-  const writingWorkshopId = writingWorkshopIdFromStore || id
-  const writingWorkshopFromStore = useAppStore(state => state.writingWorkshop)
+  const { id } = useLocalSearchParams<{ id: string }>()
+  const writingWorkshopId = id
 
   const guestId = useAppStore(state => state.guestId)
-  const userId = useAppStore(state => state.userId)
+  const user = useAppStore(state => state.user)
+  const userId = user?.id || null
 
-  const [contributions, setContributions] = useState<SegmentType[]>([])
-  const [writingWorkshop, setWritingWorkshop] = useState(writingWorkshopFromStore || null)
+  const [contributions, setContributions] = useState<ContributionType[] | []>([])
+  const [writingWorkshop, setWritingWorkshop] = useState<WritingWorkshopType | null>(null)
+  const [participant, setParticipant] = useState<ExquisiteCorpseParticipantType | null>(null)
   const [reloadContribution, setReloadContribution] = useState<boolean>(false)
 
   const fetchContributions = async () => {
-    const segments = (await fetchSegmentsByWorkshopId({ writingWorkshopId })) || []
-    setContributions(segments)
+    const retrievedContributions = await fetchContributionsByWorkshop({ workshopId: writingWorkshopId })
+    setContributions(retrievedContributions)
   }
 
   useEffect(() => {
     const fetchData = async () => {
       await fetchContributions()
-      if (!writingWorkshop || writingWorkshop.id !== writingWorkshopId) {
-        const refreshedWritingWorkshop = await getWritingWorkshopById(writingWorkshopId)
-        setWritingWorkshop(refreshedWritingWorkshop)
-      }
+      const refreshedWritingWorkshop = await getWritingWorkshopById(writingWorkshopId)
+      setWritingWorkshop(refreshedWritingWorkshop)
     }
     fetchData()
     return () => {
       console.log("clear workshopid here")
     }
   }, [writingWorkshopId])
+
+  useEffect(() => {
+    const fetch = async () => {
+      const foundParticipant = await fetchExquisiteCorpseCurrentParticipant({
+        workshopId: writingWorkshopId, userId, guestId
+      })
+      setParticipant(foundParticipant)
+    }
+    fetch()
+  }, [writingWorkshopId, guestId, userId])
 
   useEffect(() => {
     if (reloadContribution) {
@@ -59,12 +72,16 @@ export default function WritingWorkshopEditor() {
   // call useEffect hook to register user presence in workshop with supabase realTime and to untrack user when component unmounts
   useWorkshopChannel({ writingWorkshopId, guestId, userId })
 
-  const handleSubmitSegment = async (data: { text: string }) => {
-    await createSegment({
-      writingWorkshopId,
-      guestId,
-      userId,
-      text: data.text
+  const handleSubmitContribution = async (data: { text: string }) => {
+    if (!writingWorkshop || !participant) {
+      // error handling to do here
+      return
+    }
+    await submitContribution({
+      content: data.text,
+      workshopId: writingWorkshopId,
+      type: writingWorkshop.type,
+      participantId: participant.id
     })
     setReloadContribution(true)
   }
@@ -82,7 +99,7 @@ export default function WritingWorkshopEditor() {
       <WritingWorkshopContent
         contributions={contributions} />
       <WritingWorkshopComposer
-        onSubmit={handleSubmitSegment} />
+        onSubmit={handleSubmitContribution} />
     </SafeAreaView>)
 
 }

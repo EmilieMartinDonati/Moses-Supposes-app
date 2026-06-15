@@ -1,4 +1,3 @@
-import { getWritingWorkshopById } from "@/services/supabase/writingWorkshops"
 import { useAppStore } from "@/store/useAppStore"
 import { WorkshopType } from "@/types/workshops"
 import { countExquisiteCorpseParticipantsByState } from "../services/supabase/exquisite_corpse_participants"
@@ -24,11 +23,6 @@ export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
         if (!user && !guestId) {
             throw new ActionError("no_identity", "Vous devez être connecté ou identifié pour rejoindre l'atelier")
         }
-
-        // All this below with the workshop details should be once we enter ... 
-        const writingWorkshop = await getWritingWorkshopById(workshopId)
-        useAppStore.getState().setWritingWorkshopId(workshopId)
-        useAppStore.getState().setWritingWorkshop(writingWorkshop)
 
         if (type !== "exquisite_corpse") {
             NavigationActions.goToWorkshopEditor(workshopId)
