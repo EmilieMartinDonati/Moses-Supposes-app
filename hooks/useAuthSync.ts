@@ -28,7 +28,6 @@ export default function useAuthSync() {
         initializeGuestId()
       }
       // careful here we don't delete guest_id because it may be used in some exquisite_corpse_participants waiting or active rows!
-      // We'll do a transaction to update them
     }
 
     // initialize

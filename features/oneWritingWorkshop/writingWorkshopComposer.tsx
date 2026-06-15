@@ -4,9 +4,12 @@ import { Controller, useForm } from "react-hook-form";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { z } from 'zod'; // or 'zod/v4'
 
-export default function WritingWorkshopComposer({ onSubmit }: {
+export default function WritingWorkshopComposer({ visible, onSubmit }: {
+    visible: boolean,
     onSubmit: ( data: { text: string } ) => Promise<void>
 }) {
+
+    // animate visible (slides up)
 
     const formSchema = z.object({ // here custom resolver depending of the config rules
         text: z.string()
@@ -22,6 +25,10 @@ export default function WritingWorkshopComposer({ onSubmit }: {
             },
         })
 
+
+    if (!visible) {
+        return null
+    }
 
     return (
         <View style={styles.writingWorkshopComposerContainer}>

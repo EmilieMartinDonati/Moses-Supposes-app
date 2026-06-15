@@ -6,6 +6,17 @@ import { ActionError } from './errors'
 
 export const getExquisiteCorpseTicket = async ({ workshopId, userId, guestId }: { workshopId: string, userId: string | null, guestId: string | null }) => {
 
+    // check if user already has a valid entry ticket (state "waiting" or "active")
+    const {error, data} = await getExquisiteCorpseCurrentParticipationFromUser({
+        userId, guestId, workshopId
+    })
+    if (error) {
+          throw new ActionError("get_exquisite_corpse_current_participant_from_user", "Impossible d'évaluer si un ticket d'admission existe déjà", { cause: error })
+    }
+    if (data) {
+        return
+    }
+
     // initialize workshop presence
     await createExquisiteCorpseParticipant({
         workshopId,
@@ -14,10 +25,10 @@ export const getExquisiteCorpseTicket = async ({ workshopId, userId, guestId }: 
     })
 
     // check if it can be put to active and if so assign next player
-    const { error } = await supabase.rpc("assign_next_turn", {
+    const { error: transactionError } = await supabase.rpc("assign_next_turn", {
         p_workshop_id: workshopId
     })
-    if (error) {
+    if (transactionError) {
         throw new ActionError("assign_next_turn", "Impossible d'attribuer le tour de jeu", { cause: error })
     }
 }

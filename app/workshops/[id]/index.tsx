@@ -20,6 +20,8 @@ import { ExquisiteCorpseParticipantType } from '@/types/exquisite_corpse_partici
 import { WritingWorkshopType } from '@/types/workshops';
 
 import { submitContribution } from '@/actions/contributions';
+import useExquisiteCorpseRealtime from '@/hooks/realTime/useExquisiteCorpseRealtime';
+
 
 export default function WritingWorkshopEditor() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -32,7 +34,6 @@ export default function WritingWorkshopEditor() {
   const [contributions, setContributions] = useState<ContributionType[] | []>([])
   const [writingWorkshop, setWritingWorkshop] = useState<WritingWorkshopType | null>(null)
   const [participant, setParticipant] = useState<ExquisiteCorpseParticipantType | null>(null)
-  const [reloadContribution, setReloadContribution] = useState<boolean>(false)
 
   const fetchContributions = async () => {
     const retrievedContributions = await fetchContributionsByWorkshop({ workshopId: writingWorkshopId })
@@ -42,13 +43,10 @@ export default function WritingWorkshopEditor() {
   useEffect(() => {
     const fetchData = async () => {
       await fetchContributions()
-      const refreshedWritingWorkshop = await getWritingWorkshopById(writingWorkshopId)
-      setWritingWorkshop(refreshedWritingWorkshop)
+      const retrievedWritingWorkshop = await getWritingWorkshopById(writingWorkshopId)
+      setWritingWorkshop(retrievedWritingWorkshop)
     }
     fetchData()
-    return () => {
-      console.log("clear workshopid here")
-    }
   }, [writingWorkshopId])
 
   useEffect(() => {
@@ -61,19 +59,31 @@ export default function WritingWorkshopEditor() {
     fetch()
   }, [writingWorkshopId, guestId, userId])
 
-  useEffect(() => {
-    if (reloadContribution) {
-      fetchContributions()
-      setReloadContribution(false)
-    }
-  }, [reloadContribution])
+  const _handleNewContribution = (newContribution: ContributionType) => {
+    setContributions(prev => [...prev, newContribution])
+  }
 
+  const _handleParticipantStateChange = (refreshedParticipant: ExquisiteCorpseParticipantType) => {
+    setParticipant(refreshedParticipant)
+  }
 
-  // call useEffect hook to register user presence in workshop with supabase realTime and to untrack user when component unmounts
+  // ------------------------------------------------------------------------------- //
+  // --------------------------------- CHANNELS ------------------------------------ //
+  // ------------------------------------------------------------------------------- //
   useWorkshopChannel({ writingWorkshopId, guestId, userId })
+  useExquisiteCorpseRealtime({
+    workshopId: writingWorkshopId,
+    participantId: participant?.id || null,
+    onNewContribution: _handleNewContribution,
+    onExquisiteCorpseParticipantStateChange: _handleParticipantStateChange
+  })
+
+  // ------------------------------------------------------------------------------- //
+  // --------------------------------- USER ACTIONS--------------------------------- //
+  // ------------------------------------------------------------------------------- //
 
   const handleSubmitContribution = async (data: { text: string }) => {
-    if (!writingWorkshop || !participant) {
+    if (!writingWorkshop || !participant) {
       // error handling to do here
       return
     }
@@ -83,7 +93,12 @@ export default function WritingWorkshopEditor() {
       type: writingWorkshop.type,
       participantId: participant.id
     })
-    setReloadContribution(true)
+  }
+
+  const _clickReplay = async () => {
+    // todo create new ticket
+    // set participant to new ticket
+    return
   }
 
   return (
@@ -99,6 +114,7 @@ export default function WritingWorkshopEditor() {
       <WritingWorkshopContent
         contributions={contributions} />
       <WritingWorkshopComposer
+        visible={participant?.state === "active"}
         onSubmit={handleSubmitContribution} />
     </SafeAreaView>)
 
