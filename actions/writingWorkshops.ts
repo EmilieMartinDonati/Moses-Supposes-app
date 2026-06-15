@@ -5,6 +5,7 @@ import { ActionError } from "./errors"
 import { getExquisiteCorpseTicket } from "./exquisiteCorpses"
 import { NavigationActions } from "./navigation"
 
+
 //--------------------------------- JOIN ---------------------------------//
 
 export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
@@ -29,10 +30,11 @@ export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
         }
         else {
             // If busy, redirect to lobby
-            const { error, count } = await countExquisiteCorpseParticipantsByState({ workshopId, state: "waiting" })
-            if (error) {
+            const { error: countError, count } = await countExquisiteCorpseParticipantsByState({ workshopId, state: "waiting" })
+            if (countError) {
                 throw new ActionError("count_waiting_participants", "Impossible d'évaluer la disponibilité de l'atelier", { cause: error })
             }
+            // handle redirection : lobby or editor
             if ((count ?? 0) > 10) {
                 NavigationActions.goToWorkshopLobby(workshopId)
             }
