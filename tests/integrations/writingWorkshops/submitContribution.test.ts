@@ -102,7 +102,6 @@ describe("double fire submit contribution", () => {
     let exquisiteCorpseParticipantId: string
     // ------- SEED -------- //
     beforeEach(async () => {
-        // submitContribution reads identity from the store, not from params
         useAppStore.setState({ guestId, user: null, profile: null })
         const seed = await seedContributionContext({
             guestId
@@ -113,7 +112,6 @@ describe("double fire submit contribution", () => {
         workshopId = seed.workshopId
         exquisiteCorpseParticipantId = seed.exquisiteCorpseParticipantId
         // -------  RUN FUNCTION TO TEST -------- //
-        // todo test if it it called several times in a row (ex user clicks submit several times)
         const promises = []
         for (let i = 0; i < 2; i++) {
             promises.push(

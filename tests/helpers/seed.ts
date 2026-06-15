@@ -86,33 +86,3 @@ export const createTestExquisiteCorpseParticipant = async ({
 
     return data
 }
-
-// export const createTestContribution = async ({
-//     exquisiteCorpseParticipantId,
-//     workshopId,
-//     guestId,
-//     userId
-// }: {
-//     exquisiteCorpseParticipantId: string,
-//     workshopId: string,
-//     guestId: string | null,
-//     userId: string | null
-// }) => {
-
-//     const payload = {
-//         workshop_id: workshopId,
-//         participant_id: exquisiteCorpseParticipantId,
-//         guest_id: guestId,
-//         user_id: userId,
-//         avatar_seed: "FOX",
-//         content: "Vitest contribution",
-//         state: "submitted"
-//     }
-//     const { data } = await supabase
-//         .from("contributions")
-//         .insert(payload)
-//         .select("*")
-//         .single()
-
-//     return data
-// }
