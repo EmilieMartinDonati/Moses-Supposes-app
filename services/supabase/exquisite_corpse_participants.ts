@@ -20,6 +20,28 @@ export const getLastExquisiteCorpseParticipationFromUser = async ({
         .maybeSingle()
 }
 
+export const getExquisiteCorpseCurrentParticipationFromUser = async ({
+    guestId, userId, workshopId, select = "*", ascending = false
+}: { guestId: string | null, userId: string | null, workshopId: string, select?: string, ascending?: boolean }) => {
+
+    let query = supabase
+        .from("exquisite_corpse_participants")
+        .select(select)
+        .eq("workshop_id", workshopId)
+        .in("state", ["waiting", "active"])
+        .order("joined_at", { ascending: ascending })
+        .limit(1)
+
+    if (userId && guestId) {
+        query.or(`user_id.eq.${userId},guest_id.eq.${guestId}`)
+    } else if (userId) {
+        query.eq("user_id", userId)
+    } else if (guestId) {
+        query.eq("guest_id", guestId)
+    }
+    return await query.maybeSingle()
+}
+
 export const insertExquisiteCorpseParticipant = async ({
     payload,
     select = "*"
@@ -31,63 +53,8 @@ export const insertExquisiteCorpseParticipant = async ({
 }
 
 
-/**
- * 
- * @param param0 
- * @returns 
-BEGIN;
-
-// moved to transaction assign_next_turn (in migrations folder)
- */
-export const changeExquisiteCorpseParticipantState = async ({
-    participantId,
-    workshopId,
-    newState,
-}: {
-    participantId: string
-    newState: StateType,
-    workshopId: string
-}) => {
-    try {
-        const updatePayload: Record<string, any> = {
-            state: newState,
-        }
-
-        if (newState === "active") {
-            updatePayload.turned_started_at = new Date().toISOString()
-            const { error, data: workshopConfig } = await supabase.from("exquisite_corpse_config")
-                .select("writing_delay")
-                .eq("workshop_id", workshopId)
-                .single()
-
-            if (error) {
-                throw error
-            }
-
-            const writingDelay = workshopConfig.writing_delay || 120
-            updatePayload.turn_deadline = new Date(Date.now() + writingDelay * 1000).toISOString()
-        }
-
-        const { data, error } = await supabase
-            .from("exquisite_corpse_participants")
-            .update(updatePayload)
-            .eq("participant_id", participantId)
-            .select("*")
-            .single()
-
-        if (error) throw error
-
-        return data
-    } catch (error) {
-        console.error(
-            `Unexpected error changing state for participant id ${participantId} to state ${newState}`,
-            error
-        )
-    }
-}
-
 export const deleteExquisiteCorpseParticipantsByWorkshop = async ({ workshopId }: { workshopId: string }) => {
-     return await supabase.from("exquisite_corpse_participants").delete().eq("workshop_id", workshopId)
+    return await supabase.from("exquisite_corpse_participants").delete().eq("workshop_id", workshopId)
 }
 
 export const countExquisiteCorpseParticipantsByState = async ({ workshopId, state = "waiting" }: { workshopId: string, state?: StateType }) => {

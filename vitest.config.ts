@@ -1,6 +1,6 @@
-import { defineConfig } from "vitest/config"
-import { loadEnv } from "vite"
 import path from "node:path"
+import { loadEnv } from "vite"
+import { defineConfig } from "vitest/config"
 
 export default defineConfig({
     resolve: {
@@ -16,5 +16,6 @@ export default defineConfig({
         fileParallelism: false,
         // load ALL vars (empty prefix) from .env + .env.test into process.env
         env: loadEnv("test", process.cwd(), ""),
+        reporters: "verbose"
     },
 })

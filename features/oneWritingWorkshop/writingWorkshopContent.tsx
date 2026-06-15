@@ -1,13 +1,11 @@
 import { Colors } from "@/constants/theme"
-import { SegmentType } from "@/types/segments"
+import { ContributionType } from "@/types/contributions"
 import { useRef } from "react"
 import { ScrollView, StyleSheet, Text, View } from "react-native"
 
 export default function WritingWorkshopContent({
     contributions = []
-}: {
-    contributions: SegmentType[]
-}) {
+}: {contributions: ContributionType[]}) {
     const lastContribution = contributions.at(-1)
     const contributionsCount = contributions.length || 10
 
@@ -33,7 +31,7 @@ export default function WritingWorkshopContent({
             </View>
             <Text style={styles.contributionsCountText}>{contributionsCount} contributions cachées - attendez la fin pour les lire!</Text>
             <View style={styles.lastContributionContainer}>
-                <Text style={styles.lastContributionText}>{lastContribution?.text || "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"}</Text>
+                <Text style={styles.lastContributionText}>{lastContribution?.content || "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"}</Text>
             </View>
         </ScrollView>
     )

@@ -21,3 +21,5 @@ create trigger create_profile_trigger
 after insert on auth.users
 for each row
 execute function public.create_profile();
+
+/** careful here, must be changed with the new created_at and updated_at fields !

@@ -1,24 +1,24 @@
 import { supabase } from "@/services/supabase/client"
-import { getGuestSingleContribution } from "@/services/supabase/contributions"
+import { getContributionsByWorkshop, getGuestSingleContribution } from "@/services/supabase/contributions"
 import { Profile } from "@/services/supabase/profiles"
 import { useAppStore } from "@/store/useAppStore"
-import { StatusType } from "@/types/contributions"
-import { VisibilityType, WorkshopType } from "@/types/workshops"
+import { ContributionType, StatusType } from "@/types/contributions"
+import { WorkshopType } from "@/types/workshops"
 import { User } from "@supabase/supabase-js"
 import { animals, uniqueNamesGenerator } from 'unique-names-generator'
+import { ActionError } from "./errors"
 
 export const submitContribution = async ({
-    type, content, workshopId, visibility, participantId
+    type, content, workshopId, participantId
 }: {
     type: WorkshopType,
     content: string,
     workshopId: string,
-    visibility: VisibilityType,
     participantId?: string | undefined
-}):Promise<void> => {
+}): Promise<void> => {
     try {
 
-        if (!type || !content || !workshopId || !visibility) {
+        if (!type || !content || !workshopId) {
             throw new Error("L'un ou plusieurs des paramètres sont manquants")
         }
 
@@ -60,7 +60,7 @@ export const submitContribution = async ({
             p_user_id: user?.id || null,
             p_guest_id: guestId || null,
             p_participant_id: participantId || null,
-            p_status: status,
+            p_state: status,
             p_workshop_id: workshopId,
             p_content: content,
             p_display_name: displayName,
@@ -132,4 +132,18 @@ export const getStatusByWorkshopType = async ({ workshopId, type }: {
     }
     // todo infer from config 
     return "draft"
+}
+
+export const fetchContributionsByWorkshop = async ({ workshopId }: { workshopId: string }): Promise<ContributionType[]> => {
+    try {
+        const { data, error } = await getContributionsByWorkshop({ workshopId })
+        if (error) {
+            throw new ActionError("retrieve_workshop_contributions", `Impossible de récupérer les contributions pour l'atelier ${workshopId}`, { cause: error })
+        }
+        return (data ?? []) as unknown as ContributionType[]
+    }
+    catch (e) {
+        // todo snackbar
+        return []
+    }
 }

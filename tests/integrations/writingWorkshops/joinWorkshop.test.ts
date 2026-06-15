@@ -48,5 +48,4 @@ describe("join exquisite corpse as guest", () => {
         expect(data?.state).toBe("active");
         expect(data?.turn_started_at).not.toBeNull();
     });
-
 })

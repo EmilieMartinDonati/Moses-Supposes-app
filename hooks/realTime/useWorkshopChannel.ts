@@ -1,7 +1,7 @@
 import { supabase } from "@/services/supabase/client"
 import { useEffect } from "react"
 
-export default function useWorkshopChannel({ writingWorkshopId, guestId, userId }: { writingWorkshopId: string, guestId: string, userId: string }) {
+export default function useWorkshopChannel({ writingWorkshopId, guestId, userId }: { writingWorkshopId: string, guestId: string, userId: string | null }) {
     useEffect(() => {
         if (!writingWorkshopId && (!guestId || !userId)) {
             return

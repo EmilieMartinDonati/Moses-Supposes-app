@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/theme"
 import { StyleSheet, Text, View } from "react-native"
 
-export default function WritingWorkshopPrompt({ prompt }: { prompt: string }) {
+export default function WritingWorkshopPrompt({ prompt }: { prompt?: string }) {
     return (
         <View style={styles.promptContainer}>
             <Text style={styles.promptLabel}>Première phrase</Text>

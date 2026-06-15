@@ -19,6 +19,8 @@ the user layer where we store UX info on the users (auth.users, the supabase tab
 | id              | uuid        | NO          | gen_random_uuid() | PK                                  |
 | user_id         | uuid        | NO          | null              | FK                                  |
 | email_optin     | boolean     | NO          | false             |                                     |
+| created_at      | timestamp with time zone | YES                | now()                               |
+| updated_at      | timestamp with time zone | YES                | now()                               |
 
 
 
@@ -33,6 +35,7 @@ This collection is fairly light-weight to anticipate on the situation where ther
 | prompt        | text                     | NO          | null              | first sentence of exquisite cadaver for ex
 | type          | text                     | NO          | null              | eg exquisite_cadaver | contest | educative exercise
 | created_at    | timestamp with time zone | YES         | now()             |
+| updated_at    | timestamp with time zone | YES         | now()             |
 | created_by    | uuid                     | YES         | null              | only if creator is logged in 
 | creator_email | text                     | YES         | null              | mandatory if private workshop
 
@@ -99,12 +102,13 @@ the final product, in the case of an exquisite corpse, it will be segments, but 
 | workshop_id    | uuid        | NO          | null              | FK → writing_workshops.id                         |
 | participant_id | uuid        | YES         | null              | Technical trace to participant cycle              |
 | user_id        | uuid        | YES         | null              | Snapshot of logged-in user at submission time     |
-| anonymous_id   | uuid        | YES         | null              | Snapshot of anonymous identity at submission time |
-| display_name   | text        | NO          | null              | Snapshot of name shown in final story             |
-| avatar_seed    | text        | NO          | null              | Stable anonymous avatar / symbol seed             |
+| guest_id       | uuid        | YES         | null              | Snapshot of anonymous identity at submission time |
+| display_name   | text        | YES         | null              | Snapshot of name shown in final story if user     |
+| avatar_seed    | text        | YES         | null              | Stable anonymous avatar / symbol seed  if guest   |
 | content        | text        | NO          | null              | Segment text                                      |
-| state         | text        | NO          | null              | "draft" or "submitted"                            |
+| state          | text         | NO         | "submitted"             | "draft" or "submitted"                            |
 | created_at     | timestamptz | NO          | now()             | Submission timestamp                              |
+| updated_at     | timestamptz | NO          | now()             |                                                   |
 
 NB : no need to denormalize "visibility", it will be inferred from writing_workshop_config which will allow to modify it dynamically
 
