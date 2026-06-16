@@ -33,7 +33,7 @@ export default function HomeScreen() {
 
 
     return (
-        <SafeAreaView edges={['top', 'bottom', 'left', 'right']}>
+        <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={{flex: 1}}>
             <HomeHeader title="MOSES SUPPOSES" user={user} />
             <ScrollView
                 contentContainerStyle={styles.main}
@@ -57,7 +57,7 @@ export default function HomeScreen() {
                     shouldExpand={creationButtonExpanded}
                     onClick={onPressFAB} />
             </View>
-        </SafeAreaView>
+         </SafeAreaView>
     )
 }
 

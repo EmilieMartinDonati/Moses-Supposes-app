@@ -1,22 +1,31 @@
 import { Colors } from "@/constants/theme";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-// WIP (should have variants in theme)
+// WIP (should have variants in theme) + loader
+
+type Action = {
+    label: string,
+    onPress: (() => void) | (() => Promise<void>)
+    submitting?: boolean
+}
 
 export default function DualActionsFooter({
     leftAction,
     rightAction,
-    colorVariant = "neutral"
+    colorVariant = "neutral",
+    showLoaderOnSubmitting = false
 }: {
-    leftAction: { label: string; onPress: () => void };
-    rightAction: { label: string; onPress: () => void };
-    colorVariant?: "neutral" | "green" | "blue" | "dark"
+    leftAction: Action;
+    rightAction: Action;
+    colorVariant?: "neutral" | "green" | "blue" | "dark",
+    showLoaderOnSubmitting?: boolean
 }) {
     return (
         <View style={styles.dualActionsContainer}>
             <TouchableOpacity
                 style={[styles.button, styles.leftButton]}
                 onPress={leftAction.onPress}
+                disabled={leftAction.submitting}
             >
                 <Text style={[styles.buttonText, styles.leftButtonText]}>
                     {leftAction.label}
@@ -25,6 +34,7 @@ export default function DualActionsFooter({
             <TouchableOpacity
                 style={[styles.button, styles.rightButton]}
                 onPress={rightAction.onPress}
+                disabled={rightAction.submitting}
             >
                 <Text style={[styles.buttonText, styles.rightButtonText]}>
                     {rightAction.label}

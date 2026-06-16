@@ -71,6 +71,8 @@ export const fetchExquisiteCorpseCurrentParticipant = async ({
     userId: string | null,
     guestId: string | null
 }) => {
+    // without an identity, the query would match any latest participant of the workshop
+    if (!userId && !guestId) return null
     try {
         const { data, error } = await getExquisiteCorpseCurrentParticipationFromUser({
             workshopId, guestId, userId

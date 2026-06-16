@@ -1,26 +1,44 @@
+import { generateContributionDisplayNameAndAvatarSeed } from "@/actions/contributions"
+import { OnlineParticipant } from "@/app/workshops/[id]"
 import { supabase } from "@/services/supabase/client"
+import { useAppStore } from "@/store/useAppStore"
 import { useEffect } from "react"
 
-export default function useWorkshopChannel({ writingWorkshopId, guestId, userId }: { writingWorkshopId: string, guestId: string, userId: string | null }) {
+export type ChannelPresenceState = { [key: string]: Array<OnlineParticipant> }
+
+export default function useWorkshopPresenceChannel({
+    workshopId,
+    participantId,
+    guestId,
+    onSyncChange
+}: {
+    workshopId: string,
+    participantId: string | null,
+    guestId: string,
+    onSyncChange: (newPresenceState: ChannelPresenceState) => void
+}) {
     useEffect(() => {
-        if (!writingWorkshopId && (!guestId || !userId)) {
+        if (!workshopId || !participantId) {
             return
         }
-        const channel = supabase.channel(`workshop:${writingWorkshopId}`)
+        const state = useAppStore.getState()
+        const { user, profile } = state
+        const channel = supabase.channel(`workshop:${workshopId}`)
 
         channel.on("presence", { event: "sync" }, () => {
             console.log('Presence state:', channel.presenceState())
+            onSyncChange && onSyncChange(channel.presenceState())
         })
         channel.subscribe(async (status: string) => {
-            console.log("STATUS SUSCRIPTION", status)
+            const { displayName, avatarSeed } = await generateContributionDisplayNameAndAvatarSeed({
+                user, profile, guestId
+            })
             if (status === "SUBSCRIBED") {
                 await channel.track({
-                    guest_id: guestId ?? null,
-                    writing_workshop_id: writingWorkshopId,
-                    user_id: userId ?? null,
+                    participant_id: participantId,
                     joined_at: Date.now(),
-                    isTurnOver: false,
-                    turnNumber: 1
+                    display_name: displayName,
+                    avatar_seed: avatarSeed
                 })
             }
         })
@@ -28,6 +46,6 @@ export default function useWorkshopChannel({ writingWorkshopId, guestId, userId 
             supabase.removeChannel(channel)
         }
 
-    }, [guestId, writingWorkshopId, userId])
+    }, [workshopId, participantId])
 
 }
