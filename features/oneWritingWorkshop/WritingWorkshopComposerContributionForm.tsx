@@ -1,17 +1,19 @@
-import { Colors } from "@/constants/theme";
+import Loader from '@/components/Loader';
+import { Colors } from '@/constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { z } from 'zod'; // or 'zod/v4'
 
-export default function WritingWorkshopComposer({ visible, onSubmit }: {
-    visible: boolean,
-    onSubmit: ( data: { text: string } ) => Promise<void>
+
+export default function WritingWorkshopComposerContributionForm({
+    onSubmit, isSubmitting
+}: {
+    onSubmit: (data: { text: string }) => Promise<void>,
+    isSubmitting: boolean
 }) {
 
-    // animate visible (slides up)
-
-    const formSchema = z.object({ // here custom resolver depending of the config rules
+    const formSchema = z.object({
         text: z.string()
     })
 
@@ -26,18 +28,8 @@ export default function WritingWorkshopComposer({ visible, onSubmit }: {
         })
 
 
-    if (!visible) {
-        return null
-    }
-
     return (
-        <View style={styles.writingWorkshopComposerContainer}>
-            <View style={styles.userContainer}>
-                <View style={styles.userChip}>
-                    <Text style={styles.smallUserText}>Y</Text>
-                </View>
-                <Text style={styles.userText}>A TON TOUR</Text>
-            </View>
+        <View style={styles.formContainer}>
             <Controller
                 control={control}
                 name="text"
@@ -55,45 +47,28 @@ export default function WritingWorkshopComposer({ visible, onSubmit }: {
             />
             <View style={styles.inputFooter}>
                 <Text style={styles.hint}>1 phrase maximum</Text>
-                <Pressable style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
-                    <Text style={styles.submitText}>Envoyer</Text>
+                <Pressable
+                    style={styles.submitButton}
+                    onPress={handleSubmit(onSubmit)}
+                    disabled={isSubmitting}>
+                    {isSubmitting ?
+                        <Loader /> :
+                        <Text style={styles.submitText}>Envoyer</Text>}
                 </Pressable>
             </View>
         </View>
     )
+
+
 }
 
-
 const styles = StyleSheet.create({
-    writingWorkshopComposerContainer: {
-        height: 280,
-        borderTopColor: Colors.light.elevatedBeige,
-        borderTopWidth: 1,
-        padding: 16,
+    formContainer: {
+        gap: 16,
         justifyContent: "space-between"
     },
-    userContainer: {
-        gap: 10,
-        flexDirection: "row",
-        alignItems: "center"
-    },
-    userChip: {
-        backgroundColor: Colors.light.honey,
-        width: 24,
-        height: 24,
-        borderRadius: 12,        // exactement la moitié
-        justifyContent: "center",
-        alignItems: "center",    // centre le texte dedans
-    },
-    smallUserText: {
-        fontSize: 10,
-        fontWeight: "500",
-    },
-    userText: {
-        color: Colors.light.chocolate
-    },
     input: {
-        height: 120,
+        height: 140,
         backgroundColor: Colors.light.faintWarmWhite,
         borderColor: Colors.light.elevatedBeige,
         borderWidth: 0.5,
