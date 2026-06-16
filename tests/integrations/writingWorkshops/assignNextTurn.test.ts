@@ -39,7 +39,7 @@ describe("test assign next turn", () => {
         await deleteTestWorkshop({ workshopId }) // will also delete associated rows on tables exquisite_corpse_config, exquisite_corpse_participants, contributions
     })
     // ------ RUN TESTS ------- //
-    test("has promoted one to active and exactly one", async () => {
+    test("has promoted one and exactly one to active", async () => {
 
         const { count } = await supabase.from("exquisite_corpse_participants")
             .select("*", { count: "exact", head: true })

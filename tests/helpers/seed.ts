@@ -18,7 +18,7 @@ export const createTestWorkshop = async ({
     visibility = "public"
 }: {
     type: WorkshopType,
-    visibility: VisibilityType
+    visibility?: VisibilityType
 }) => {
 
     const payload = {

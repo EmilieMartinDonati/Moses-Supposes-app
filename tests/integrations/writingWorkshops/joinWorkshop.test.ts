@@ -39,13 +39,4 @@ describe("join exquisite corpse as guest", () => {
             .eq("workshop_id", workshopId).single();
         expect(data).toMatchObject({ guest_id: guestId, user_id: null, cycle: 0 });
     });
-
-    test("assign_next_turn promotes the participant to active", async () => {
-        const { data } = await supabase
-            .from("exquisite_corpse_participants")
-            .select("state, turn_started_at")
-            .eq("workshop_id", workshopId).single();
-        expect(data?.state).toBe("active");
-        expect(data?.turn_started_at).not.toBeNull();
-    });
 })
