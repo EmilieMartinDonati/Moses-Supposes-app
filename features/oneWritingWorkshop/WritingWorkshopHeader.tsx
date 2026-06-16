@@ -1,14 +1,27 @@
+import { OnlineParticipant } from "@/app/workshops/[id]"
+import GroupedAvatars from "@/components/GroupedAvatars"
 import { Colors } from "@/constants/theme"
 import { StyleSheet, Text, View } from "react-native"
+import { formatAvatar } from "./formatAvatar"
 
-export default function WritingWorkshopHeader({ title, type = "Cadavre Exquis", presencesCount, participantsCount }: { title?: string, type: string, presencesCount?: number, participantsCount?: number }) {
+export default function WritingWorkshopHeader({
+    title, type = "Cadavre Exquis",
+    onlineParticipants = []
+}: { title?: string, type: string, onlineParticipants?: OnlineParticipant[] }) {
+
     return (
         <View style={styles.writingWorkshopHeaderContainer}>
             <View style={styles.writingWorkshopHeaderTextContent}>
                 <Text style={styles.writingWorkshopType}>{type}</Text>
                 <Text style={styles.writingWorkshopName}>{title}</Text>
             </View>
-            <View></View>
+            {onlineParticipants?.length > 0 && (
+                <View>
+                    <GroupedAvatars
+                        avatars={onlineParticipants.map(formatAvatar)}
+                        avatarWidth={40} />
+                </View>)
+            }
         </View>
     )
 }
@@ -18,6 +31,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
         height: 80,
         paddingHorizontal: 16,
         borderBottomColor: Colors.light.elevatedBeige,
