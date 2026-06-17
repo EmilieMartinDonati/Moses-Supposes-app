@@ -1,7 +1,7 @@
 import { supabase } from "@/services/supabase/client";
 import { ContributionType } from "@/types/contributions";
 import { ExquisiteCorpseParticipantType } from "@/types/exquisite_corpse_participants";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function useExquisiteCorpseRealtime({
     workshopId,
@@ -10,10 +10,20 @@ export default function useExquisiteCorpseRealtime({
     onExquisiteCorpseParticipantStateChange
 }: {
     workshopId: string | null,
-    participantId: string | null, 
+    participantId: string | null,
     onNewContribution: (contribution: ContributionType) => void,
     onExquisiteCorpseParticipantStateChange: (participant: ExquisiteCorpseParticipantType) => void
 }) {
+
+    // Keep refs pointing at the latest callbacks so the channels (which subscribe
+    // once) always invoke the freshest closure instead of the one frozen at subscribe time.
+    const onNewContributionRef = useRef(onNewContribution)
+    const onParticipantStateChangeRef = useRef(onExquisiteCorpseParticipantStateChange)
+
+    useEffect(() => {
+        onNewContributionRef.current = onNewContribution
+        onParticipantStateChangeRef.current = onExquisiteCorpseParticipantStateChange
+    })
 
     useEffect(() => {
         if (!workshopId) {
@@ -26,7 +36,7 @@ export default function useExquisiteCorpseRealtime({
                 table: "contributions",
                 filter: `workshop_id=eq.${workshopId}`
             }, (payload) => {
-                onNewContribution(payload.new as ContributionType)
+                onNewContributionRef.current(payload.new as ContributionType)
             })
             .subscribe()
 
@@ -45,9 +55,9 @@ export default function useExquisiteCorpseRealtime({
             schema: "public",
             table: "exquisite_corpse_participants",
             filter: `id=eq.${participantId}`
-        }, 
+        },
         (payload) => {
-            onExquisiteCorpseParticipantStateChange(payload.new as ExquisiteCorpseParticipantType)
+            onParticipantStateChangeRef.current(payload.new as ExquisiteCorpseParticipantType)
         })
         .subscribe()
 

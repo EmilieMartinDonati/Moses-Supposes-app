@@ -50,12 +50,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: 16,
         paddingTop: 8,
-        gap: 12
+        gap: 16
     },
     button: {
         flex: 1,
         borderRadius: 8,
         paddingVertical: 12,
+        paddingHorizontal: 4,
         alignItems: "center",
     },
     buttonText: {

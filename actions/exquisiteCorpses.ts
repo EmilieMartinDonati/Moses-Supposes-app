@@ -4,14 +4,31 @@ import { ExquisiteCorpseParticipantType } from '@/types/exquisite_corpse_partici
 import * as Crypto from 'expo-crypto'
 import { ActionError } from './errors'
 
+export const replayExquisiteCorpse = async ({ workshopId, userId, guestId }: { workshopId: string, userId: string | null, guestId: string | null }) => {
+    try {
+        await getExquisiteCorpseTicket({
+            workshopId, userId, guestId
+        })
+        // refresh participant
+        const participant = await fetchExquisiteCorpseCurrentParticipant({
+            workshopId, userId, guestId
+        })
+        return participant
+    }
+    catch (e) {
+        console.log("ERROR REPLAYING", e)
+    }
+}
+
 export const getExquisiteCorpseTicket = async ({ workshopId, userId, guestId }: { workshopId: string, userId: string | null, guestId: string | null }) => {
 
     // check if user already has a valid entry ticket (state "waiting" or "active")
-    const {error, data} = await getExquisiteCorpseCurrentParticipationFromUser({
+    const { error, data } = await getExquisiteCorpseCurrentParticipationFromUser({
         userId, guestId, workshopId
     })
     if (error) {
-          throw new ActionError("get_exquisite_corpse_current_participant_from_user", "Impossible d'évaluer si un ticket d'admission existe déjà", { cause: error })
+        console.log("error", error)
+        throw new ActionError("get_exquisite_corpse_current_participant_from_user", "Impossible d'évaluer si un ticket d'admission existe déjà", { cause: error })
     }
     if (data) {
         return
