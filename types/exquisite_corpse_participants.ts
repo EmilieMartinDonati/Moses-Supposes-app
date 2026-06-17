@@ -5,7 +5,7 @@ export type ExquisiteCorpseParticipantType = {
     workshop_id: string,
     user_id?: string,
     guest_id?: string,
-    participant_id?: string, // remove this and from table
+    participant_id?: string, // to deprecate
     state: StateType,
     cycle: number
 }

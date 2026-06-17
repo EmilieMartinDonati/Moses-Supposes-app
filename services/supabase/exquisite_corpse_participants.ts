@@ -1,6 +1,12 @@
 import { ExquisiteCorpseParticipantType, StateType } from '@/types/exquisite_corpse_participants';
 import { supabase } from "./client";
 
+export const getExquisiteCorseParticipantById = async ({
+    id
+}: { id: string }) => {
+    return await supabase.from("exquisite_corpse_participant").select("*").eq("id", id).single()
+}
+
 export const getLastExquisiteCorpseParticipationFromUser = async ({
     guestId, userId, workshopId, select = "*", ascending = false
 }: { guestId: string | null, userId: string | null, workshopId: string, select?: string, ascending?: boolean }) => {

@@ -16,11 +16,11 @@ export default function WritingWorkshopComposerReplay({
     return (
         <View style={styles.container}>
             <View style={styles.replayInvitation}>
-                <Text>Vous avez encore le droit de rejouer {remainingReplayCount} fois. Pour cela prenez un nouveau ticket dans la file d'attente.</Text>
+                <Text>Vous avez encore le droit de rejouer {remainingReplayCount} fois.</Text>
             </View>
             <DualActionsFooter
                 leftAction={{
-                    label: "Retour à l'accueil",
+                    label: "Retour",
                     onPress: NavigationActions.goHome
                 }}
                 rightAction={{
@@ -42,16 +42,18 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     replayInvitation: {
-        height: 140,
-        backgroundColor: Colors.light.faintWarmWhite,
+        height: 80,
+        backgroundColor: Colors.light.waterGreen,
         borderColor: Colors.light.elevatedBeige,
         borderWidth: 0.5,
         borderRadius: 8,
+        opacity: 0.8,
         paddingHorizontal: 12,
         paddingVertical: 8,
-        color: Colors.light.chocolate,
+        color: Colors.light.mainBlue,
         fontSize: 14,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        textAlign: "justify"
     }
 })

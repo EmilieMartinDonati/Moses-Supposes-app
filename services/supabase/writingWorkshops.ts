@@ -58,19 +58,8 @@ export async function getWritingWorkshopsByVisibility({ onlyPublic = false, visi
     }
 }
 
-export const getWritingWorkshopById = async (writingWorkshopId: string) => {
-    try {
-        const { data: writingWorkshop, error } = await supabase.from("writing_workshops").select("*").eq("id", writingWorkshopId).single()
-
-        if (error) {
-            throw (error)
-        }
-        return writingWorkshop
-    }
-    catch (e) {
-        console.error(`erreur getting writingWorkshopById with writingWorkshopId ${writingWorkshopId}`)
-    }
-
+export const getWritingWorkshopById = async ({workshopId, select="*"}:{workshopId: string, select?: string}) => {
+    return await supabase.from("writing_workshops").select(select).eq("id", workshopId).single()
 }
 
 export const getWritingWorkshopWithDetails = async (writingWorkshopId: string) => {
@@ -155,9 +144,13 @@ export const createWritingWorkshop = async (data: any) => {
             prompt: string,
             title: string,
             type: "exquisite_corpse" | "contest",
-            creator_email?: string
+            creator_email?: string,
+            status: "draft" | "published"
         } = {
-            prompt, title, type: "exquisite_corpse"
+            prompt,
+            title,
+            type: "exquisite_corpse",
+            status: "published"
         }
         if (data.email) {
             writing_workshop_payload["creator_email"] = data.email

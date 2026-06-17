@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import Avatar from "./Avatar";
 
 export type AvatarItem =
-    | { type: "image"; uri: string }
+    | { type: "image"; uri: string, bgColor?: string }
     | { type: "text"; label: string; bgColor?: string }
 
 export default function GroupedAvatars({

@@ -13,15 +13,20 @@ export default function WritingWorkshopComposer({
     onReplay,
     replayAllowed = true,
     isSubmitting = false,
-    isReplaySubmitting = false
+    isReplaySubmitting = false,
+    rules 
 }: {
     onlineParticipant?: OnlineParticipant,
-    participant?: ExquisiteCorpseParticipantType,
+    participant: ExquisiteCorpseParticipantType,
     onSubmit: (data: { text: string }) => Promise<void>,
     onReplay: () => Promise<void>
     replayAllowed: boolean,
     isSubmitting: boolean,
-    isReplaySubmitting: boolean
+    isReplaySubmitting: boolean,
+    rules: {
+        maxSentences: number,
+        writingDelay: number
+    }
 }) {
 
     const _getWritingWorkshopComposerMainContent = () => {
@@ -48,6 +53,7 @@ export default function WritingWorkshopComposer({
             <WritingWorkshopComposerContributionForm
             onSubmit={onSubmit}
             isSubmitting={isSubmitting}
+            maxSentences={rules.maxSentences}
              />
         )
 
@@ -56,8 +62,9 @@ export default function WritingWorkshopComposer({
     return (
         <View style={styles.writingWorkshopComposerContainer}>
             <WritingWorkshopComposerTopContent
-                participantState={participant?.state}
+                participantState={participant.state}
                 onlineParticipant={onlineParticipant}
+                writingDelay={rules.writingDelay}
             />
             {_getWritingWorkshopComposerMainContent()}
         </View>

@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAppStore } from '@/store/useAppStore';
 import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import WritingWorkshopComposer from '@/features/oneWritingWorkshop/WritingWorkshopComposer';
 import WritingWorkshopContent from '@/features/oneWritingWorkshop/WritingWorkshopContent';
@@ -12,7 +12,6 @@ import WritingWorkshopPrompt from '@/features/oneWritingWorkshop/WritingWorkshop
 
 import { fetchContributionsByWorkshop, submitContribution } from '@/actions/contributions';
 import { fetchExquisiteCorpseCurrentParticipant } from '@/actions/exquisiteCorpses';
-import { getWritingWorkshopById } from '@/services/supabase/writingWorkshops';
 
 import { ContributionType } from '@/types/contributions';
 import { ExquisiteCorpseParticipantType } from '@/types/exquisite_corpse_participants';
@@ -20,6 +19,11 @@ import { WritingWorkshopType } from '@/types/workshops';
 
 import useExquisiteCorpseRealtime from '@/hooks/realTime/useExquisiteCorpseRealtime';
 import useWorkshopPresenceChannel, { ChannelPresenceState } from '@/hooks/realTime/useWorkshopChannel';
+
+import { fetchWritingWorkshopWithConfig } from '@/actions/writingWorkshops';
+import { ExquisiteCorpseConfig } from '@/types/exquisite_corpse_config';
+
+import { replayExquisiteCorpse } from '@/actions/exquisiteCorpses';
 
 export type OnlineParticipant = {
   participant_id: string,
@@ -39,42 +43,72 @@ export default function WritingWorkshopEditor() {
   const userId = user?.id || null
 
   const [contributions, setContributions] = useState<ContributionType[] | []>([])
-  const [writingWorkshop, setWritingWorkshop] = useState<WritingWorkshopType | null>(null)
+  const [writingWorkshop, setWritingWorkshop] = useState<WritingWorkshopType & ExquisiteCorpseConfig | null>(null)
+
+  const [prevParticipant, setPrevParticipant] = useState<ExquisiteCorpseParticipantType | null>(null)
   const [participant, setParticipant] = useState<ExquisiteCorpseParticipantType | null>(null)
+  const [userContributionsCount, setUserContributionsCount] = useState(0)
 
   const [onlineParticipants, setOnlineParticipants] = useState<OnlineParticipant[]>([])
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isReplaySubmitting, setIsReplaySubmitting] = useState(false)
 
+  const replayAllowed = useMemo(() => {
+    if (!writingWorkshop) {
+      return false
+    }
+    return writingWorkshop.visibility === "public" || userContributionsCount < (writingWorkshop.iterations_count || 1) 
+  }, [writingWorkshop, userContributionsCount])
+
   const fetchContributions = async () => {
     const retrievedContributions = await fetchContributionsByWorkshop({ workshopId: writingWorkshopId })
     setContributions(retrievedContributions)
   }
 
+  const fetchWorkshop = async () => {
+    const retrievedWritingWorkshop = await fetchWritingWorkshopWithConfig({ workshopId: writingWorkshopId })
+    setWritingWorkshop(retrievedWritingWorkshop)
+  }
+
+  const fetchParticipant = async () => {
+    const foundParticipant = await fetchExquisiteCorpseCurrentParticipant({
+      workshopId: writingWorkshopId, userId, guestId
+    })
+    setParticipant(foundParticipant)
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await fetchContributions()
-      const retrievedWritingWorkshop = await getWritingWorkshopById(writingWorkshopId)
-      setWritingWorkshop(retrievedWritingWorkshop)
+      await fetchWorkshop()
     }
     fetchData()
   }, [writingWorkshopId])
 
   useEffect(() => {
     // wait for an identity to resolve (guestId hydrates async from AsyncStorage)
-    if (!userId && !guestId) return
-    const fetch = async () => {
-      const foundParticipant = await fetchExquisiteCorpseCurrentParticipant({
-        workshopId: writingWorkshopId, userId, guestId
-      })
-      setParticipant(foundParticipant)
+    if (!userId && !guestId) {
+      return
     }
-    fetch()
+    fetchParticipant()
   }, [writingWorkshopId, guestId, userId])
 
-  const _handleNewContribution = (newContribution: ContributionType) => {
-    setContributions(prev => [...prev, newContribution])
+  // ------------------------------------------------------------------------------- //
+  // ---------------------------- CHANNELS AND LISTENERS ---------------------------- //
+  // ------------------------------------------------------------------------------- //
+    const _handleNewContribution = (newContribution: ContributionType) => {
+    const updatedContributions = [...contributions, newContribution]
+    setContributions(updatedContributions)
+    const userContributions = updatedContributions.filter((contribution) => {
+      if (userId && contribution.user_id) {
+        return contribution.user_id === userId
+      }
+      else if (guestId && contribution.guest_id) {
+        return contribution.guest_id === guestId
+      }
+    })
+    setUserContributionsCount(userContributions.length)
   }
 
   const _handleParticipantStateChange = (refreshedParticipant: ExquisiteCorpseParticipantType) => {
@@ -85,13 +119,6 @@ export default function WritingWorkshopEditor() {
     setOnlineParticipants(Object.values(presenceState).flat())
   }
 
-  console.log("onlineParticipants", onlineParticipants)
-
-  console.log("participant", participant)
-
-  // ------------------------------------------------------------------------------- //
-  // --------------------------------- CHANNELS ------------------------------------ //
-  // ------------------------------------------------------------------------------- //
   useWorkshopPresenceChannel({
     workshopId: writingWorkshopId,
     participantId: participant?.id || null,
@@ -112,7 +139,6 @@ export default function WritingWorkshopEditor() {
 
   const handleSubmitContribution = async (data: { text: string }) => {
     if (!writingWorkshop || !participant) {
-      // error handling to do here
       return
     }
     setIsSubmitting(true)
@@ -126,11 +152,30 @@ export default function WritingWorkshopEditor() {
   }
 
   const handleReplay = async () => {
+    if (!writingWorkshop) {
+      return
+    }
+    // lock button
     setIsReplaySubmitting(true)
-    console.log("todo replay")
-    // todo create new ticket
-    // set participant to new ticket
-    return
+    // create new ticket
+    const newParticipant = await replayExquisiteCorpse({
+      workshopId: writingWorkshop.id,
+      userId,
+      guestId
+    })
+    // refresh participant
+    if (newParticipant) {
+      // we keep prev participation to avoid user to be shown in onlineparticipants (normally, only others participants)
+      setPrevParticipant(participant) 
+      setParticipant(newParticipant)
+    }
+    // unlock
+    setIsReplaySubmitting(false)
+  }
+
+
+  if (!writingWorkshop || !participant) {
+    return null // show loading screen here
   }
 
   return (
@@ -138,7 +183,7 @@ export default function WritingWorkshopEditor() {
       <WritingWorkshopHeader
         title={writingWorkshop?.title}
         type={"Cadavre Exquis"}
-        onlineParticipants={onlineParticipants.filter((p) => p.participant_id !== participant?.id)}
+        onlineParticipants={onlineParticipants.filter((p) => p.participant_id !== participant.id && p.participant_id !== prevParticipant?.id)}
       />
       <WritingWorkshopPrompt
         prompt={writingWorkshop?.prompt} />
@@ -146,12 +191,17 @@ export default function WritingWorkshopEditor() {
         contributions={contributions} />
       <WritingWorkshopComposer
         participant={participant}
-        onlineParticipant={onlineParticipants.find((p) => p.participant_id === participant?.id)}
+        onlineParticipant={onlineParticipants.find((p) => p.participant_id === participant.id)}
         onSubmit={handleSubmitContribution}
         onReplay={handleReplay}
         isSubmitting={isSubmitting}
-        replayAllowed={true}
+        replayAllowed={replayAllowed}
         isReplaySubmitting={isReplaySubmitting}
+        rules={{
+          maxSentences: writingWorkshop.max_sentences,
+          writingDelay: writingWorkshop.writing_delay
+
+        }}
       />
     </SafeAreaView>)
 
@@ -159,7 +209,7 @@ export default function WritingWorkshopEditor() {
 
 const styles = StyleSheet.create({
   writingWorkshopEditorContainer: {
-    flex: 1,// why do I need to put it I don't see why view is not full screen by default ?
+    flex: 1,
     justifyContent: 'space-between',
     backgroundColor: "white"
   }

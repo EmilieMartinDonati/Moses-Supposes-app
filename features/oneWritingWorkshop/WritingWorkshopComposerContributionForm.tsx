@@ -7,14 +7,28 @@ import { z } from 'zod'; // or 'zod/v4'
 
 
 export default function WritingWorkshopComposerContributionForm({
-    onSubmit, isSubmitting
+    onSubmit,
+    isSubmitting,
+    maxSentences
 }: {
     onSubmit: (data: { text: string }) => Promise<void>,
-    isSubmitting: boolean
+    isSubmitting: boolean,
+    maxSentences?: number
 }) {
 
+    function countSentences(text: string): number {
+        const matches = text.trim().match(/[.!?]+(?=\s|$)/g)
+        return matches ? matches.length : 0
+    }
+
+    const sentencesMessage = `${maxSentences} phrase${maxSentences === 1 ? '' : 's'} maximum`
+
     const formSchema = z.object({
-        text: z.string()
+        text: z.string().trim().min(1, "Panne d'inspiration ?")
+            .refine(
+                (text) => !maxSentences || countSentences(text) <= maxSentences,
+                { message: sentencesMessage}
+            )
     })
 
     const {
@@ -27,6 +41,7 @@ export default function WritingWorkshopComposerContributionForm({
             },
         })
 
+    console.log("errors", errors)
 
     return (
         <View style={styles.formContainer}>
@@ -35,7 +50,13 @@ export default function WritingWorkshopComposerContributionForm({
                 name="text"
                 render={({ field: { onChange, value } }) => (
                     <TextInput
-                        style={[styles.input, { outline: 'none' } as any]}
+                        style={[
+                            styles.input,
+                            { outline: 'none' } as any,
+                            errors.text && { 
+                                borderColor: Colors.light.redError
+                             }
+                        ]}
                         placeholder="Continue the story…"
                         placeholderTextColor={Colors.light.mainBlue}
                         underlineColorAndroid="transparent"
@@ -46,7 +67,12 @@ export default function WritingWorkshopComposerContributionForm({
                 )}
             />
             <View style={styles.inputFooter}>
-                <Text style={styles.hint}>1 phrase maximum</Text>
+                <Text style={[styles.info, 
+                    styles.hint,
+                    errors.text && styles.error
+                    ]}>
+                    {sentencesMessage}
+                </Text>
                 <Pressable
                     style={styles.submitButton}
                     onPress={handleSubmit(onSubmit)}
@@ -71,7 +97,7 @@ const styles = StyleSheet.create({
         height: 140,
         backgroundColor: Colors.light.faintWarmWhite,
         borderColor: Colors.light.elevatedBeige,
-        borderWidth: 0.5,
+        borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 12,
         paddingVertical: 8,
@@ -84,9 +110,15 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
+    info: {
+        fontSize: 12,
+        fontWeight: 500,
+    },
     hint: {
-        fontSize: 11,
         color: Colors.light.mainBlue,
+    },
+    error: {
+        color: Colors.light.redError
     },
     submitButton: {
         backgroundColor: Colors.light.chocolate,
