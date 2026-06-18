@@ -113,7 +113,7 @@ The user boundary — one per user gesture. The **only** place with a
 // actions/writingWorkshops.ts
 try {
     await getExquisiteCorpseTicket({ workshopId })   // helpers throw; we don't check
-    NavigationActions.goToWorkshopEditor(workshopId)
+    NavigationActions.goToSingleWorkshopView(workshopId)
 } catch (e) {
     if (e instanceof ActionError) {
         console.error(`[${e.stage}]`, e.cause)   // → log / events table

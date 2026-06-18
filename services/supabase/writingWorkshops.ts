@@ -137,95 +137,11 @@ export const generateUniqueCode = async (): Promise<string> => {
     return code
 }
 
-export const createWritingWorkshop = async (data: any) => {
-    try {
-        const { visibility, prompt, title } = data
-        const writing_workshop_payload : {
-            prompt: string,
-            title: string,
-            type: "exquisite_corpse" | "contest",
-            creator_email?: string,
-            status: "draft" | "published"
-        } = {
-            prompt,
-            title,
-            type: "exquisite_corpse",
-            status: "published"
-        }
-        if (data.email) {
-            writing_workshop_payload["creator_email"] = data.email
-        }
-        const { data: writing_workshop, error } = await supabase.from("writing_workshops").insert(writing_workshop_payload).select("*").single()
+export const insertWorkshopAccess = async ({ payload}: { payload: any }) => {
+    return await supabase.from("workshop_access").insert(payload).select("*").single()
 
-        if (error) {
-            console.error("Error creating writing workshop:", error);
-            throw error;
-        }
-
-        const workshop_id = writing_workshop.id
-        const exquisite_corpse_config_payload: {
-            workshop_id: string,
-            writing_delay: number,
-            max_sentences: number,
-            visibility: "private" | "public",
-            iterations_count?: number,
-            max_participants?: number,
-            start_time?: Date,
-            end_time?: Date
-        } = {
-            workshop_id,
-            writing_delay: data.writingDelay,
-            max_sentences: data.max_sentences,
-            visibility
-        }
-        if (data.iterations_count) {
-            exquisite_corpse_config_payload["iterations_count"] = data.iterations_count
-        }
-        if (data.max_participants) {
-            exquisite_corpse_config_payload["max_participants"] = data.max_participants
-        }
-        if (data.start_time) {
-            exquisite_corpse_config_payload["start_time"] = data.start_time
-        }
-        if (data.end_time) {
-            exquisite_corpse_config_payload["end_time"] = data.end_time
-        }
-
-        const { data: config, error: configError } = await supabase.from("exquisite_corpse_config").insert(exquisite_corpse_config_payload).select("*").single()
-
-        if (configError) {
-            console.error("Error creating exquisite corpse config:", configError);
-            throw configError;
-        }
-
-        let access = null
-        if (visibility === "private") {
-            const code = await generateUniqueCode()
-            const { data, error: accessError } = await supabase.from("workshop_access").insert({ workshop_id, code, type: "code" }).select("*").single()
-            if (accessError) {
-                console.error("Error creating workshop access:", accessError);
-                throw accessError;
-            }
-            access = data
-        }
-
-        return {
-            ...writing_workshop,
-             writing_delay: config.writing_delay,
-            max_sentences: config.max_sentences,
-            visibility: config.visibility,
-            iterations_count: config.iterations_count,
-            max_participants: config.max_participants,
-            start_time: config.start_time,
-            end_time: config.end_time,
-            access_type: access?.type,
-            access_code: access?.code
-        }
-    }
-    catch (e) {
-        console.error("error creating writing workshop", e)
-    }
 }
-/* ----------------------------------------------------------------
----------------------------- UPDATE -------------------------------
----------------------------------------------------------------- */
+
+export const insertWritingWorkshop = async ({ payload }: { payload: any }) => {
+     return await supabase.from("writing_workshops").insert(payload).select("*").single()
+}

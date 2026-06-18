@@ -1,16 +1,15 @@
 import { fetchContributionsByWorkshop } from "@/actions/contributions"
 import { fetchWritingWorkshop } from "@/actions/writingWorkshops"
+import { Colors } from "@/constants/theme"
 import { ContributionType } from "@/types/contributions"
 import { WritingWorkshopType } from "@/types/workshops"
+import { Feather } from '@expo/vector-icons'
 import { useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react"
-import { ScrollView, StyleSheet } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import ContributionList from "./ContributionsList"
 import WritingWorkshopHeader from "./WritingWorkshopHeader"
-import { View } from "react-native"
-import { Colors } from "@/constants/theme"
-import { Feather } from '@expo/vector-icons';
 
 export default function WritingWorkshopConsultation() {
 
@@ -60,7 +59,7 @@ export default function WritingWorkshopConsultation() {
             />
             <ScrollView>
                 <ContributionList
-                    contributions={[...contributions, ...contributions, ...contributions, ...contributions, ...contributions]}
+                    contributions={contributions}
                 />
             </ScrollView>
         </SafeAreaView>

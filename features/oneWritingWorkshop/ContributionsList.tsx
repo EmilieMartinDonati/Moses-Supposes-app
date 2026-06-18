@@ -12,7 +12,7 @@ export default function ContributionList({
 
     return (
         <View style={styles.contributionsConsultationContainer}>
-            {contributions.map((contribution, index) => (
+            {contributions.map((contribution) => (
                 <View key={contribution.id} style={styles.avatarAndContribution}>
                     <Avatar
                         item={formatAvatar(contribution)}
@@ -20,7 +20,7 @@ export default function ContributionList({
                     <View style={styles.dividerAndContribution}>
                         <View style={styles.divider} />
                         <View style={styles.contributionContentContainer}>
-                            <Text style={styles.contentText}>{index === 0 ? contribution.content : "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum "}</Text>
+                            <Text style={styles.contentText}>{contribution.content}</Text>
                         </View>
                     </View>
                 </View>

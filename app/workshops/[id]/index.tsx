@@ -28,7 +28,7 @@ export default function WorkshopRoute() {
     return null // show loading screen here
   }
 
-  const isDone = false // todo from status
+  const isDone = writingWorkshop.status === "closed" // todo from status
 
   return isDone ? <WritingWorkshopConsultation /> : <WritingWorkshopEditor />
 }

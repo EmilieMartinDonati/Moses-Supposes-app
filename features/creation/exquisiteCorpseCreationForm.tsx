@@ -1,7 +1,8 @@
+import { createWritingWorkshop } from "@/actions/writingWorkshops";
 import DualActionsFooter from "@/components/DualActionsFooter";
 import { Colors } from "@/constants/theme";
 import WritingWorkshopHeader from "@/features/oneWritingWorkshop/WritingWorkshopHeader";
-import { createWritingWorkshop } from "@/services/supabase/writingWorkshops";
+import { useAppStore } from "@/store/useAppStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
@@ -16,6 +17,11 @@ import ExquisiteCorpseStepTwo from "./ExquisiteCorpseStepTwo";
 type FormValues = z.infer<typeof exquisiteCorpseFormSchema>;
 
 export default function ExquisiteCorpseCreationForm() {
+
+    const { user } = useAppStore.getState()
+
+    console.log("user", user)
+    
     const [step, setStep] = useState(0);
     const [stepFields, setStepFields] = useState<any[]>([["title", "prompt", "visibility"]]);
 
@@ -51,7 +57,7 @@ export default function ExquisiteCorpseCreationForm() {
     };
 
     const onSubmit = async (data: any) => {
-        const result = await createWritingWorkshop(data);
+        const result = await createWritingWorkshop({ data, user });
         if (result?.id) {
             router.replace(`/create/${result.id}`);
         }
