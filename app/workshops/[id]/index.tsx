@@ -24,15 +24,8 @@ import { fetchWritingWorkshopWithConfig } from '@/actions/writingWorkshops';
 import { ExquisiteCorpseConfig } from '@/types/exquisite_corpse_config';
 
 import { replayExquisiteCorpse } from '@/actions/exquisiteCorpses';
+import { OnlineParticipant } from '@/types/workshops';
 
-export type OnlineParticipant = {
-  participant_id: string,
-  joined_at: string,
-  avatar_seed: string | null,
-  display_name: string | null,
-  workshop_id: string,
-  presence_ref: string
-}
 
 export default function WritingWorkshopEditor() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -58,7 +51,7 @@ export default function WritingWorkshopEditor() {
     if (!writingWorkshop) {
       return false
     }
-    return writingWorkshop.visibility === "public" || userContributionsCount < (writingWorkshop.iterations_count || 1) 
+    return writingWorkshop.visibility === "public" || userContributionsCount < (writingWorkshop.iterations_count || 1)
   }, [writingWorkshop, userContributionsCount])
 
   const fetchContributions = async () => {
@@ -166,7 +159,7 @@ export default function WritingWorkshopEditor() {
     // refresh participant
     if (newParticipant) {
       // we keep prev participation to avoid user to be shown in onlineparticipants (normally, only others participants)
-      setPrevParticipant(participant) 
+      setPrevParticipant(participant)
       setParticipant(newParticipant)
     }
     // unlock
@@ -188,7 +181,8 @@ export default function WritingWorkshopEditor() {
       <WritingWorkshopPrompt
         prompt={writingWorkshop?.prompt} />
       <WritingWorkshopContent
-        contributions={contributions} />
+        contributions={contributions}
+        showLastContribution={participant.state === "active"} />
       <WritingWorkshopComposer
         participant={participant}
         onlineParticipant={onlineParticipants.find((p) => p.participant_id === participant.id)}

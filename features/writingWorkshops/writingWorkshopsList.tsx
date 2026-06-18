@@ -4,29 +4,26 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import WritingWorkshopsCarousel from "./WritingWorkshopsCarousel";
 
-type WritingWorkshop = {
-    id: number;
-    title: string;
-    prompt: string;
-    start_time: string;
-    end_time: string;
-    status: "draft" | "published";
-};
+import { WritingWorkshopType } from "@/types/workshops";
 
 export default function WritingWorkshopList() {
-    const [liveWorkshops, setLiveWorkshops] = useState<WritingWorkshop[]>([]);
-    const [upcomingWorkshops, setUpcomingWorkshops] = useState<WritingWorkshop[]>([]);
+    const [liveWorkshops, setLiveWorkshops] = useState<WritingWorkshopType[]>([]);
+    const [upcomingWorkshops, setUpcomingWorkshops] = useState<WritingWorkshopType[]>([]);
+    const [finishedWorkshops, setFinishedWorkshops] = useState<WritingWorkshopType[]>([]);
+
     const [loading, setLoading] = useState<boolean>(true);
 
 
     useEffect(() => {
         async function loadWorkshops() {
-            const [currentWorkshops, toComeWorkshops] = await Promise.all([
+            const [currentWorkshops, toComeWorkshops, closedWorkshops] = await Promise.all([
                 getWritingWorkshopsByVisibility({ onlyPublic: false, visibility: "live" }),
-                getWritingWorkshopsByVisibility({ onlyPublic: false, visibility: "upcoming" })
+                getWritingWorkshopsByVisibility({ onlyPublic: false, visibility: "upcoming" }),
+                getWritingWorkshopsByVisibility({ onlyPublic: false, visibility: "finished" })
             ]);
             setLiveWorkshops(currentWorkshops);
             setUpcomingWorkshops(toComeWorkshops);
+            setFinishedWorkshops(closedWorkshops)
             setLoading(false);
         }
 
@@ -46,6 +43,12 @@ export default function WritingWorkshopList() {
             <WritingWorkshopsCarousel 
               visibility={"upcoming"}
               workshops={chunkArray(upcomingWorkshops, 1)}
+              loading={loading}
+              />
+            <Text style={styles.writingWorkshopsSection}>⏳ Ateliers fermés</Text>
+            <WritingWorkshopsCarousel 
+              visibility={"finished"}
+              workshops={chunkArray(finishedWorkshops, 1)}
               loading={loading}
               />
         </View>

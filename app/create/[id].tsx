@@ -26,7 +26,7 @@ export default function WorkshopConfirmationScreen() {
                 onPress: () => router.replace("/")
             }}
             rightAction={{
-                label: "Voir le workshop",
+                label: "Rejoindre",
                 onPress: () => console.log("todo")
             }} />
         </View>

@@ -14,9 +14,8 @@ const guestActions: Action[] = [
   { label: "Connexion", logo: require("../../assets/images/anonymous_person_24.png"), onClick: NavigationActions.goToSignup },
 ]
 const userActions: Action[] = [
-  { label: "Déconnexion", logo: require("../../assets/images/logout_24.svg"), onClick: async () => logOutUser },
   { label: "Mon compte", logo: require("../../assets/images/anonymous_person_24.png"), onClick: () => { } },
-  { label: "Explorer", logo: require("../../assets/images/anonymous_person_24.png"), onClick: () => console.log("open filter modals") }
+  { label: "Déconnexion", logo: require("../../assets/images/logout_24.svg"), onClick: logOutUser },
 ]
 
 export default function HomeHeader({ title, logo, user, hideActions = false }: {
@@ -26,6 +25,9 @@ export default function HomeHeader({ title, logo, user, hideActions = false }: {
   const [actions, setActions] = useState<Action[]>([])
 
   useEffect(() => {
+    if (hideActions) {
+      return
+    }
     if (user) {
       setActions(userActions)
     }
@@ -43,7 +45,7 @@ export default function HomeHeader({ title, logo, user, hideActions = false }: {
         <Text style={styles.title}>{title}</Text>
       </View>
       <View>
-        {!user && !hideActions &&
+        {!hideActions &&
           <View style={styles.actionsContainer}>
             {actions.map(({ onClick, logo, label }: Action) => (
               <Pressable
@@ -55,8 +57,6 @@ export default function HomeHeader({ title, logo, user, hideActions = false }: {
             )}
           </View>
         }
-        {user && !hideActions &&
-          <Text>Todo</Text>}
       </View>
     </View>
   );

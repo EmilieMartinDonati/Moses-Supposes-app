@@ -1,7 +1,8 @@
-import { OnlineParticipant } from "@/app/workshops/[id]"
+import { OnlineParticipant } from "@/types/workshops"
 import { AvatarItem } from "@/components/GroupedAvatars"
+import { ContributionType } from "@/types/contributions"
 
-export const formatAvatar = (participant?: OnlineParticipant): AvatarItem => {
+export const formatAvatar = (participant?: OnlineParticipant | ContributionType): AvatarItem => {
     if (participant?.display_name) {
         const label = participant.display_name
             .split(" ")

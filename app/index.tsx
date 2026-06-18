@@ -65,11 +65,9 @@ const styles = StyleSheet.create({
     main: {
         justifyContent: "flex-start"
     },
-    codeAddBannerContainer: {
-    },
     writingWorkshopListContainer: {
         paddingTop: 24,
-        paddingBottom: 80
+        paddingBottom: 120
     },
     footer: {
         position: "absolute",

@@ -1,4 +1,4 @@
-import { OnlineParticipant } from "@/app/workshops/[id]";
+import { OnlineParticipant } from "@/types/workshops";
 import { Colors } from "@/constants/theme";
 import { ExquisiteCorpseParticipantType } from "@/types/exquisite_corpse_participants";
 import { StyleSheet, View } from "react-native";
