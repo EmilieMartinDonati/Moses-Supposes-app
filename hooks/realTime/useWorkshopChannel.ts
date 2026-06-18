@@ -1,7 +1,7 @@
 import { generateContributionDisplayNameAndAvatarSeed } from "@/actions/contributions"
-import { OnlineParticipant } from "@/app/workshops/[id]"
 import { supabase } from "@/services/supabase/client"
 import { useAppStore } from "@/store/useAppStore"
+import { OnlineParticipant } from "@/types/workshops"
 import { useEffect } from "react"
 
 export type ChannelPresenceState = { [key: string]: Array<OnlineParticipant> }
@@ -26,7 +26,6 @@ export default function useWorkshopPresenceChannel({
         const channel = supabase.channel(`workshop:${workshopId}`)
 
         channel.on("presence", { event: "sync" }, () => {
-            console.log('Presence state:', channel.presenceState())
             onSyncChange && onSyncChange(channel.presenceState())
         })
         channel.subscribe(async (status: string) => {

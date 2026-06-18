@@ -1,9 +1,11 @@
-import { OnlineParticipant } from "@/app/workshops/[id]"
+import { OnlineParticipant } from "@/types/workshops"
 import GroupedAvatars from "@/components/GroupedAvatars"
 import { Colors } from "@/constants/theme"
-import { StyleSheet, Text, View } from "react-native"
+import { Pressable, StyleSheet, Text, View } from "react-native"
 import { formatAvatar } from "./formatAvatar"
 import { ReactNode } from "react"
+import { Feather } from "@expo/vector-icons"
+import { NavigationActions } from "@/actions/navigation"
 
 export default function WritingWorkshopHeader({
     title, 
@@ -17,10 +19,14 @@ export default function WritingWorkshopHeader({
     renderRightAction?: (() => ReactNode) | null
 }) {
 
-    console.log("renderRightAction", renderRightAction)
-
     return (
         <View style={styles.writingWorkshopHeaderContainer}>
+            <View>
+                <Pressable onPress={NavigationActions.goHome}>
+                    <Feather name="chevron-left" size={24} color={Colors.light.chocolate}/>
+                    </Pressable>
+            </View>
+            <View style={styles.writingWorkshopHeaderMainContent}>
             <View style={styles.writingWorkshopHeaderTextContent}>
                 <Text style={styles.writingWorkshopType}>{type}</Text>
                 <Text style={styles.writingWorkshopName}>{title}</Text>
@@ -33,21 +39,29 @@ export default function WritingWorkshopHeader({
                 </View>)
             }
             {!!renderRightAction && renderRightAction()}
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     writingWorkshopHeaderContainer: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
         height: 80,
         paddingHorizontal: 16,
         borderBottomColor: Colors.light.elevatedBeige,
         borderBottomWidth: 1,
-        backgroundColor: "white"
+        backgroundColor: "white",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        gap: 16
+    },
+    writingWorkshopHeaderMainContent: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flex: 1
     },
     writingWorkshopHeaderTextContent: {
         display: "flex",

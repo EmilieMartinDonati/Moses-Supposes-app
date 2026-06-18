@@ -1,4 +1,4 @@
-import { OnlineParticipant } from "@/app/workshops/[id]"
+import { OnlineParticipant } from "@/types/workshops"
 import { AvatarItem } from "@/components/GroupedAvatars"
 import { ContributionType } from "@/types/contributions"
 

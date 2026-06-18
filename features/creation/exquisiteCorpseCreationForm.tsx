@@ -53,7 +53,6 @@ export default function ExquisiteCorpseCreationForm() {
     const onSubmit = async (data: any) => {
         const result = await createWritingWorkshop(data);
         if (result?.id) {
-            console.log("result.id", result?.id)
             router.replace(`/create/${result.id}`);
         }
     };

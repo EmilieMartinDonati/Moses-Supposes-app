@@ -15,8 +15,6 @@ export default function WritingWorkshopContent({
 
     const scrollViewRef = useRef<ScrollView>(null)
 
-    console.log("show last contirbution", showLastContribution)
-
     return (
         <ScrollView
             style={styles.writingWorkshopContentContainer}

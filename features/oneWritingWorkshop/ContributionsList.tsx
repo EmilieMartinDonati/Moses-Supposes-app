@@ -1,15 +1,14 @@
 import Avatar from "@/components/Avatar";
+import { Colors } from "@/constants/theme";
 import { ContributionType } from "@/types/contributions";
 import { StyleSheet, Text, View } from "react-native";
 import { formatAvatar } from "./formatAvatar";
-import { Colors } from "@/constants/theme";
 
 export default function ContributionList({
     contributions = []
 }: {
     contributions: ContributionType[] | []
 }) {
-    console.log("contribu", contributions)
 
     return (
         <View style={styles.contributionsConsultationContainer}>

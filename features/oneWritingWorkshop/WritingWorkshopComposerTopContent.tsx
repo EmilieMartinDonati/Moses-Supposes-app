@@ -1,4 +1,4 @@
-import { OnlineParticipant } from "@/app/workshops/[id]"
+import { OnlineParticipant } from "@/types/workshops"
 import Avatar from "@/components/Avatar"
 import { Colors } from "@/constants/theme"
 import { StateType } from "@/types/exquisite_corpse_participants"

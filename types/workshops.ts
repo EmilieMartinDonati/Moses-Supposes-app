@@ -12,3 +12,12 @@ export type WritingWorkshopType = {
     created_by: string | null,
     created_email: string | null
 }
+
+export type OnlineParticipant = {
+    participant_id: string,
+    joined_at: string,
+    avatar_seed: string | null,
+    display_name: string | null,
+    workshop_id: string,
+    presence_ref: string
+}

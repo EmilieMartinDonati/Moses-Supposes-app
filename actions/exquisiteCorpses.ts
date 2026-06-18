@@ -27,7 +27,6 @@ export const getExquisiteCorpseTicket = async ({ workshopId, userId, guestId }: 
         userId, guestId, workshopId
     })
     if (error) {
-        console.log("error", error)
         throw new ActionError("get_exquisite_corpse_current_participant_from_user", "Impossible d'évaluer si un ticket d'admission existe déjà", { cause: error })
     }
     if (data) {

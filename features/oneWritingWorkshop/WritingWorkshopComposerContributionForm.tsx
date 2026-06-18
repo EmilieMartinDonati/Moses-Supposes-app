@@ -41,8 +41,6 @@ export default function WritingWorkshopComposerContributionForm({
             },
         })
 
-    console.log("errors", errors)
-
     return (
         <View style={styles.formContainer}>
             <Controller
