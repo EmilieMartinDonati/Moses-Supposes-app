@@ -7,7 +7,7 @@ export const signUpAndLoginUser = async ({ email, password, emailOptin }: {
     password: string,
     emailOptin: boolean
 }) => {
-    const result: { error: string | undefined, errorCode: string | undefined , data: any } = {
+    const result: { error: string | undefined, errorCode: string | undefined, data: any } = {
         error: undefined,
         errorCode: undefined,
         data: undefined
@@ -36,7 +36,37 @@ export const signUpAndLoginUser = async ({ email, password, emailOptin }: {
         console.error("Unexpected error during sign up and login", e)
         result.errorCode = "unexpected_failure"
         result.error = "Il y a eu une erreur. Veuillez contacter le service client"
-        
+
+    } finally {
+        return result
+    }
+}
+
+export const loginUser = async ({ email, password }: { email: string, password: string }) => {
+    const result: { error: string | undefined, errorCode: string | undefined, data: any } = {
+        error: undefined,
+        errorCode: undefined,
+        data: undefined
+    }
+    try {
+
+        const { error: signInError, data: signInData } = await signInUser({
+            email, password
+        })
+
+        if (signInError) {
+            result.errorCode = signInError.code
+            result.error = getAuthErrorMessage(signInError.code)
+            return result
+        }
+        result.data = signInData?.user
+        return result
+
+    } catch (e) {
+        console.error("Unexpected error during sign up and login", e)
+        result.errorCode = "unexpected_failure"
+        result.error = "Il y a eu une erreur. Veuillez contacter le service client"
+
     } finally {
         return result
     }
@@ -44,10 +74,10 @@ export const signUpAndLoginUser = async ({ email, password, emailOptin }: {
 
 export const logOutUser = async () => {
     try {
-       const {error} = await logOut()
-       if (error) {
-        throw error
-       }
+        const { error } = await logOut()
+        if (error) {
+            throw error
+        }
     }
     catch (e) {
         console.error("Une erreur est survenue lors de la déconnexion")

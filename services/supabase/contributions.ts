@@ -10,7 +10,7 @@ export const getGuestSingleContribution = async ({
         .select(select)
         .eq("guest_id", guestId)
         .order("created_at", { ascending: ascending })
-        .single()
+        .maybeSingle()
 }
 
 export const getContributionsByWorkshop = async ({
