@@ -5,13 +5,15 @@ import { ScrollView, StyleSheet, Text, View } from "react-native"
 
 export default function WritingWorkshopContent({
     contributions = [],
-    showLastContribution
+    showLastContribution,
+    prompt
 }: {
     contributions: ContributionType[],
-    showLastContribution: boolean
+    showLastContribution: boolean,
+    prompt: string
 }) {
     const lastContribution = contributions.at(-1)
-    const contributionsCount = contributions.length || 10
+    const contributionsCount = contributions.length || 0
 
     const scrollViewRef = useRef<ScrollView>(null)
 
@@ -22,7 +24,7 @@ export default function WritingWorkshopContent({
             ref={scrollViewRef}
             onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: false })}>
             <View style={styles.hiddenContributionsContainer}>
-                {[1, 2, 3, 4].map((__, index) => {
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((__, index) => {
                     return (
                         <View key={index}
                             style={[
@@ -33,9 +35,9 @@ export default function WritingWorkshopContent({
 
                 })}
             </View>
-            <Text style={styles.contributionsCountText}>{contributionsCount} contributions cachées - attendez la fin pour les lire!</Text>
+            <Text style={styles.contributionsCountText}>{contributionsCount ? `${contributionsCount} contributions cachées - attendez la fin pour les lire!` : "Soyez le premier à participer"}</Text>
             <View style={styles.lastContributionContainer}>
-                {showLastContribution && <Text style={styles.lastContributionText}>{lastContribution?.content || "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"}</Text>}
+                {showLastContribution && <Text style={styles.lastContributionText}>{lastContribution?.content || prompt}</Text>}
             </View>
         </ScrollView>
     )

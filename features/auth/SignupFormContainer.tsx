@@ -1,5 +1,6 @@
+import { NavigationActions } from "@/actions/navigation"
 import { Colors } from "@/constants/theme"
-import { Link, router } from "expo-router"
+import { Link } from "expo-router"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import EmailOptinField from "./EmailOptinField"
 import SignupForm from "./SignupForm"
@@ -8,8 +9,7 @@ export default function SignupFormContainer() {
 
     const _handleRedirect = (timeoutMs: number) => {
         setTimeout(() => {
-            if (router.canGoBack()) router.back();
-            else router.replace("/");
+            NavigationActions.goHome()
         }, timeoutMs);
     }
 

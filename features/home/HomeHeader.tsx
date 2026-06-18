@@ -11,7 +11,7 @@ type Action = {
 }
 
 const guestActions: Action[] = [
-  { label: "Connexion", logo: require("../../assets/images/anonymous_person_24.png"), onClick: NavigationActions.goToSignup },
+  { label: "Connexion", logo: require("../../assets/images/anonymous_person_24.png"), onClick: NavigationActions.goToLogin },
 ]
 const userActions: Action[] = [
   { label: "Mon compte", logo: require("../../assets/images/anonymous_person_24.png"), onClick: () => { } },

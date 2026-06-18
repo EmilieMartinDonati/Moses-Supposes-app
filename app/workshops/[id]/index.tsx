@@ -8,7 +8,6 @@ import { useEffect, useMemo, useState } from "react";
 import WritingWorkshopComposer from '@/features/oneWritingWorkshop/WritingWorkshopComposer';
 import WritingWorkshopContent from '@/features/oneWritingWorkshop/WritingWorkshopContent';
 import WritingWorkshopHeader from '@/features/oneWritingWorkshop/WritingWorkshopHeader';
-import WritingWorkshopPrompt from '@/features/oneWritingWorkshop/WritingWorkshopPrompt';
 
 import { fetchContributionsByWorkshop, submitContribution } from '@/actions/contributions';
 import { fetchExquisiteCorpseCurrentParticipant } from '@/actions/exquisiteCorpses';
@@ -178,11 +177,12 @@ export default function WritingWorkshopEditor() {
         type={"Cadavre Exquis"}
         onlineParticipants={onlineParticipants.filter((p) => p.participant_id !== participant.id && p.participant_id !== prevParticipant?.id)}
       />
-      <WritingWorkshopPrompt
-        prompt={writingWorkshop?.prompt} />
+      {/* <WritingWorkshopPrompt
+        prompt={writingWorkshop?.prompt} /> */}
       <WritingWorkshopContent
         contributions={contributions}
-        showLastContribution={participant.state === "active"} />
+        showLastContribution={participant.state === "active"}
+        prompt={writingWorkshop?.prompt} />
       <WritingWorkshopComposer
         participant={participant}
         onlineParticipant={onlineParticipants.find((p) => p.participant_id === participant.id)}

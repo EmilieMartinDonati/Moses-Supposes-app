@@ -8,7 +8,7 @@ import { WritingWorkshopType } from "@/types/workshops"
 import { Feather } from '@expo/vector-icons'
 import { useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react"
-import { ScrollView, StyleSheet, View } from "react-native"
+import { ScrollView, StyleSheet, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function WritingWorkshopConsultation() {
@@ -58,6 +58,9 @@ export default function WritingWorkshopConsultation() {
                 renderRightAction={renderRightAction}
             />
             <ScrollView>
+                <View style={styles.firstSentenceContainer}>
+                    <Text style={styles.firstSentence}>{writingWorkshop.prompt}</Text>
+                </View>
                 <ContributionList
                     contributions={contributions}
                 />
@@ -77,7 +80,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         gap: 16
     },
-    rightActionText: {
-        color: Colors.light.chocolate
+    firstSentenceContainer: {
+        backgroundColor: Colors.light.mainBlue,
+        padding: 32
+    },
+    firstSentence: {
+        color: "white"
     }
 });

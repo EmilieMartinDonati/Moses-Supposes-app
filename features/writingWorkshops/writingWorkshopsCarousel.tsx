@@ -3,7 +3,7 @@ import { WorkshopType } from "@/types/workshops";
 import { FlatList, StyleSheet, View } from "react-native";
 import WritingWorkshopCard from "./WritingWorkshopCard";
 
-type Visibility = "live" | "upcoming";
+type Visibility = "live" | "upcoming" | "finished";
 
 type WritingWorkshop = {
   id: number;
