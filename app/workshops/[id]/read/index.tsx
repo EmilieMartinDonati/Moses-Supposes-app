@@ -1,6 +1,8 @@
 import { fetchContributionsByWorkshop } from "@/actions/contributions"
 import { fetchWritingWorkshop } from "@/actions/writingWorkshops"
 import { Colors } from "@/constants/theme"
+import ContributionList from "@/features/oneWritingWorkshop/ContributionsList"
+import WritingWorkshopHeader from "@/features/oneWritingWorkshop/WritingWorkshopHeader"
 import { ContributionType } from "@/types/contributions"
 import { WritingWorkshopType } from "@/types/workshops"
 import { Feather } from '@expo/vector-icons'
@@ -8,8 +10,6 @@ import { useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import ContributionList from "./ContributionsList"
-import WritingWorkshopHeader from "./WritingWorkshopHeader"
 
 export default function WritingWorkshopConsultation() {
 

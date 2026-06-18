@@ -23,7 +23,8 @@ export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
         }
 
         if (visibility === "finished") {
-            NavigationActions.goToSingleWorkshopView(workshopId)
+            NavigationActions.goToWorkshopConsultation(workshopId)
+            return
         }
 
         const { user, guestId } = useAppStore.getState()
@@ -33,7 +34,7 @@ export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
         }
 
         if (type !== "exquisite_corpse") {
-            NavigationActions.goToSingleWorkshopView(workshopId)
+            NavigationActions.goToWorkshopEditor(workshopId)
         }
         else {
             // If busy, redirect to lobby
@@ -47,7 +48,7 @@ export const clickWritingWorkshop = async ({ workshopId, visibility, type }: {
             }
             else {
                 await getExquisiteCorpseTicket({ workshopId, userId: user?.id || null, guestId })
-                NavigationActions.goToSingleWorkshopView(workshopId)
+                NavigationActions.goToWorkshopEditor(workshopId)
             }
         }
     } catch (e) {

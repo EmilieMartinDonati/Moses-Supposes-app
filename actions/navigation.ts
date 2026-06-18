@@ -2,8 +2,9 @@ import { router } from "expo-router";
 
 type NavigationActionsType = {
     goHome: () => void,
-    goToSingleWorkshopView: (workshopId: string) => void,
+    goToWorkshopEditor: (workshopId: string) => void,
     goToWorkshopLobby: (workshopId: string) => void,
+    goToWorkshopConsultation: (workshopId: string) => void,
     goBack: () => void,
     createWorkshop: () => void,
     goToSignup: () => void,
@@ -20,10 +21,12 @@ export const NavigationActions: NavigationActionsType = {
     goToLogin: () => {
         router.push("/auth/login")
     },
-    goToSingleWorkshopView: (id) => {
+    goToWorkshopEditor: (id) => {
         router.push(`/workshops/${id}`);
     },
-
+    goToWorkshopConsultation: (id) => {
+        router.push(`/workshops/${id}/read`);
+    },
     goToWorkshopLobby: (id) => {
         router.push(`/workshops/${id}/lobby`);
     },
