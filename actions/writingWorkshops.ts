@@ -81,7 +81,7 @@ export const fetchWritingWorkshopWithConfig = async ({ workshopId }: { workshopI
             ...exquisiteCorpseConfig
         }
         // careful with the merge here
-        result.id = writingWorkshop.id 
+        result.id = writingWorkshop.id
         return result
 
     }
@@ -89,4 +89,19 @@ export const fetchWritingWorkshopWithConfig = async ({ workshopId }: { workshopI
         console.log("e", e)
         // snackbar
     }
+}
+
+export const fetchWritingWorkshop = async ({ workshopId }: { workshopId: string }) => {
+    try {
+        const { data, error } = await getWritingWorkshopById({ workshopId })
+        if (error) {
+            throw new ActionError("fetching_writing_workshop", "Impossible de récupérer les informations du cadavre exquis", { cause: error })
+        }
+        return data
+    }
+    catch (e) {
+        console.log("e", e)
+        // snackbar
+    }
+
 }

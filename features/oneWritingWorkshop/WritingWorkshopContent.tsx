@@ -4,12 +4,18 @@ import { useRef } from "react"
 import { ScrollView, StyleSheet, Text, View } from "react-native"
 
 export default function WritingWorkshopContent({
-    contributions = []
-}: {contributions: ContributionType[]}) {
+    contributions = [],
+    showLastContribution
+}: {
+    contributions: ContributionType[],
+    showLastContribution: boolean
+}) {
     const lastContribution = contributions.at(-1)
     const contributionsCount = contributions.length || 10
 
     const scrollViewRef = useRef<ScrollView>(null)
+
+    console.log("show last contirbution", showLastContribution)
 
     return (
         <ScrollView
@@ -31,7 +37,7 @@ export default function WritingWorkshopContent({
             </View>
             <Text style={styles.contributionsCountText}>{contributionsCount} contributions cachées - attendez la fin pour les lire!</Text>
             <View style={styles.lastContributionContainer}>
-                <Text style={styles.lastContributionText}>{lastContribution?.content || "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"}</Text>
+                {showLastContribution && <Text style={styles.lastContributionText}>{lastContribution?.content || "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"}</Text>}
             </View>
         </ScrollView>
     )

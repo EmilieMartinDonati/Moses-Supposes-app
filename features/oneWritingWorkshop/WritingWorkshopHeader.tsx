@@ -3,11 +3,21 @@ import GroupedAvatars from "@/components/GroupedAvatars"
 import { Colors } from "@/constants/theme"
 import { StyleSheet, Text, View } from "react-native"
 import { formatAvatar } from "./formatAvatar"
+import { ReactNode } from "react"
 
 export default function WritingWorkshopHeader({
-    title, type = "Cadavre Exquis",
-    onlineParticipants = []
-}: { title?: string, type: string, onlineParticipants?: OnlineParticipant[] }) {
+    title, 
+    type = "Cadavre Exquis",
+    onlineParticipants = [],
+    renderRightAction = null
+}: {
+    title?: string,
+    type: string,
+    onlineParticipants?: OnlineParticipant[],
+    renderRightAction?: (() => ReactNode) | null
+}) {
+
+    console.log("renderRightAction", renderRightAction)
 
     return (
         <View style={styles.writingWorkshopHeaderContainer}>
@@ -22,6 +32,7 @@ export default function WritingWorkshopHeader({
                         avatarWidth={40} />
                 </View>)
             }
+            {!!renderRightAction && renderRightAction()}
         </View>
     )
 }

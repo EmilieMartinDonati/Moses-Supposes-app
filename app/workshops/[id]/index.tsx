@@ -25,6 +25,9 @@ import { ExquisiteCorpseConfig } from '@/types/exquisite_corpse_config';
 
 import { replayExquisiteCorpse } from '@/actions/exquisiteCorpses';
 
+import WritingWorkshopConsultation from '@/features/oneWritingWorkshop/WritingWorkshopConsultation';
+
+
 export type OnlineParticipant = {
   participant_id: string,
   joined_at: string,
@@ -179,6 +182,10 @@ export default function WritingWorkshopEditor() {
   }
 
   return (
+    <WritingWorkshopConsultation />
+    )
+
+  return (
     <SafeAreaView style={styles.writingWorkshopEditorContainer}>
       <WritingWorkshopHeader
         title={writingWorkshop?.title}
@@ -188,7 +195,8 @@ export default function WritingWorkshopEditor() {
       <WritingWorkshopPrompt
         prompt={writingWorkshop?.prompt} />
       <WritingWorkshopContent
-        contributions={contributions} />
+        contributions={contributions}
+        showLastContribution={participant.state === "active"} />
       <WritingWorkshopComposer
         participant={participant}
         onlineParticipant={onlineParticipants.find((p) => p.participant_id === participant.id)}
